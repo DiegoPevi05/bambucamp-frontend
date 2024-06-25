@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react"
 import {GOOGLE_ICON} from "../assets/images"
 import { Star  } from "lucide-react"
-import ReviewIT from "../lib/interfaces"
+import {ReviewIT} from "../lib/interfaces"
 import {reviewsData} from "../lib/constant"
+import {useTranslation} from "react-i18next"
 
 interface CardReviewProps {
   data: ReviewIT
 }
 
 const CardReview = (props:CardReviewProps) => {
+  const {t} = useTranslation()
   const {data} = props
   const isMobile = window.innerWidth < 1026;
 
@@ -32,7 +34,7 @@ const CardReview = (props:CardReviewProps) => {
         </div>
 
         <div className="w-full h-auto flex flex-row justify-start items-center">
-          <p className="text-secondary text-xs">Fecha de estadia: {data.date}</p>
+          <p className="text-secondary text-xs">{t("Dates of Reservations")}: {data.date}</p>
         </div>
 
       </div>

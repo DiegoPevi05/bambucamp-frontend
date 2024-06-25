@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 
 import {User, AlignJustify, Facebook, Instagram, Twitter, X } from 'lucide-react';
 import { styles } from "../lib/styles";
@@ -6,6 +6,9 @@ import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
 import {fadeIn, slideIn} from "../lib/motions";
 import {motion, AnimatePresence} from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageDropDownList from "./ui/LanguageSelector";
 
 const NavBarItem = ({children, index}:{children:string, index:number}) => {
   return (
@@ -35,8 +38,15 @@ const NavBarItemMobile = ({children, index}:{children:string, index:number}) => 
   )
 };
 
+
 const Navbar = () => {
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const goToRoute = (route:string) => {
+    navigate(route);
+  }
 
   const toogleSidebar = () => {
     setOpenSideBar(!openSideBar);
@@ -50,14 +60,15 @@ const Navbar = () => {
         </a>
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-6">
-        <NavBarItem index={1}>Nosotros</NavBarItem>
-        <NavBarItem index={2}>Reservas</NavBarItem>
-        <NavBarItem index={3}>Promociones</NavBarItem>
-        <NavBarItem index={4}>Servicios</NavBarItem>
-        <NavBarItem index={5}>Contactanos</NavBarItem>
+        <NavBarItem index={1}>{t("Us")}</NavBarItem>
+        <NavBarItem index={2}>{t("Reservations")}</NavBarItem>
+        <NavBarItem index={3}>{t("Promotions")}</NavBarItem>
+        <NavBarItem index={4}>{t("Services")}</NavBarItem>
+        <NavBarItem index={5}>{t("Contact Us")}</NavBarItem>
       </ul>
       <div className="w-[50%] lg:w-[20%] h-full flex justify-end lg:justify-center items-center">
-        <Button className="hidden lg:flex gap-x-4">Log In <User/> </Button>
+        <LanguageDropDownList/>
+        <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("signin")}>{t("Sign In")}<User/> </Button>
         <Button onClick={toogleSidebar} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 mt-6 p-0"> <AlignJustify className=""/> </Button>
       </div>
 
@@ -78,14 +89,14 @@ const Navbar = () => {
                 <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
               </a>
               <ul className="flex flex-col justify-start items-start gap-y-6 mt-16">
-                <NavBarItemMobile index={1}>Nosotros</NavBarItemMobile>
-                <NavBarItemMobile index={2}>Reservas</NavBarItemMobile>
-                <NavBarItemMobile index={3}>Promociones</NavBarItemMobile>
-                <NavBarItemMobile index={4}>Servicios</NavBarItemMobile>
-                <NavBarItemMobile index={5}>Contactanos</NavBarItemMobile>
+                <NavBarItemMobile index={1}>{t("Us")}</NavBarItemMobile>
+                <NavBarItemMobile index={2}>{t("Reservations")}</NavBarItemMobile>
+                <NavBarItemMobile index={3}>{t("Promotions")}</NavBarItemMobile>
+                <NavBarItemMobile index={4}>{t("Services")}</NavBarItemMobile>
+                <NavBarItemMobile index={5}>{t("Contact Us")}</NavBarItemMobile>
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
-                <Button className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">Log In <User/> </Button>
+                <Button effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("Sign In")} <User/> </Button>
               </div>
               <div className="w-full mt-auto flex flex-row justify-start items-center gap-x-4 sm:gap-x-6">
                 <a href="/" target="_blank" className="font-primary text-white hover:scale-[1.05] hover:text-primary duration-300">

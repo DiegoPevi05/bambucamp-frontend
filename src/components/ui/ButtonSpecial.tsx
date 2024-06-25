@@ -4,12 +4,12 @@ import { Loader2 } from 'lucide-react'
 import { ButtonHTMLAttributes, FC } from 'react'
 
 export const buttonVariants = cva(
-  'active:scale-95 disabled:before:bg-gray-500 disabled:border-gray-500 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500 border border-[3px]',
+  'active:scale-95 disabled:before:bg-gray-200 disabled:border-gray-500 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500 border border-[3px]',
   {
     variants: {
-      effect:{
-        slide: 'button',
-        default: '',
+      noEffect:{
+        true: 'button',
+        false: '',
       },
       variant: {
         default: 'button-primary',
@@ -28,7 +28,7 @@ export const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      effect: 'slide',
+      noEffect: true,
       variant: 'default',
       size: 'default',
     },
@@ -48,7 +48,7 @@ const Button: FC<ButtonProps> = ({
   variant,
   isLoading,
   size,
-  effect,
+  noEffect,
   isRound,
   rightIcon,
   ...props
@@ -56,10 +56,10 @@ const Button: FC<ButtonProps> = ({
 
   return (
     <button
-      className={cn(buttonVariants({ variant, size, effect, isRound, className }))}
+      className={cn(buttonVariants({ variant, size, noEffect, isRound, className }))}
       disabled={isLoading}
       {...props}>
-      <span className="flex justify-center items-center gap-x-2">
+      <span className="flex justify-center items-center">
       {isLoading ? <Loader2 className='mr-2 text-secondary h-4 w-4 animate-spin' /> : null}
       {children}
       {rightIcon ? <div className="transform transition-transform group-hover:translate-x-2 duration-300">{rightIcon}</div> : null}

@@ -3,6 +3,7 @@ import { MapPin, CalendarDays, User, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import { SearchReservation } from "../db/actions";
+import {useTranslation} from "react-i18next";
 
 
 const generateCalendar = (currentDate:Date, handleSelectedDate: (date: Date) => void ) => {
@@ -64,6 +65,7 @@ const generateCalendar = (currentDate:Date, handleSelectedDate: (date: Date) => 
 
 const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const {t} = useTranslation()
 
   const handleNextMonth = () => {
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
@@ -94,9 +96,9 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
         }}
         >
           <div className="flex flex-row justify-between items-center mb-4 px-4">
-            <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>Previous</button>
+            <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
             <h1 className="text-slate-700">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-            <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>Next</button>
+            <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
           </div>
           <div className="grid grid-cols-7 gap-2 p-2">
             {calendarDays}
@@ -148,6 +150,7 @@ const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setD
 const InputGuestBar = ({guests, type,handleCount }: {guests:{adults:number, kids:number, babys:number}, type: "adults" | "kids" | "babys", handleCount: (type: "adults" | "kids" | "babys", count: number) => void } ) => {
 
   const [currentCount,setCurrentCount] = useState<number>(guests[type]);
+  const {t} = useTranslation();
 
   useEffect(()=>{
     handleCount(type,currentCount);
@@ -165,7 +168,7 @@ const InputGuestBar = ({guests, type,handleCount }: {guests:{adults:number, kids
       <div className="w-[80%] h-full flex flex-row justify-center items-center gap-x-4 text-secondary">
         <User/>
         <span>{currentCount}</span>
-        <span>{type}</span>
+        <span>{t(type)}</span>
       </div>
       <div className="w-[20%] h-full flex flex-col border-l-[1px] border-slate-200 divide-y">
         <button className="w-full h-[50%] bg-white text-secondary hover:bg-secondary hover:text-white duration-300" onClick={IncrementConter}>+</button>
@@ -238,6 +241,7 @@ const GuestPicker = ({openBar, containerRef, toggleBar, guests, setGuests}:
 };
 
 const SearchDatesBar = () => {
+  const {t} = useTranslation();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [guests, setGuests] = useState<{adults:number, kids:number, babys:number}>({ adults:1, kids:0, babys:0 });
@@ -276,7 +280,7 @@ const SearchDatesBar = () => {
       <DatePicker openBar={ openBar['startDate']} type="startDate" toggleBar={toggleBar} date={startDate} setDate={setStartDate} />
       <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} date={endDate} setDate={setEndDate} />
       <GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>
-      <button className="bg-tertiary text-white w-full col-span-1 sm:col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>Book</button>
+      <button className="bg-tertiary text-white w-full col-span-1 sm:col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
     </motion.div>
 
   );

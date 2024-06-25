@@ -24,6 +24,7 @@ import {
 import * as LucideIcons from 'lucide-react';
 import Button from "./ui/Button"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 
 interface CarouselCardProps {
@@ -115,6 +116,7 @@ const ServiceItem = ({iconName,label}:ServiceItemProps) => {
 
 const VerticalCarousel = () => {
 
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const [tents, setTents] = useState<TentIT[]>(tentsData)
   const [selectedTent, setSelectedTent] = useState<TentIT>(tentsData[0])
@@ -199,23 +201,25 @@ const VerticalCarousel = () => {
                 </ul>
               <div className="w-full h-auto flex flex-row justify-start items-center gap-x-4 mb-4 lg:mb-12">
                 <Button 
+                  effect="default"
                   variant="default" 
-                  size="default" 
-                  className="text-xs sm:text-lg h-8 sm:h-10"
-                  rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 text-white ml-2 duration-300"/>}
+                  size="lg" 
+                  className="group text-xs sm:text-lg h-8 sm:h-10"
+                  rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
                   onClick={()=>goBooking()}
                 >
-                  Book Now
+                  {t("Book now")}
                 </Button>
 
                 <Button 
+                  effect="default"
                   variant="dark" 
-                  size="default" 
-                  className="max-sm:hidden text-xs sm:text-lg h-8 sm:h-10"
-                  rightIcon={<ChevronRightIcon className="w-6 h-6 text-white ml-2 duration-300"/>}
+                  size="lg" 
+                  className="group max-sm:hidden text-xs sm:text-lg h-8 sm:h-10"
+                  rightIcon={<ChevronRightIcon className="w-6 h-6 ml-2 duration-300"/>}
                   onClick={()=>goBooking()}
                 >
-                  Services
+                  {t("Services")}
                 </Button>
               </div>
             </motion.div>

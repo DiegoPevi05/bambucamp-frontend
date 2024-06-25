@@ -21,7 +21,7 @@ export const SearchReservation = async (searchValues: SearchValues): Promise<voi
   } catch (error) {
     if (error instanceof ZodError) {
       error.errors.forEach((err) => {
-        toast.error(err.message);
+        toast.error((err.message));
       });
     } else {
       toast.error("Invalid search values.");

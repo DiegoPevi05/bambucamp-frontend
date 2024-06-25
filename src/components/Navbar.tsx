@@ -1,6 +1,6 @@
 import  { useState } from "react";
 
-import {User, AlignJustify, Facebook, Instagram, Twitter, X } from 'lucide-react';
+import {User, AlignJustify, Facebook, Instagram, Twitter, X, CalendarCheck  } from 'lucide-react';
 import { styles } from "../lib/styles";
 import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
@@ -9,6 +9,8 @@ import {motion, AnimatePresence} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LanguageDropDownList from "./ui/LanguageSelector";
+import {useAuth} from "../contexts/AuthContext";
+import DropDownListAccount from "./DropDownListAccount";
 
 const NavBarItem = ({children, index}:{children:string, index:number}) => {
   return (
@@ -40,6 +42,7 @@ const NavBarItemMobile = ({children, index}:{children:string, index:number}) => 
 
 
 const Navbar = () => {
+  const { user  } = useAuth();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -68,7 +71,11 @@ const Navbar = () => {
       </ul>
       <div className="w-[50%] lg:w-[20%] h-full flex justify-end lg:justify-center items-center">
         <LanguageDropDownList/>
-        <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("signin")}>{t("Sign In")}<User/> </Button>
+        {user ? 
+          <DropDownListAccount user={user}/>
+          :
+          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Sign In")}<User/> </Button>
+        }
         <Button onClick={toogleSidebar} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 mt-6 p-0"> <AlignJustify className=""/> </Button>
       </div>
 
@@ -96,7 +103,11 @@ const Navbar = () => {
                 <NavBarItemMobile index={5}>{t("Contact Us")}</NavBarItemMobile>
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
-                <Button effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("Sign In")} <User/> </Button>
+                {user ?
+                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>
+                  :
+                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("Sign In")} <User/> </Button>
+                }
               </div>
               <div className="w-full mt-auto flex flex-row justify-start items-center gap-x-4 sm:gap-x-6">
                 <a href="/" target="_blank" className="font-primary text-white hover:scale-[1.05] hover:text-primary duration-300">

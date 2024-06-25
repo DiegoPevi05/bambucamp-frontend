@@ -19,7 +19,6 @@ const signUpSchema = z.object({
   confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
   firstName: z.string().nonempty({ message: "First name is required." }),
   lastName: z.string().nonempty({ message: "Last name is required." }),
-  phoneNumber: z.string().nonempty({ message: "Phone number is required." }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords do not match.", path: ["confirmPassword"], });
 
@@ -28,7 +27,7 @@ const forgotPasswordSchema = z.object({
 });
 
 const validateCodeSchema = z.object({
-  code: z.string().length(6, { message: "Code must be 4 characters." }),
+  code: z.string().length(4, { message: "Code must be 4 characters." }),
 });
 
 const resetPasswordSchema = z.object({
@@ -56,4 +55,4 @@ const searchSchema = z.object({
   path: ["endDate"],
 });
 
-export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema };
+export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema, forgotPasswordSchema, validateCodeSchema, resetPasswordSchema};

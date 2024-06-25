@@ -19,7 +19,9 @@ import {
 	GOLD_LLURAK_6,
 } from "../assets/images"
 
-import { TentIT, ReviewIT, PromotionIT } from "./interfaces"
+import { TentIT, ReviewIT, PromotionIT, ReserveIT } from "./interfaces"
+
+
 
 export const tentsData:TentIT[] = [
   {
@@ -178,6 +180,20 @@ export const tentsData:TentIT[] = [
       grill:false,
     }
   },
+]
+
+export const ReservesData:ReserveIT[] = [
+  {
+    id: 1,
+    checkin: "01-03-2024",
+    checkout: "01-03-2024",
+    status: "pending",
+    total: 1000,
+    tents: [
+      tentsData[0],
+      tentsData[1]
+    ]
+  }
 ]
 
 

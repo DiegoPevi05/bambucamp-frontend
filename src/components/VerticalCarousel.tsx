@@ -7,19 +7,7 @@ import { fadeIn, fadeOnly } from "../lib/motions"
 import { 
   ChevronLeftIcon, 
   ChevronRightIcon,
-  Wifi,
-  Car,
-  Waves,
-  Croissant,
-  Utensils,
-  Sandwich,
-  CookingPot,
-  Sparkles,
-  Martini,
-  Bath,
-  AirVent,
-  Beef,
-  Tent,
+  Tent
 } from "lucide-react"
 import * as LucideIcons from 'lucide-react';
 import Button from "./ui/Button"
@@ -187,17 +175,17 @@ const VerticalCarousel = () => {
                   className={`${styles.sectionBodyText} text-white`}>{selectedTent.description}
                 </p>
               <ul className="w-full h-auto flex flex-row flex-wrap lg:grid lg:grid-cols-4 gap-2 lg:gap-4 sm:pb-6 lg:pb-12">
-                  { selectedTent.services.wifi && ( <ServiceItem iconName={"Wifi"} label={"Wi-fi"}/>)}
-                  { selectedTent.services.parking && ( <ServiceItem iconName={"Car"} label={"Parking"}/>)}
-                  { selectedTent.services.pool  && ( <ServiceItem iconName={"Waves"} label={"Pool"}/> )  }
-                  { selectedTent.services.breakfast && ( <ServiceItem iconName={"Croissant"} label={"Breakfast"}/> ) }
-                  { selectedTent.services.lunch && (<ServiceItem iconName={"Sandwich"} label={"Lunch"}/>) }
-                  { selectedTent.services.dinner && (<ServiceItem iconName={"Utensils"} label={"Dinner"}/>) }
-                  { selectedTent.services.spa && (<ServiceItem iconName={"Sparkles"} label={"Spa"}/>) }
-                  { selectedTent.services.bar && (<ServiceItem iconName={"Martini"} label={"Bar"}/>) }
-                  { selectedTent.services.hotwater && (<ServiceItem iconName={"Bath"} label={"Hotwater"}/>) }
-                  { selectedTent.services.airconditioning && (<ServiceItem iconName={"AirVent"} label={"Air Conditioning"}/>) }
-                  { selectedTent.services.grill && (<ServiceItem iconName={"Beef"} label={"Grill"}/>) }
+                  { selectedTent.services.wifi && ( <ServiceItem iconName={"Wifi"} label={t("Wi-fi")}/>)}
+                  { selectedTent.services.parking && ( <ServiceItem iconName={"Car"} label={t("Parking")}/>)}
+                  { selectedTent.services.pool  && ( <ServiceItem iconName={"Waves"} label={t("Pool")}/> )  }
+                  { selectedTent.services.breakfast && ( <ServiceItem iconName={"Croissant"} label={t("Breakfast")}/> ) }
+                  { selectedTent.services.lunch && (<ServiceItem iconName={"Sandwich"} label={t("Lunch")}/>) }
+                  { selectedTent.services.dinner && (<ServiceItem iconName={"Utensils"} label={t("Dinner")}/>) }
+                  { selectedTent.services.spa && (<ServiceItem iconName={"Sparkles"} label={t("Spa")}/>) }
+                  { selectedTent.services.bar && (<ServiceItem iconName={"Martini"} label={t("Bar")}/>) }
+                  { selectedTent.services.hotwater && (<ServiceItem iconName={"Bath"} label={t("Hotwater")}/>) }
+                  { selectedTent.services.airconditioning && (<ServiceItem iconName={"AirVent"} label={t("Air Conditioner")}/>) }
+                  { selectedTent.services.grill && (<ServiceItem iconName={"Beef"} label={t("Grill")}/>) }
                 </ul>
               <div className="w-full h-auto flex flex-row justify-start items-center gap-x-4 mb-4 lg:mb-12">
                 <Button 

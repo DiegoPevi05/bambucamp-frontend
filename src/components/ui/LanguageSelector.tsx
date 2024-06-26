@@ -28,11 +28,11 @@ const LanguageDropDownList = () => {
             exit="hidden"
             viewport={{ once: true }}
             variants={fadeOnly("",0,0.3)}
-            className="absolute top-[110%] w-full h-auto flex flex-col justify-start items-start bg-primary">
-            <span onClick={() => changeLanguage("es")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group">
+            className="absolute top-[110%] w-full h-auto flex flex-col justify-start items-start bg-primary rounded-md divide-y divide-white border-4 border-primary">
+            <span onClick={() => changeLanguage("es")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group rounded-t-md">
               <p className="text-white text-lg group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{"es"}</p>
             </span>
-            <span onClick={() => changeLanguage("en")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group">
+            <span onClick={() => changeLanguage("en")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group rounded-b-md">
               <p className="text-white text-lg group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{"en"}</p>
             </span>
           </motion.div>

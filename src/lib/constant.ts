@@ -185,9 +185,31 @@ export const tentsData:TentIT[] = [
 export const ReservesData:ReserveIT[] = [
   {
     id: 1,
-    checkin: "01-03-2024",
-    checkout: "01-03-2024",
-    status: "pending",
+    checkin: new Date(2024,5,28,12,0,0,0),
+    checkout: new Date(2024,5,30,12,0,0,0),
+    status: "PENDING",
+    total: 1000,
+    tents: [
+      tentsData[0],
+      tentsData[1]
+    ]
+  },
+  {
+    id: 2,
+    checkin: new Date(2024,6,17,12,0,0,0),
+    checkout: new Date(2024,6,19,12,0,0,0),
+    status: "PENDING",
+    total: 1000,
+    tents: [
+      tentsData[0],
+      tentsData[1]
+    ]
+  },
+  {
+    id: 2,
+    checkin: new Date(2024,6,21,12,0,0,0),
+    checkout: new Date(2024,6,24,12,0,0,0),
+    status: "PENDING",
     total: 1000,
     tents: [
       tentsData[0],

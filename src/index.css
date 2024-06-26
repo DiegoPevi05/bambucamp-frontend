@@ -189,6 +189,47 @@
   background-color: #146c73;
 }
 
+.button-ghost-light {
+  background-color: #00AAA9;
+  color: #fff;
+  border-color: #00AAA9;
+}
+
+.button-ghost-light:hover {
+  color: #00AAA9;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.button.button-ghost-light:hover {
+  background-color: #00AAA9;
+}
+
+.button.button-ghost-light::before {
+  background-color: #fff;
+}
+
+.button-danger {
+  background-color: #f87171;
+  color: #fff;
+  border-color: #f87171;
+}
+
+.button-danger:hover {
+  color: #f87171;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.button.button-danger:hover {
+  background-color: #f87171;
+}
+
+.button.button-danger::before {
+  background-color: #fff;
+}
+
+
 
 
 .loader {

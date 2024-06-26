@@ -8,8 +8,8 @@ export interface User {
 
 export interface ReserveIT{
   id: number;
-  checkin: string;
-  checkout: string;
+  checkin: Date;
+  checkout: Date;
   status: string;
   total: number;
   tents: TentIT[];

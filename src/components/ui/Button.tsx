@@ -16,6 +16,8 @@ export const buttonVariants = cva(
         dark: 'button-dark',
         light: 'button-light',
         ghost: 'button-ghost',
+        ghostLight: 'button-ghost-light',
+        danger: 'button-danger',
       },
       isRound: {
         true: 'rounded-md',

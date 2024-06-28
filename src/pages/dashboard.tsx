@@ -4,7 +4,7 @@ import Button from "../components/ui/Button";
 import { LOGO_PRIMARY } from "../assets/images";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, fadeOnly } from "../lib/motions";
-import { CalendarCheck, User, UserCog, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye } from "lucide-react"
+import { CalendarCheck, User, UserCog, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, UserCog2 , UserX  } from "lucide-react"
 import {useTranslation} from "react-i18next";
 import {useAuth} from "../contexts/AuthContext";
 import DropDownListAccount from "../components/DropDownListAccount";
@@ -12,23 +12,29 @@ import { ReserveIT } from "../lib/interfaces";
 import { ReservesData } from "../lib/constant";
 import Modal from "../components/Modal";
 
-const DashboardButtons: DashboardButtonProps[] = [
+const DashboardButtons: DashboardButtonDataProps[] = [
   {
     "title": "Reserves",
     "icon": <CalendarCheck/>,
-    "onClick": () => console.log("Home clicked")
+    "section": "reserves"
   },
   {
     "title": "Account",
     "icon": <User />,
-    "onClick": () => console.log("Profile clicked")
+    "section": "account"
   },
   {
     "title": "Settings",
     "icon": <UserCog />,
-    "onClick": () => console.log("Settings clicked")
+    "section": "settings"
   }
 ];
+
+interface DashboardButtonDataProps{
+  title:string;
+  icon:React.ReactNode;
+  section:string;
+}
 
 interface DashboardButtonProps {
   title: string;
@@ -208,7 +214,8 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const [section,setSection] = useState<string>("reserves");
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [isUserEdit,setUserEdit] = useState<boolean>(false);
 
   const handleNextMonth = () => {
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
@@ -218,6 +225,11 @@ const Dashboard = () => {
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
   }
   const calendarDays = generateCalendar(currentDate, ReservesData.map((reserve) => ({ checkin: reserve.checkin, checkout: reserve.checkout })));
+
+  const handleViewSection = (section:string) => {
+    console.log(section)
+    setSection(section);
+  }
 
   return (
     <div className="bg-white w-full min-h-screen">
@@ -232,7 +244,7 @@ const Dashboard = () => {
               key={index}
               title={button.title}
               icon={button.icon}
-              onClick={button.onClick}
+              onClick={()=>handleViewSection(button.section)}
             />
           ))}
           <Button
@@ -246,7 +258,7 @@ const Dashboard = () => {
             <span>{t("Log out")}</span>
           </Button>
         </div>
-        <div className="bg-white px-4 col-span-1 lg:col-span-5 grid grid-rows-8 gap-4 h-full">
+        <div className="bg-white px-4 col-span-1 lg:col-span-5 grid grid-rows-8 gap-4 h-full overflow-hidden">
           <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 row-span-1 flex flex-row justify-between">
             <div className="flex flex-row gap-x-4 items-start flex-col ">
               <h1 className="text-lg text-secondary">{t("Welcome")} {user?.firstName}{" "}{user?.lastName}</h1>
@@ -254,51 +266,131 @@ const Dashboard = () => {
             </div>
             <DropDownListAccount user={user} variant="dark"/>
           </div>
-          <div className="bg-white row-span-7 grid grid-cols-2 grid-rows-3 gap-4">
-            <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-2">
-              <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
-              <p className="font-secondary text-md text-tertiary">{t("View your reserves through months")}</p>
-              <div className="w-full h-auto flex flex-row gap-x-2 my-2">
-                <span className="h-6 w-6 bg-tertiary rounded-md"></span>
-                <p className="font-primary text-tertiary text-sm">{t("Reserves")}</p>
-                <span className="h-6 w-6 bg-white rounded-md border-2 border-slate-400"></span>
-                <p className="font-primary text-slate-400 text-sm">{t("Today")}</p>
-              </div>
-              <AnimatePresence>
-                  <motion.div 
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  variants={fadeOnly("",0,0.5)}
-                  className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
-                    <div className="flex flex-row justify-between items-center mb-4 px-4">
-                      <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
-                      <h1 className="text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-                      <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
+          <AnimatePresence>
+
+            {section == "reserves" &&
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("up","",0,0.5)}
+                className="bg-white row-span-7 grid grid-cols-2 grid-rows-3 gap-4">
+                  <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-2">
+                    <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
+                    <p className="font-secondary text-md text-tertiary">{t("View your reserves through months")}</p>
+                    <div className="w-full h-auto flex flex-row gap-x-2 my-2">
+                      <span className="h-6 w-6 bg-tertiary rounded-md"></span>
+                      <p className="font-primary text-tertiary text-sm">{t("Reserves")}</p>
+                      <span className="h-6 w-6 bg-white rounded-md border-2 border-slate-400"></span>
+                      <p className="font-primary text-slate-400 text-sm">{t("Today")}</p>
                     </div>
-                    <div className="grid grid-cols-7 gap-2 p-2">
-                      {calendarDays}
+                    <AnimatePresence>
+                        <motion.div 
+                        initial="hidden"
+                        animate="show"
+                        exit="hidden"
+                        variants={fadeOnly("",0,0.5)}
+                        className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
+                          <div className="flex flex-row justify-between items-center mb-4 px-4">
+                            <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
+                            <h1 className="text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
+                            <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
+                          </div>
+                          <div className="grid grid-cols-7 gap-2 p-2">
+                            {calendarDays}
+                          </div>
+                        </motion.div>
+                    </AnimatePresence>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-3">
+                    <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><Tent/>{t("Reserves")}</h1>
+                    <p className="font-secondary text-tertiary text-md">{t("View all your reserves directly")}</p>
+                    <div className="w-full h-[80%] flex flex-col overflow-y-scroll">
+                      {ReservesData.map((reserve, index) => (
+                        <ReserveCard key={index} reserve={reserve}/>
+                      ))}
                     </div>
-                  </motion.div>
-              </AnimatePresence>
-            </div>
+                  </div>
 
-            <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-3">
-              <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><Tent/>{t("Reserves")}</h1>
-              <p className="font-secondary text-tertiary text-md">{t("View all your reserves directly")}</p>
-              <div className="w-full h-[80%] flex flex-col overflow-y-scroll">
-                {ReservesData.map((reserve, index) => (
-                  <ReserveCard key={index} reserve={reserve}/>
-                ))}
-              </div>
-            </div>
+                  <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-1">
+                    <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
+                    <p className="font-secondary text-md text-tertiary">{t("Here are the latest notifications of your reserve")}</p>
+                  </div>
+              </motion.div>
+            }
+            {section == "account" &&
 
-            <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-1">
-              <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
-              <p className="font-secondary text-md text-tertiary">{t("Here are the latest notifications of your reserve")}</p>
-            </div>
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("up","",0.5,0.5)}
+                className="bg-white row-span-7 grid grid-cols-2 grid-rows-3 gap-4">
 
-          </div>
+                  <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-2 row-span-7">
+                    <div className="w-full h-auto flex flex-row">
+                      <div className="w-[50%] h-auto flex flex-col justify-start items-start">
+                        <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><User/>{t("Account")}</h1>
+                        <p className="font-secondary text-md text-tertiary">{t("View your personal information and complete missing fields")}</p>
+                      </div>
+                      <div className="w-[50%] h-auto flex flex-row justify-end px-12">
+                        {isUserEdit ?
+                          <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(false)}><UserX className="h-5 w-5"/>Edit</Button>
+                        :
+                        <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(true)}><UserCog className="h-5 w-5"/>Edit</Button>
+                        }
+                      </div>
+                    </div>
+                    <div className="w-full h-full grid grid-cols-2 grid-rows-4">
+                      <div className="col-span-1 row-span-1 p-6">
+                        <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+                          <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("FirstName")}</label>
+                          {isUserEdit ?
+                            <>
+                              <input className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+                              <div className="w-full h-6">
+                                <motion.p 
+                                  initial="hidden"
+                                  animate="show"
+                                  exit="hidden"
+                                  variants={fadeIn("up","", 0, 1)}
+                                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t("Email is required.")}
+                                </motion.p>
+                              </div>
+                            </>
+                          :
+                          <input className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary disabled:bg-white" placeholder={t("Email")} disabled/>
+                          }
+
+                        </div>
+                      </div>
+                      <div className="bg-green-400 col-span-1 row-span-1">
+
+
+
+                      </div>
+                    </div>
+                  </div>
+              </motion.div>
+            }
+
+            {section == "settings" &&
+
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("up","",0.5,0.5)}
+                className="bg-white row-span-7 grid grid-cols-2 grid-rows-3 gap-4">
+
+                  <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-2 row-span-7 w-full h-full">
+                    <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><User/>{t("Settings")}</h1>
+                    <p className="font-secondary text-md text-tertiary">{t("View your personal information and complete missing fields")}</p>
+                  </div>
+              </motion.div>
+            }
+          </AnimatePresence>
         </div>
       </div>
     </div>

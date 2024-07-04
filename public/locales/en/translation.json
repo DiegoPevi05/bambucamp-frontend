@@ -6,6 +6,7 @@
 	"babys": "babys",
 	"Dates of Reservations": "Dates of Reservations",
 	"welcome": "welcome",
+	"Log In": "Sign In",
 	"Sign In": "Sign In",
 	"Sign Up": "Sign Up",
 	"Sign Out": "Sign Out",
@@ -92,5 +93,11 @@
 	"Your email has been validated": "Your email has been validated",
 	"Reserves": "Reserves",
 	"Account": "Account",
-	"Log out": "Log out"
+	"Log out": "Log out",
+	"Go to Web": "Go to Web",
+	"Update Info": "Update Info",
+	"Edit": "Edit",
+	"Phone": "Phone",
+	"PhoneNumber": "PhoneNumber",
+	"Settings": "Settings"
 }

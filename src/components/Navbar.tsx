@@ -72,9 +72,9 @@ const Navbar = () => {
       <div className="w-[50%] lg:w-[20%] h-full flex justify-end lg:justify-center items-center">
         <LanguageDropDownList/>
         {user ? 
-          <DropDownListAccount user={user}/>
+          <DropDownListAccount user={user} isDashboard={false}/>
           :
-          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Sign In")}<User/> </Button>
+          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Log In")}<User/> </Button>
         }
         <Button onClick={toogleSidebar} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 mt-6 p-0"> <AlignJustify className=""/> </Button>
       </div>

@@ -91,7 +91,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div id="promotions" className="relative w-full h-auto lg:h-[100vh] py-24 px-6 sm:px-12 lg:px-48 flex flex-col justify-start items-start gap-y-6">
+      <div id="promotions" className="relative w-full h-auto lg:h-auto py-24 px-6 sm:px-12 lg:px-24 2xl:px-36 flex flex-col justify-start items-start gap-y-6">
         <motion.h2 
           initial="hidden"
           whileInView='show'
@@ -114,7 +114,7 @@ const Home = () => {
           className="font-tertiary text-white bg-secondary text-lg sm:text-4xl">{t("are off 50%")}</motion.p>
         </div>
 
-        <div className="w-full h-auto sm:h-full mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 max-lg:mt-12 max-sm:overflow-auto">
+        <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 max-lg:mt-12 max-sm:overflow-auto">
           {promotionsData.length > 1 && (
             promotionsData.map((promotion,index) => (
               <PromotionCard promotion={promotion} index={index}/>
@@ -126,7 +126,7 @@ const Home = () => {
       <div id="services" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
         <VerticalCarousel/>
       </div>
-      <div id="FAQ" className="relative w-full h-auto lg:h-[100vh] grid grid-cols-1 lg:grid-cols-2 overflow-hidden px-12 sm:px-36 lg:px-48 py-24 bg-secondary text-white max-lg:gap-y-4">
+      <div id="FAQ" className="relative w-full h-auto lg:h-[100vh] grid grid-cols-1 lg:grid-cols-2 overflow-hidden px-12 sm:px-24 2xl:px-36 py-24 bg-secondary text-white max-lg:gap-y-4">
         <div className="lg:flex w-full h-full col-span-1 flex-col justify-center items-start gap-y-6">
           <motion.h2 
             initial="hidden"
@@ -173,7 +173,7 @@ const Home = () => {
           variants={fadeIn("right","",0,2)}
           className="w-full h-full col-span-2 lg:col-span-1 bg-white flex flex-col justify-center items-start px-12 sm:px-24 lg:px-36 2xl:px-48 py-24 lg:pt-12 gap-y-6">
           <h2 className="font-primary text-secondary text-3xl sm:text-5xl">{t("Contact us")}</h2>
-          <h3 className="font-primary text-secondary text-sm sm:text-xl">{t("Send us a message with a specific proposal that you might have for us or any addiontal information you could not found")}</h3>
+          <h3 className="font-primary text-secondary text-sm sm:text-sm">{t("Send us a message with a specific proposal that you might have for us or any addiontal information you could not found")}</h3>
           <form className="w-full h-full flex flex-col justify-start items-start" onSubmit={handleSubmit(onSubmit)}>
 
             <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4">

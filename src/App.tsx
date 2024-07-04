@@ -11,8 +11,10 @@ import ValidateCode from './pages/validate-code';
 import ChangePassword from './pages/change-password';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Dashboard from './pages/dashboard';
 import ValidateAccount from './pages/validate-account';
+import DashboardReserves from './pages/reserves';
+import DashboardAccount from './pages/account';
+import DashboardSettings from './pages/settings';
 
 
 const AppRoutes: React.FC = () => {
@@ -37,15 +39,35 @@ const AppRoutes: React.FC = () => {
       <Route path="/validated-account" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateAccount /></ProtectedRoute>} />
 
       <Route
-        path="/dashboard"
+        path="/dashboard/reserves"
         element={
           <ProtectedRoute
             isAllowed={!!user && user.role && user.role.includes('CLIENT')}
           >
-            <Dashboard />
+            <DashboardReserves/>
           </ProtectedRoute>
         }
       />
+      <Route path="/dashboard/account"
+        element={
+          <ProtectedRoute
+            isAllowed={!!user && user.role && user.role.includes('CLIENT')}
+          >
+            <DashboardAccount/>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="/dashboard/settings"
+        element={
+          <ProtectedRoute
+            isAllowed={!!user && user.role && user.role.includes('CLIENT')}
+          >
+            <DashboardSettings/>
+          </ProtectedRoute>
+        }
+      />
+
     </Routes>
   );
 };

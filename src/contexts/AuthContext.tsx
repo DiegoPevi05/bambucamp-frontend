@@ -23,9 +23,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const firstName = localStorage.getItem('firstName') ?? '';
     const lastName = localStorage.getItem('lastName') ?? '';
     const email = localStorage.getItem('email') ?? '';
+    const phoneNumber = localStorage.getItem('phoneNumber') ?? '';
     const role = JSON.parse(localStorage.getItem('role') || '[]');
     if (token) {
-      setUser({ token, firstName, lastName, email, role });
+      setUser({ token, firstName, lastName, email, phoneNumber, role });
     }
     setLoading(false);
   }, []);
@@ -35,12 +36,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const firstName = 'John'; // Example firstName
     const lastName = 'Doe'; // Example lastName
     const email = 'example@gmail.com';
+    const phoneNumber = '1234567890';
     localStorage.setItem('token', token);
     localStorage.setItem('firstName', firstName);
     localStorage.setItem('lastName', lastName);
     localStorage.setItem('email', email);
+    localStorage.setItem('phoneNumber', phoneNumber);
     localStorage.setItem('role', JSON.stringify(role));
-    setUser({ token, firstName, lastName, email, role });
+    setUser({ token, firstName, lastName, email, phoneNumber, role });
   };
 
   const logout = () => {
@@ -49,6 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem('lastName');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
+    localStorage.removeItem('phoneNumber');
     setUser(null);
   };
 

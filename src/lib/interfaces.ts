@@ -4,6 +4,7 @@ export interface User {
   lastName?: string;
   email?: string;
   role?: string[]; // Add role or other attributes as needed
+  phoneNumber?: string;
 }
 
 export interface ReserveIT{

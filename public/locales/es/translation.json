@@ -6,6 +6,7 @@
 	"babys": "Bebes",
 	"Dates of Reservations": "Fechas de Estadia",
 	"welcome": "Bienvenido",
+	"Log In": "Ingresar",
 	"Sign In": "Iniciar sesión",
 	"Sign Up": "Regístrate",
 	"Sign Out": "Cerrar sesión",
@@ -92,5 +93,11 @@
 	"Your email has been validated": "Tu correo ha sido validado",
 	"Reserves": "Reservas",
 	"Account": "Cuenta",
-	"Log out": "Cerrar sesion"
+	"Log out": "Cerrar sesion",
+	"Go to Web": "Ir a la Web",
+	"Update Info": "Actualizar Informacion",
+	"Edit": "Editar",
+	"Phone": "Telefono",
+	"PhoneNumber": "Celular",
+	"Settings": "Ajustes"
 }

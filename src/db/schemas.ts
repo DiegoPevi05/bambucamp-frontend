@@ -37,9 +37,6 @@ const resetPasswordSchema = z.object({
   message: "Passwords do not match.", path: ["confirmPassword"], });
 
 
-
-
-
 const guestsSchema = z.object({
   adults: z.number().min(1, { message: "There must be at least one adult." }),
   kids: z.number().min(0, { message: "Number of kids cannot be negative." }),
@@ -55,4 +52,12 @@ const searchSchema = z.object({
   path: ["endDate"],
 });
 
-export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema, forgotPasswordSchema, validateCodeSchema, resetPasswordSchema};
+
+const userSchema = z.object({
+  email: z.string().email({ message: "Email is not valid." }),
+  firstName: z.string().nonempty({ message: "First name is required." }),
+  lastName: z.string().nonempty({ message: "Last name is required." }),
+  phoneNumber: z.string().nonempty({ message: "Phone number is required." }),
+});
+
+export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema, forgotPasswordSchema, validateCodeSchema, resetPasswordSchema, userSchema};

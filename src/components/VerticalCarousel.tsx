@@ -39,7 +39,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       variants={fadeIn("left","", data.id*0.1,1)}
       onClick={selectCard}
       className="bg-black
-      h-[300px] 2xl:h-[350px] w-[160px] 2xl:min-w-[200px]  2xl:w-[200px]
+      h-[300px] 2xl:h-[350px] min-w-[160px] 2xl:min-w-[200px]  2xl:w-[200px]
       w-full rounded-3xl shadow-3xl relative overflow-hidden hover:-translate-y-4 ease-in-out duration-1200 transition-all
       flex flex-col justify-end items-start pb-6 border border-4 border-secondary
       "
@@ -95,7 +95,7 @@ const ServiceItem = ({iconName,label}:ServiceItemProps) => {
   const IconComponent = LucideIcons[iconName];
 
   return(
-    <li className="text-white text-[10px] sm:text-[14px] lg:text-lg font-secondary flex flex-row gap-x-2">
+    <li className="text-white text-[10px] sm:text-[14px] 2xl:text-lg font-secondary flex flex-row gap-x-2">
       <IconComponent className="w-4 sm:w-5 lg:w-6 h-4 sm:h-5 lg:h-6 text-white" />
       {label}
     </li>
@@ -187,7 +187,7 @@ const VerticalCarousel = () => {
                   { selectedTent.services.airconditioning && (<ServiceItem iconName={"AirVent"} label={t("Air Conditioner")}/>) }
                   { selectedTent.services.grill && (<ServiceItem iconName={"Beef"} label={t("Grill")}/>) }
                 </ul>
-              <div className="w-full h-auto flex flex-row justify-start items-center gap-x-4 mb-4 lg:mb-12">
+              <div className="w-full h-auto flex flex-row justify-start items-center gap-x-4 mb-4 lg:mb-6">
                 <Button 
                   effect="default"
                   variant="default" 

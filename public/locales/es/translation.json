@@ -1,4 +1,5 @@
 {
+	"Welcome": "Bienvenido",
 	"Previous": "Anterior",
 	"Next": "Siguiente",
 	"adults": "Adultos",
@@ -99,5 +100,23 @@
 	"Edit": "Editar",
 	"Phone": "Telefono",
 	"PhoneNumber": "Celular",
-	"Settings": "Ajustes"
+	"Settings": "Ajustes",
+	"News": "Noticias",
+	"View your reserves through months": "Mira tus reserves a traves de los meses",
+	"Today": "Hoy",
+	"Here are the latest notifications of your reserve": "Aqui estas las ultimas notificationes de tu reserva",
+	"View all your reserves directly": "Mira todas tus reservas aqui",
+	"Here you can manage your reserves and acquire products": "Aqui puedes gestionar tus reservas y adquirir productos",
+	"Cancel": "Cancelar",
+	"View Details": "Ver Detalles",
+	"Are you sure you want to cancel your Reservation?": "Estas seguro que quieres cancelar la reservacion?",
+	"Send us and email": "Envianos un correo",
+	"Or put in contact with us through our channels": "O ponte en contacto con nosotros a traves de nuestros canales",
+	"Tents": "Glampings",
+	"Experiences": "Experiencias",
+	"Products": "Productos",
+	"Identificator": "Identificador",
+	"Reservation": "Reserva",
+	"Total Import": "Importe Total",
+	"Calendar": "Calendario"
 }

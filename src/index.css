@@ -231,6 +231,72 @@
 
 
 
+.input {
+  position: relative;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.input::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -145%;
+  /* Start position off-screen to the right */
+  bottom: 0;
+  width: 140%;
+  transform: skew(45deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1), right 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  /* Adjust transition to animate 'right' property */
+  z-index: 0;
+}
+
+.input:hover::before {
+  right: 0;
+}
+
+.input span {
+  position: relative;
+  z-index: 1;
+}
+
+
+.input-primary {
+  background-color: #fff;
+  color: #00AAA9;
+  border-color: #fff;
+}
+
+.input-primary:hover {
+  color: #fff;
+  background-color: #00AAA9;
+  transition: background-color 0.3s ease;
+}
+
+.input.input-primary {
+  border-color: #fff;
+}
+
+.input-primary:hover,
+.input-primary input:checked+span {
+  color: #fff;
+  background-color: #00AAA9;
+  transition: background-color 0.3s ease;
+}
+
+.input.input-primary::before {
+  background-color: #00AAA9;
+}
+
+
+
+
+
 
 .loader {
   width: 124px;

@@ -1,4 +1,5 @@
 {
+	"Welcome": "Welcome",
 	"Previous": "Previous",
 	"Next": "Next",
 	"adults": "adults",
@@ -99,5 +100,23 @@
 	"Edit": "Edit",
 	"Phone": "Phone",
 	"PhoneNumber": "PhoneNumber",
-	"Settings": "Settings"
+	"Settings": "Settings",
+	"News": "News",
+	"View your reserves through months": "View your reserves through months",
+	"Today": "Today",
+	"Here are the latest notifications of your reserve": "Here are the latest notifications of your reserve",
+	"View all your reserves directly": "View all your reserves directly",
+	"Here you can manage your reserves and acquire products": "Here you can manage your reserves and acquire products",
+	"Cancel": "Cancel",
+	"View Details": "View Details",
+	"Are you sure you want to cancel your Reservation?": "Are you sure you want to cancel your Reservation?",
+	"Send us and email": "Send us and email",
+	"Or put in contact with us through our channels": "Or put in contact with us through our channels",
+	"Tents": "Glampings",
+	"Experiences": "Experiences",
+	"Products": "Products",
+	"Identificator": "Identificator",
+	"Reservation": "Reservation",
+	"Total Import": "Total Import",
+	"Calendar": "Calendar"
 }

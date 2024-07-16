@@ -19,8 +19,77 @@ import {
 	GOLD_LLURAK_6,
 } from "../assets/images"
 
-import { TentIT, ReviewIT, PromotionIT, ReserveIT } from "./interfaces"
+import { TentIT, ReviewIT, PromotionIT, ReserveIT, ExperienceIT,ProductIT, NotificationIT } from "./interfaces"
 
+export const experiencesData:ExperienceIT[] = [
+  {
+    id:1,
+    title:"Experience 1",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    duration: 90,
+    date: new Date(2024,5,28,12,0,0,0),
+    price: 100,
+    quantity: 10,
+    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+  },
+  {
+    id:2,
+    title:"Experience 2",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    duration: 90,
+    date: new Date(2024,5,28,12,0,0,0),
+    price: 100,
+    quantity: 10,
+    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+  }
+]
+
+export const productsData:ProductIT[] = [
+  {
+    id:1,
+    title:"Product 1",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    price: 100,
+    quantity: 10,
+    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+  },
+  {
+    id:2,
+    title:"Product 2",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    price: 100,
+    quantity: 10,
+    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+  }
+]
+
+
+export const notificationsData: NotificationIT[] = [
+  {
+    id:1,
+    type:"I",
+    title:"Reservation Confirmed",
+    description:"Your Reserve have been confirmed.",
+    date:"2024-07-12",
+  },
+
+  {
+    id:2,
+    type:"S",
+    title:"Reservation Confirmed",
+    description:"Your Reserve have been confirmed.",
+    date:"2024-07-12",
+  },
+
+  {
+    id:3,
+    type:"E",
+    title:"Reservation Confirmed",
+    description:"Your Reserve have been confirmed.",
+    date:"2024-07-12",
+  },
+
+]
 
 
 export const tentsData:TentIT[] = [
@@ -182,6 +251,7 @@ export const tentsData:TentIT[] = [
   },
 ]
 
+
 export const ReservesData:ReserveIT[] = [
   {
     id: 1,
@@ -192,6 +262,14 @@ export const ReservesData:ReserveIT[] = [
     tents: [
       tentsData[0],
       tentsData[1]
+    ],
+    experiences: [
+      experiencesData[0],
+      experiencesData[1]
+    ],
+    products: [
+      productsData[0],
+      productsData[1]
     ]
   },
   {
@@ -203,6 +281,12 @@ export const ReservesData:ReserveIT[] = [
     tents: [
       tentsData[0],
       tentsData[1]
+    ],
+    experiences: [
+      experiencesData[0],
+    ],
+    products: [
+      productsData[0],
     ]
   },
   {
@@ -214,7 +298,9 @@ export const ReservesData:ReserveIT[] = [
     tents: [
       tentsData[0],
       tentsData[1]
-    ]
+    ],
+    experiences: [],
+    products: []
   }
 ]
 

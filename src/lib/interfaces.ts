@@ -14,6 +14,8 @@ export interface ReserveIT{
   status: string;
   total: number;
   tents: TentIT[];
+  experiences: ExperienceIT[];
+  products: ProductIT[];
 }
 
 export interface PromotionIT {
@@ -47,6 +49,26 @@ export interface TentIT {
   }
 }
 
+export interface ExperienceIT {
+  id: number;
+  title: string;
+  description: string;
+  duration: number;
+  date: Date;
+  price: number;
+  quantity: number;
+  images: string[];
+}
+
+export interface ProductIT {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  quantity: number;
+  images: string[];
+}
+
 export interface ReviewIT {
   id: number;
   name: string;
@@ -56,4 +78,12 @@ export interface ReviewIT {
   date: string;
   images: string[];
   profile_image: string;
+}
+
+export interface NotificationIT {
+  id: number;
+  type : string;
+  title:string;
+  description:string;
+  date:string;
 }

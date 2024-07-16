@@ -1,14 +1,16 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { fadeIn, fadeOnly } from "../lib/motions";
+import { fadeIn, fadeOnly, slideIn } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
 import { CalendarCheck, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye  } from "lucide-react"
-import { ReserveIT } from "../lib/interfaces";
+import { NotificationIT, ReserveIT } from "../lib/interfaces";
 import Modal from "../components/Modal";
-import { ReservesData } from "../lib/constant";
+import { ReservesData, notificationsData } from "../lib/constant";
 import Dashboard from "../components/ui/Dashboard";
+import { InputRadio } from "../components/ui/Input";
+import { getTentsNames, getProductsNames, getExperiencesNames } from "../lib/utils";
 
 
 const generateCalendar = (currentDate:Date, resevesDates:{ checkin:Date, checkout:Date }[] ) => {
@@ -77,6 +79,30 @@ const generateCalendar = (currentDate:Date, resevesDates:{ checkin:Date, checkou
   return calendarDays;
 };
 
+interface NotificationCardProps {
+  notification: NotificationIT;
+}
+
+const NotificationCard = (props:NotificationCardProps) => {
+
+  const { notification } = props;
+  const {t} = useTranslation();
+
+  return (
+    <motion.div 
+      initial="hidden"
+      whileInView="show"
+      viewport={{once: true}}
+      variants={fadeOnly("",0.5,0.5)}
+      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto relative flex flex-col hover:bg-secondary duration-300 cursor-pointer group active:scale-95">
+      <h2 className="group-hover:text-tertiary">{notification.title}</h2>
+      <p className="text-sm text-secondary group-hover:text-white font-secondary">{notification.description}</p>
+      </motion.div>
+  )
+}
+
+
+
 interface ReserveCardProps {
   reserve: ReserveIT;
 };
@@ -86,6 +112,9 @@ const ReserveCard = (props:ReserveCardProps) => {
   const { reserve } = props;
   const {t} = useTranslation();
   const [openModal,setOpenModal] = useState<boolean>(false); 
+  const [openReserve,setOpenReserve] = useState<boolean>(false);
+  const [openDetails,setOpenDetails] = useState<string>("tents");
+
 
   return (
     <>
@@ -105,11 +134,11 @@ const ReserveCard = (props:ReserveCardProps) => {
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.status}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Checkin")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Check In")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.checkin.toISOString().split("T")[0]+" "+reserve.checkin.toISOString().split("T")[1].split(".")[0]}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Checkout")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Check Out")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.checkout.toISOString().split("T")[0]+" "+reserve.checkout.toISOString().split("T")[1].split(".")[0]}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
@@ -120,15 +149,15 @@ const ReserveCard = (props:ReserveCardProps) => {
       <div className="col-span-2 2xl:col-span-3 row-span-6 p-4 flex flex flex-row flex-wrap">
           <div className="w-full h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Tent className="h-5 w-5"/>{t("Tents")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.id}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{getTentsNames(reserve)}</p>
           </div>
           <div className="w-full h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Pizza className="h-5 w-5"/>{t("Products")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.id}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{getProductsNames(reserve)}</p>
           </div>
           <div className="w-full h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><FlameKindling className="h-5 w-5"/>{t("Experiences")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.id}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{getExperiencesNames(reserve)}</p>
           </div>
         </div>
         <div className="col-span-6 row-span-1 flex flex-row justify-end gap-x-4">
@@ -138,14 +167,14 @@ const ReserveCard = (props:ReserveCardProps) => {
             variant="danger"
             isRound={true}
             onClick={() => setOpenModal(true)}
-          >Cancel</Button>
+          >{t("Cancel")}</Button>
           <Button
             className="w-auto"
             size="sm"
             variant="ghostLight"
             isRound={true}
-            onClick={() => console.log("View reserve clicked")}
-          >View Details <Eye /></Button>
+            onClick={() => setOpenReserve(true)}
+          >{t("View Details")} <Eye /></Button>
         </div>
       </motion.div>
       <Modal isOpen={openModal} onClose={()=>setOpenModal(false)}>
@@ -155,9 +184,65 @@ const ReserveCard = (props:ReserveCardProps) => {
           <p className="text-sm mt-6 text-primary">{t("Send us and email")}</p>
           <a href="mailto:diego10azul@hotmail.com" className="text-xs cursor-pointer hover:underline">services@bambucamp.com.pe</a>
           <p className="text-sm mt-6 text-primary">{t("Or put in contact with us through our channels")}</p>
-          <p className="text-xs">{"+51 399 857 857 or +51 230 456 234"}</p>
+          <p className="text-xs">{"+51 399 857 857 - +51 230 456 234"}</p>
         </div>
       </Modal>
+
+      <Modal isOpen={openReserve} onClose={()=>setOpenReserve(false)}>
+        <div className="w-[800px] h-[600px] flex flex-col items-start justify-start text-secondary p-6 overflow-hidden">
+            <div className="w-full h-auto flex flex-row gap-x-6 pb-4 border-b-2 border-secondary">
+              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("tents")}>{t("Tents")}</Button>
+              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("products")}>{t("Products")}</Button>
+              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("experiences")}>{t("Experiences")}</Button>
+            </div>
+            {openDetails === "tents" && (
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("left","",0.5,0.5)}
+                className="w-full flex flex-row gap-x-6 py-4">
+                {reserve.tents.length > 0 && (
+                  reserve.tents.map((tent, index) => (
+                    <InputRadio variant="default" value={tent.id} name="tent" placeholder={tent.title}/>
+                  )
+                ))}
+              </motion.div>
+            )}
+
+            {openDetails === "products" && (
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("left","",0.5,0.5)}
+                className="w-full flex flex-row gap-x-6 py-4">
+                {reserve.products.length > 0 && (
+                  reserve.products.map((product, index) => (
+                      <Button effect="default" className="w-auto" size="sm" variant="dark">{product.title}</Button>
+                  )
+                ))}
+              </motion.div>
+            )}
+
+            {openDetails === "experiences" && (
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("left","",0.5,0.5)}
+                className="w-full flex flex-row gap-x-6 py-4">
+                {reserve.experiences.length > 0 && (
+                  reserve.experiences.map((experience, index) => (
+                      <Button effect="default" className="w-auto" size="sm" variant="dark">{experience.title}</Button>
+                  )
+                ))}
+              </motion.div>
+            )}
+        </div>
+      </Modal>
+
+
     </>
   );
 };
@@ -226,6 +311,12 @@ const DashboardReserves = () => {
           <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-1">
             <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
             <p className="font-secondary text-md text-tertiary">{t("Here are the latest notifications of your reserve")}</p>
+            <div className="w-full h-[60%] flex flex-col overflow-y-scroll gap-y-4 mt-4">
+              {notificationsData.map((notification, index) => (
+                <NotificationCard key={index} notification={notification}/>
+              ))}
+            </div>
+
           </div>
       </motion.div>
     </Dashboard>

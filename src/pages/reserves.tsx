@@ -1,11 +1,10 @@
-
+import { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { fadeIn, fadeOnly, slideIn } from "../lib/motions";
+import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
-import { CalendarCheck, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye  } from "lucide-react"
-import { NotificationIT, ReserveIT } from "../lib/interfaces";
+import { CalendarCheck, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus  } from "lucide-react"
+import { ExperienceIT, NotificationIT, ProductIT, ReserveIT, TentIT } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import { ReservesData, notificationsData } from "../lib/constant";
 import Dashboard from "../components/ui/Dashboard";
@@ -114,6 +113,34 @@ const ReserveCard = (props:ReserveCardProps) => {
   const [openModal,setOpenModal] = useState<boolean>(false); 
   const [openReserve,setOpenReserve] = useState<boolean>(false);
   const [openDetails,setOpenDetails] = useState<string>("tents");
+  const [selectedOption,setSelectedOption] = useState<number>(0);
+  const [selectedTent,setSelectedTent] = useState<TentIT|undefined>(undefined);
+  const [selectedProduct,setSelectedProduct] = useState<ProductIT|undefined>(undefined);
+  const [selectedExperience,setSelectedExperience] = useState<ExperienceIT|undefined>(undefined);
+
+
+  useEffect(() => {
+    if(openDetails == "tents"){
+      const tent = reserve.tents.find((_,index) => index === selectedOption);
+      setSelectedTent(tent);
+    }else{
+      setSelectedTent(undefined);
+    }
+
+    if(openDetails == "products"){
+      const product = reserve.products.find((_,index) => index === selectedOption);
+      setSelectedProduct(product);
+    }else{
+      setSelectedProduct(undefined);
+    }
+    if(openDetails == "experiences"){
+      const experience = reserve.experiences.find((_,index) => index === selectedOption);
+      setSelectedExperience(experience);
+    }else{
+      setSelectedExperience(undefined);
+    }
+
+  },[openDetails,selectedOption])
 
 
   return (
@@ -162,24 +189,26 @@ const ReserveCard = (props:ReserveCardProps) => {
         </div>
         <div className="col-span-6 row-span-1 flex flex-row justify-end gap-x-4">
           <Button
+            effect="default"
             className="w-auto"
             size="sm"
-            variant="danger"
-            isRound={true}
+            variant="light"
             onClick={() => setOpenModal(true)}
+            isRound={true}
           >{t("Cancel")}</Button>
           <Button
+            effect="default"
             className="w-auto"
             size="sm"
             variant="ghostLight"
-            isRound={true}
             onClick={() => setOpenReserve(true)}
+            isRound={true}
           >{t("View Details")} <Eye /></Button>
         </div>
       </motion.div>
       <Modal isOpen={openModal} onClose={()=>setOpenModal(false)}>
         <div className="w-full h-auto flex flex-col items-center justify-center text-secondary p-12">
-          <FlameKindling className="h-[120px] w-[120px] text-red-400"/>
+          <FlameKindling className="h-[120px] w-[120px] text-tertiary"/>
           <h2 className="text-primary">{t("Are you sure you want to cancel your Reservation?")}</h2>
           <p className="text-sm mt-6 text-primary">{t("Send us and email")}</p>
           <a href="mailto:diego10azul@hotmail.com" className="text-xs cursor-pointer hover:underline">services@bambucamp.com.pe</a>
@@ -191,58 +220,201 @@ const ReserveCard = (props:ReserveCardProps) => {
       <Modal isOpen={openReserve} onClose={()=>setOpenReserve(false)}>
         <div className="w-[800px] h-[600px] flex flex-col items-start justify-start text-secondary p-6 overflow-hidden">
             <div className="w-full h-auto flex flex-row gap-x-6 pb-4 border-b-2 border-secondary">
-              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("tents")}>{t("Tents")}</Button>
-              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("products")}>{t("Products")}</Button>
-              <Button effect="default" className="w-auto" size="sm" variant="ghostLight" onClick={()=>setOpenDetails("experiences")}>{t("Experiences")}</Button>
+              <InputRadio  
+                className="w-auto" 
+                onClick={()=>{setOpenDetails("tents") ; setSelectedOption(0)}} 
+                name="category" 
+                placeholder={t("Tents")} 
+                rightIcon={<Tent/>} 
+                checked={openDetails === "tents"}
+              />
+              <InputRadio  
+                className="w-auto" 
+                onClick={()=>{setOpenDetails("products"); setSelectedOption(0)}} 
+                name="category" 
+                placeholder={t("Products")} 
+                rightIcon={<Pizza/>}
+                checked={openDetails === "products"}
+              />
+              <InputRadio  
+                className="w-auto" 
+                onClick={()=>{setOpenDetails("experiences"); setSelectedOption(0)}} 
+                name="category" 
+                placeholder={t("Experiences")} 
+                rightIcon={<FlameKindling/>}
+                checked={openDetails === "experiences"}
+              />
             </div>
-            {openDetails === "tents" && (
-              <motion.div 
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                variants={fadeIn("left","",0.5,0.5)}
-                className="w-full flex flex-row gap-x-6 py-4">
-                {reserve.tents.length > 0 && (
-                  reserve.tents.map((tent, index) => (
-                    <InputRadio variant="default" value={tent.id} name="tent" placeholder={tent.title}/>
-                  )
-                ))}
-              </motion.div>
-            )}
+            <div className="w-full h-auto">
+              {openDetails === "tents" && (
+                  <motion.div 
+                    initial="hidden"
+                    animate="show"
+                    exit="hidden"
+                    variants={fadeIn("left","",0.5,0.5)}
+                    className="w-full flex flex-row gap-x-6 py-4">
+                    {reserve.tents.length > 0 ? (
+                      reserve.tents.map((tent, index) => (
+                        <InputRadio 
+                          key={"tent_option"+index} 
+                          variant="light" 
+                          value={tent.id} 
+                          name="tent" 
+                          placeholder={tent.title} 
+                          rightIcon={<Tent/>} 
+                          onClick={()=>setSelectedOption(index)}
+                          checked={selectedOption === index}
+                        />
+                      )
+                    ))
+                    : 
+                    <div className="w-full h-[200px] flex justify-center items-center flex-col">
+                      <Tent className="h-12 w-12"/>
+                      <p className="text-secondary text-sm">{t("No tents available")}</p>
+                      <Button 
+                        className="w-auto mt-4"
+                        effect="default"
+                        size="sm" 
+                        variant="ghostLight" 
+                        rightIcon={<Plus/>}
+                      >{t("Add Tent")}</Button>
+                    </div>
+                    }
+                  </motion.div>
+              )}
 
-            {openDetails === "products" && (
-              <motion.div 
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                variants={fadeIn("left","",0.5,0.5)}
-                className="w-full flex flex-row gap-x-6 py-4">
-                {reserve.products.length > 0 && (
-                  reserve.products.map((product, index) => (
-                      <Button effect="default" className="w-auto" size="sm" variant="dark">{product.title}</Button>
-                  )
-                ))}
-              </motion.div>
-            )}
+              {openDetails === "products" && (
+                <motion.div 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("left","",0.5,0.5)}
+                  className="w-full flex flex-row gap-x-6 py-4">
+                  {reserve.products.length > 0 ? (
+                    reserve.products.map((product, index) => (
+                        <InputRadio 
+                          key={"tent_option"+index} 
+                          variant="light" 
+                          value={product.id} 
+                          name="product" 
+                          placeholder={product.title} 
+                          rightIcon={<Pizza/>} 
+                          onClick={()=>(setSelectedOption(index))}
+                          checked={selectedOption === index}
+                        />
+                    )
+                  ))
+                  : 
+                    <div className="w-full h-[200px] flex justify-center items-center flex-col">
+                      <Pizza className="h-12 w-12"/>
+                      <p className="text-secondary text-sm">{t("No products available")}</p>
+                      <Button 
+                        className="w-auto mt-4"
+                        effect="default"
+                        size="sm" 
+                        variant="ghostLight" 
+                        rightIcon={<Plus/>}
+                      >{t("Add Product")}</Button>
+                    </div>
+                  }
+                </motion.div>
+              )}
 
-            {openDetails === "experiences" && (
+              {openDetails === "experiences" && (
+                <motion.div 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("left","",0.5,0.5)}
+                  className="w-full flex flex-row gap-x-6 py-4">
+                  {reserve.experiences.length > 0 ? (
+                    reserve.experiences.map((experience, index) => (
+                        <InputRadio 
+                          key={"tent_option"+index} 
+                          variant="light" 
+                          value={experience.id} 
+                          name="experience" 
+                          placeholder={experience.title} 
+                          rightIcon={<FlameKindling/>} 
+                          onClick={()=>setSelectedOption(index)}
+                          checked={selectedOption === index}
+                        />
+                    )))
+                  :
+                    <div className="w-full h-[200px] flex justify-center items-center flex-col">
+                      <FlameKindling className="h-12 w-12"/>
+                      <p className="text-secondary text-sm">{t("No experiences available")}</p>
+                      <Button 
+                        className="w-auto mt-4"
+                        effect="default"
+                        size="sm" 
+                        variant="ghostLight" 
+                        rightIcon={<Plus/>}
+                      >{t("Add Experience")}</Button>
+                    </div>
+                  }
+                </motion.div>
+              )}
+            </div>
+            {selectedTent !== undefined && (
               <motion.div 
+                key={"tent_"+selectedTent.id}
                 initial="hidden"
                 animate="show"
                 exit="hidden"
-                variants={fadeIn("left","",0.5,0.5)}
-                className="w-full flex flex-row gap-x-6 py-4">
-                {reserve.experiences.length > 0 && (
-                  reserve.experiences.map((experience, index) => (
-                      <Button effect="default" className="w-auto" size="sm" variant="dark">{experience.title}</Button>
-                  )
-                ))}
+                variants={fadeIn("","up",0.5,1)}
+                className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
+                <div className="col-span-3 row-span-3 bg-red-100">
+                  {selectedTent.title}
+                </div>
+                <div className="col-span-1 row-span-3 bg-green-100">
+                  hola
+                </div>
+                <div className="col-span-4 row-span-1 bg-yellow-400">
+                  hola
+                </div>
               </motion.div>
             )}
+          {selectedProduct !== undefined && (
+            <motion.div 
+              key={"product_"+selectedProduct.id}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={fadeIn("","up",0.5,1)}
+              className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
+              <div className="col-span-3 row-span-3 bg-red-100">
+                {selectedProduct.title}
+              </div>
+              <div className="col-span-1 row-span-3 bg-green-100">
+                hola
+              </div>
+              <div className="col-span-4 row-span-1 bg-yellow-400">
+                hola
+              </div>
+            </motion.div>
+          )}
+          {selectedExperience !== undefined && (
+            <motion.div 
+              key={"experience_"+selectedExperience.id}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={fadeIn("","up",0.5,1)}
+              className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
+              <div className="col-span-3 row-span-3 bg-red-100">
+                {selectedExperience.title}
+              </div>
+              <div className="col-span-1 row-span-3 bg-green-100">
+                hola
+              </div>
+              <div className="col-span-4 row-span-1 bg-yellow-400">
+                hola
+              </div>
+            </motion.div>
+          )}
         </div>
       </Modal>
-
-
     </>
   );
 };

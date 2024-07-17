@@ -1,9 +1,10 @@
 import { cn } from '../../lib/utils'
 import { cva, VariantProps } from 'class-variance-authority'
 import { InputHTMLAttributes, FC } from 'react'
+import { Check } from 'lucide-react';
 
 export const radioVariants = cva(
-  'active:scale-95 border border-[3px]',
+  'active:scale-105',
   {
     variants: {
       effect: {
@@ -12,11 +13,8 @@ export const radioVariants = cva(
       },
       variant: {
         default: 'input-primary',
-        dark: 'button-dark',
-        light: 'button-light',
-        ghost: 'button-ghost',
-        ghostLight: 'button-ghost-light',
-        danger: 'button-danger',
+        dark: 'input-dark',
+        light: 'input-light',
       },
       isRound: {
         true: 'rounded-md',
@@ -58,6 +56,9 @@ export const InputRadio: FC<RadioProps> = ({
         {props.placeholder}
         {rightIcon && <div className="transform transition-transform group-hover:translate-x-2 duration-300">{rightIcon}</div>}
       </span>
+      <div className="checkIcon"> 
+        <Check className="h-4 w-4"/>
+      </div>
     </label>
   )
 }

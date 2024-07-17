@@ -1,3 +1,11 @@
+:root {
+  --primary-color: #00AAA9;
+  --primary-color-light: #eab485;
+  --primary-color-dark: #146c73;
+  --danger-color: #f87171;
+  --white-color: #fff;
+}
+
 @font-face {
   font-family: 'helveticaNeue-bold';
   src: url(./assets/fonts/helveticaNeue-bold.otf) format('opentype');
@@ -27,6 +35,8 @@
     scroll-behavior: smooth;
   }
 }
+
+
 
 .no-scroll-bar::-webkit-scrollbar {
   display: none;
@@ -81,22 +91,19 @@
   position: absolute;
   top: 0;
   right: -145%;
-  /* Start position off-screen to the right */
   bottom: 0;
   width: 140%;
   transform: skew(45deg);
   transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1), right 0.4s cubic-bezier(0.3, 1, 0.8, 1);
-  /* Adjust transition to animate 'right' property */
   z-index: 0;
 }
 
 .button:hover {
-  color: #fff;
+  color: var(--white-color);
 }
 
 .button:hover::before {
   right: 0;
-  /* Move into place from the right */
 }
 
 .button span {
@@ -105,131 +112,100 @@
 }
 
 .button-primary {
-  background-color: #fff;
-  color: #00AAA9;
-  border-color: #fff;
+  background-color: var(--white-color);
+  color: var(--primary-color);
+  border-color: var(--white-color);
 }
 
 .button-primary:hover {
-  color: #fff;
-  background-color: #00AAA9;
+  color: var(--white-color);
+  background-color: var(--primary-color);
   transition: background-color 0.3s ease;
-}
-
-.button.button-primary {
-  border-color: #fff;
-}
-
-.button.button-primary:hover {
-  background-color: #fff;
 }
 
 .button.button-primary::before {
-  background-color: #00AAA9;
+  background-color: var(--primary-color);
 }
 
-
 .button-dark {
-  background-color: #146c73;
-  color: #fff;
-  border-color: #146c73;
+  background-color: var(--primary-color-dark);
+  color: var(--white-color);
+  border-color: var(--primary-color-dark);
 }
 
 .button-dark:hover {
-  color: #146c73;
-  background-color: #fff;
+  color: var(--primary-color-dark);
+  background-color: var(--white-color);
   transition: background-color 0.3s ease;
-}
-
-.button.button-dark:hover {
-  background-color: #146c73;
 }
 
 .button.button-dark::before {
-  background-color: #fff;
+  background-color: var(--white-color);
 }
 
 .button-light {
-  background-color: #eab485;
-  color: #fff;
-  border-color: #fff;
+  background-color: var(--primary-color-light);
+  color: var(--white-color);
+  border-color: var(--white-color);
 }
 
 .button-light:hover {
-  color: #eab485;
-  background-color: #fff;
+  color: var(--primary-color-light);
+  background-color: var(--white-color);
   transition: background-color 0.3s ease;
-}
-
-.button.button-light:hover {
-  background-color: #eab485;
 }
 
 .button.button-light::before {
-  background-color: #fff;
+  background-color: var(--white-color);
 }
 
 .button-ghost {
-  background-color: #fff;
-  color: #146c73;
-  border-color: #fff;
+  background-color: var(--white-color);
+  color: var(--primary-color-dark);
+  border-color: var(--white-color);
 }
 
 .button-ghost:hover {
-  color: #fff;
-  background-color: #146c73;
+  color: var(--white-color);
+  background-color: var(--primary-color-dark);
   transition: background-color 0.3s ease;
-}
-
-.button.button-ghost:hover {
-  background-color: #fff;
 }
 
 .button.button-ghost::before {
-  background-color: #146c73;
+  background-color: var(--primary-color-dark);
 }
 
 .button-ghost-light {
-  background-color: #00AAA9;
-  color: #fff;
-  border-color: #00AAA9;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border-color: var(--primary-color);
 }
 
 .button-ghost-light:hover {
-  color: #00AAA9;
-  background-color: #fff;
+  color: var(--primary-color);
+  background-color: var(--white-color);
   transition: background-color 0.3s ease;
-}
-
-.button.button-ghost-light:hover {
-  background-color: #00AAA9;
 }
 
 .button.button-ghost-light::before {
-  background-color: #fff;
+  background-color: var(--white-color);
 }
 
 .button-danger {
-  background-color: #f87171;
-  color: #fff;
-  border-color: #f87171;
+  background-color: var(--danger-color);
+  color: var(--white-color);
+  border-color: var(--danger-color);
 }
 
 .button-danger:hover {
-  color: #f87171;
-  background-color: #fff;
+  color: var(--danger-color);
+  background-color: var(--white-color);
   transition: background-color 0.3s ease;
 }
 
-.button.button-danger:hover {
-  background-color: #f87171;
-}
-
 .button.button-danger::before {
-  background-color: #fff;
+  background-color: var(--white-color);
 }
-
-
 
 .input {
   position: relative;
@@ -243,21 +219,15 @@
 }
 
 .input::before {
-  content: '';
+  content: ' ';
   position: absolute;
   top: 0;
-  right: -145%;
-  /* Start position off-screen to the right */
+  right: -175%;
   bottom: 0;
   width: 140%;
   transform: skew(45deg);
   transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1), right 0.4s cubic-bezier(0.3, 1, 0.8, 1);
-  /* Adjust transition to animate 'right' property */
   z-index: 0;
-}
-
-.input:hover::before {
-  right: 0;
 }
 
 .input span {
@@ -265,36 +235,115 @@
   z-index: 1;
 }
 
-
-.input-primary {
-  background-color: #fff;
-  color: #00AAA9;
-  border-color: #fff;
+.input:has(input:checked)::before {
+  right: -134%;
+  z-index: 2;
 }
 
-.input-primary:hover {
-  color: #fff;
-  background-color: #00AAA9;
-  transition: background-color 0.3s ease;
+.input .checkIcon {
+  display: none;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: auto;
+  height: auto;
+  border: none;
+  background: transparent;
+  color: transparent;
+  z-index: 4;
+  transition: color 0.3s ease;
 }
 
-.input.input-primary {
-  border-color: #fff;
+.input:has(input:checked) .checkIcon {
+  display: block;
 }
 
-.input-primary:hover,
-.input-primary input:checked+span {
-  color: #fff;
-  background-color: #00AAA9;
+
+.input-primary span {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: 4px solid var(--primary-color);
+}
+
+.input-primary:hover span {
+  color: var(--primary-color);
+  background-color: var(--white-color);
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+
+.input-primary input:checked + span {
+  color: var(--primary-color);
+  background-color: var(--white-color);
   transition: background-color 0.3s ease;
 }
 
 .input.input-primary::before {
-  background-color: #00AAA9;
+  background-color: var(--primary-color);
 }
 
 
+.input-primary:has(input:checked) .checkIcon {
+  color: var(--white-color);
+}
 
+
+.input-dark span {
+  background-color: var(--primary-color-dark);
+  color: var(--white-color);
+  border: 4px solid var(--primary-color-dark);
+}
+
+.input-dark:hover span {
+  color: var(--primary-color-dark);
+  background-color: var(--white-color);
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+
+.input-dark input:checked + span {
+  color: var(--primary-color-dark);
+  background-color: var(--white-color);
+  transition: background-color 0.3s ease;
+}
+
+.input.input-dark::before {
+  background-color: var(--primary-color-dark);
+}
+
+
+.input-dark:has(input:checked) .checkIcon {
+  color: var(--white-color);
+}
+
+
+.input-light span {
+  background-color: var(--primary-color-light);
+  color: var(--white-color);
+  border: 4px solid var(--primary-color-light);
+}
+
+.input-light:hover span {
+  color: var(--primary-color-light);
+  background-color: var(--white-color);
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+
+.input-light input:checked + span {
+  color: var(--primary-color-light);
+  background-color: var(--white-color);
+  transition: background-color 0.3s ease;
+}
+
+.input.input-light::before {
+  background-color: var(--primary-color-light);
+}
+
+
+.input-light:has(input:checked) .checkIcon {
+  color: var(--white-color);
+}
 
 
 
@@ -302,7 +351,7 @@
   width: 124px;
   aspect-ratio: 1.154;
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  --c: no-repeat linear-gradient(#fff 0 0);
+  --c: no-repeat linear-gradient(var(--white-color) 0 0);
   background: var(--c), var(--c), var(--c), var(--c), var(--c);
   background-size: 100% calc(100%/5 + 1px);
   animation: l15 3s infinite;

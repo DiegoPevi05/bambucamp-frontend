@@ -97,6 +97,7 @@ export const tentsData:TentIT[] = [
     id: 1,
     header: "Tent 1",
     title: "Gold Kullaq",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_KULLAQ_2,
@@ -123,6 +124,7 @@ export const tentsData:TentIT[] = [
     id: 2,
     header: "Tent 1",
     title: "Gold Sumaq",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_SUMAQ_2,
@@ -149,6 +151,7 @@ export const tentsData:TentIT[] = [
     id: 3,
     header: "Tent 1",
     title: "Suite Llurak",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_LLURAK_2,
@@ -175,6 +178,7 @@ export const tentsData:TentIT[] = [
     id: 4,
     header: "Tent 1",
     title: "Suite Sallary",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_SUMAQ_2,
@@ -201,6 +205,7 @@ export const tentsData:TentIT[] = [
     id: 5,
     header: "Tent 1",
     title: "Suite Wayra",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_KULLAQ_2,
@@ -227,6 +232,7 @@ export const tentsData:TentIT[] = [
     id: 6,
     header: "Tent 1",
     title: "Suite Yana",
+    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_KULLAQ_2,

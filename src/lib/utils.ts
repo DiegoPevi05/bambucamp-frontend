@@ -20,3 +20,12 @@ export const getExperiencesNames = (reserve:ReserveIT) => {
   if(reserve.experiences.length === 0) return "N/A";
   return reserve.experiences.map((experience) => experience.title).join(", ");
 }
+
+export const formatPrice = (price:number) => {
+  return price.toLocaleString("en-US", {style: "currency", currency: "USD"});
+};
+
+export const formatDate = (date:Date) => {
+  //format with time 
+  return new Intl.DateTimeFormat("en-US", {dateStyle: "medium", timeStyle: "short"}).format(date);
+}

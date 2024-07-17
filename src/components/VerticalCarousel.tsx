@@ -9,10 +9,10 @@ import {
   ChevronRightIcon,
   Tent
 } from "lucide-react"
-import * as LucideIcons from 'lucide-react';
 import Button from "./ui/Button"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import ServiceItem from "./ServiceItem"
 
 
 interface CarouselCardProps {
@@ -84,21 +84,6 @@ const CarouselImages = (props:carouselImagesProps) => {
         </AnimatePresence>
       </div>
     </div>
-  )
-}
-interface ServiceItemProps {
-  iconName: keyof typeof LucideIcons;
-  label: string;
-}
-
-const ServiceItem = ({iconName,label}:ServiceItemProps) => {
-  const IconComponent = LucideIcons[iconName];
-
-  return(
-    <li className="text-white text-[10px] sm:text-[14px] 2xl:text-lg font-secondary flex flex-row gap-x-2">
-      <IconComponent className="w-4 sm:w-5 lg:w-6 h-4 sm:h-5 lg:h-6 text-white" />
-      {label}
-    </li>
   )
 }
 
@@ -175,17 +160,13 @@ const VerticalCarousel = () => {
                   className={`${styles.sectionBodyText} text-white`}>{selectedTent.description}
                 </p>
               <ul className="w-full h-auto flex flex-row flex-wrap lg:grid lg:grid-cols-4 gap-2 lg:gap-4 sm:pb-6 lg:pb-12">
-                  { selectedTent.services.wifi && ( <ServiceItem iconName={"Wifi"} label={t("Wi-fi")}/>)}
-                  { selectedTent.services.parking && ( <ServiceItem iconName={"Car"} label={t("Parking")}/>)}
-                  { selectedTent.services.pool  && ( <ServiceItem iconName={"Waves"} label={t("Pool")}/> )  }
-                  { selectedTent.services.breakfast && ( <ServiceItem iconName={"Croissant"} label={t("Breakfast")}/> ) }
-                  { selectedTent.services.lunch && (<ServiceItem iconName={"Sandwich"} label={t("Lunch")}/>) }
-                  { selectedTent.services.dinner && (<ServiceItem iconName={"Utensils"} label={t("Dinner")}/>) }
-                  { selectedTent.services.spa && (<ServiceItem iconName={"Sparkles"} label={t("Spa")}/>) }
-                  { selectedTent.services.bar && (<ServiceItem iconName={"Martini"} label={t("Bar")}/>) }
-                  { selectedTent.services.hotwater && (<ServiceItem iconName={"Bath"} label={t("Hotwater")}/>) }
-                  { selectedTent.services.airconditioning && (<ServiceItem iconName={"AirVent"} label={t("Air Conditioner")}/>) }
-                  { selectedTent.services.grill && (<ServiceItem iconName={"Beef"} label={t("Grill")}/>) }
+                {Object.entries(selectedTent.services).map(([service, value]) => {
+                    if (value) {
+
+                      return <ServiceItem key={service} icon={service} />;
+                    }
+                    return null;
+                  })}
                 </ul>
               <div className="w-full h-auto flex flex-row justify-start items-center gap-x-4 mb-4 lg:mb-6">
                 <Button 

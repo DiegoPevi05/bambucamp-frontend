@@ -4,64 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import { SearchReservation } from "../db/actions";
 import {useTranslation} from "react-i18next";
+import CalendarComponent from "./Calendar";
 
-
-const generateCalendar = (currentDate:Date, handleSelectedDate: (date: Date) => void ) => {
-  const startOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const endOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
-  const startDayOfWeek = startOfCurrentMonth.getDay();
-  const totalDaysInMonth = endOfCurrentMonth.getDate();
-
-  const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 0);
-  const totalDaysInPrevMonth = prevMonth.getDate();
-
-  const today = new Date();
-
-  let calendarDays = [];
-
-  // Add days from the previous month
-  for (let i = startDayOfWeek; i > 0; i--) {
-    calendarDays.push(
-      <span key={`prev-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-        {totalDaysInPrevMonth - i + 1}
-      </span>
-    );
-  }
-
-  // Add days from the current month
-  for (let i = 1; i <= totalDaysInMonth; i++) {
-    const currentIterationDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-    if(currentIterationDate < today){
-      calendarDays.push(
-        <span key={`past-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-          {i}
-        </span>
-      );
-    }else{
-      calendarDays.push(
-        <span key={`current-${i}`} 
-          onClick={()=>handleSelectedDate(currentIterationDate)}
-          className={`cursor-pointer bg-white text-secondary flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
-          ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
-          {i}
-        </span>
-      );
-    } 
-  }
-
-  // Add days from the next month
-  const remainingDays = 42 - calendarDays.length; // 42 = 6 weeks * 7 days
-  for (let i = 1; i <= remainingDays; i++) {
-    calendarDays.push(
-      <span key={`next-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-        {i}
-      </span>
-    );
-  }
-
-  return calendarDays;
-};
 
 const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -75,7 +19,7 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
   }
 
-  const calendarDays = generateCalendar(currentDate, handleSelectedDate);
+  const calendarDays = CalendarComponent(currentDate,[], handleSelectedDate);
 
   const calendarWidth = 400;
   const isCalendarOverflowing = containerDimensions.left + calendarWidth > window.innerWidth;

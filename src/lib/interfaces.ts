@@ -34,6 +34,7 @@ export interface TentIT {
   title: string;
   description: string;
   images: string[];
+  price: number;
   services: {
     wifi: boolean;
     parking: boolean;
@@ -57,6 +58,8 @@ export interface ExperienceIT {
   date: Date;
   price: number;
   quantity: number;
+  startDate?: Date;
+  endDate?: Date;
   images: string[];
 }
 

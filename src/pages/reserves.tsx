@@ -9,74 +9,10 @@ import Modal from "../components/Modal";
 import { ReservesData, notificationsData } from "../lib/constant";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
-import { getTentsNames, getProductsNames, getExperiencesNames } from "../lib/utils";
+import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate } from "../lib/utils";
+import ServiceItem from "../components/ServiceItem";
+import Calendar from "../components/Calendar";
 
-
-const generateCalendar = (currentDate:Date, resevesDates:{ checkin:Date, checkout:Date }[] ) => {
-  const startOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const endOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-
-  const startDayOfWeek = startOfCurrentMonth.getDay();
-  const totalDaysInMonth = endOfCurrentMonth.getDate();
-
-  const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 0);
-  const totalDaysInPrevMonth = prevMonth.getDate();
-
-  //create today with 12:00 PM
-  const today = new Date();
-  today.setHours(12,0,0,0);
-
-  let calendarDays = [];
-
-  // Add days from the previous month
-  for (let i = startDayOfWeek; i > 0; i--) {
-    calendarDays.push(
-      <span key={`prev-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-        {totalDaysInPrevMonth - i + 1}
-      </span>
-    );
-  }
-
-  // Add days from the current month
-  for (let i = 1; i <= totalDaysInMonth; i++) {
-    const currentIterationDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i, 12, 0, 0, 0);
-    if(currentIterationDate < today){
-      calendarDays.push(
-        <span key={`past-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-          {i}
-        </span>
-      );
-    }else if(resevesDates.some((reserve) => reserve.checkin <= currentIterationDate && reserve.checkout >= currentIterationDate)){
-      calendarDays.push(
-        <span key={`reserved-${i}`} 
-          className={`cursor-pointer bg-tertiary text-white flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
-          ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
-          {i}
-        </span>
-      );
-    }else{
-      calendarDays.push(
-        <span key={`current-${i}`} 
-          className={`cursor-pointer bg-white text-secondary flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
-          ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
-          {i}
-        </span>
-      );
-    } 
-  }
-
-  // Add days from the next month
-  const remainingDays = 42 - calendarDays.length; // 42 = 6 weeks * 7 days
-  for (let i = 1; i <= remainingDays; i++) {
-    calendarDays.push(
-      <span key={`next-${i}`} className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl">
-        {i}
-      </span>
-    );
-  }
-
-  return calendarDays;
-};
 
 interface NotificationCardProps {
   notification: NotificationIT;
@@ -363,15 +299,39 @@ const ReserveCard = (props:ReserveCardProps) => {
                 animate="show"
                 exit="hidden"
                 variants={fadeIn("","up",0.5,1)}
-                className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
-                <div className="col-span-3 row-span-3 bg-red-100">
-                  {selectedTent.title}
+                className="grid grid-cols-4 grid-rows-5 gap-4 w-full h-full mt-4">
+                <div className="col-span-3 row-span-3 flex flex-col p-4">
+                  <h2 className="text-secondary">{selectedTent.header}</h2>
+                  <h1 className="text-tertiary">{selectedTent.title}</h1>
+                  <p className="text-primary text-sm">{selectedTent.description}</p>
+                  <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                    <p className="text-primary text-sm">{t("Check In")} </p>
+                    <p className="text-gray-400 text-sm">{formatDate(reserve.checkin)}</p>
+                  </div>
+
+                  <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                    <p className="text-primary text-sm">{t("Check Out")} </p>
+                    <p className="text-gray-400 text-sm">{formatDate(reserve.checkout)}</p>
+                  </div>
+                  <div className="w-full h-auto flex flex-row gap-x-6 mt-auto">
+                    <p className="text-primary text-sm">{t("Total Import")} </p>
+                    <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
+                  </div>
                 </div>
-                <div className="col-span-1 row-span-3 bg-green-100">
-                  hola
+                <div className="col-span-1 row-span-3 flex justify-center items-center overflow-hidden">
+                  <img src={selectedTent.images[0]} alt={selectedTent.title} className="w-full h-auto object-cover"/>
                 </div>
-                <div className="col-span-4 row-span-1 bg-yellow-400">
-                  hola
+                <div className="col-span-4 row-span-2 p-4 flex flex-col bg-secondary">
+                  <h3 className="text-white mb-4">{t("Services")}</h3>
+                  <div className="w-full h-auto flex flex-row flex-wrap gap-y-4 gap-x-12">
+                  {Object.entries(selectedTent.services).map(([service, value]) => {
+                      if (value) {
+
+                        return <ServiceItem key={service} icon={service} />;
+                      }
+                      return null;
+                    })}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -432,7 +392,7 @@ const DashboardReserves = () => {
     const handlePreviousMonth = () => {
         setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
       }
-    const calendarDays = generateCalendar(currentDate, ReservesData.map((reserve) => ({ checkin: reserve.checkin, checkout: reserve.checkout })));
+    const calendarDays = Calendar(currentDate, ReservesData.map((reserve) => ({ checkin: reserve.checkin, checkout: reserve.checkout })));
 
     return (
     <Dashboard>

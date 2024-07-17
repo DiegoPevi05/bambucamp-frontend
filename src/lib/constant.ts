@@ -17,6 +17,13 @@ import {
 	GOLD_LLURAK_4,
 	GOLD_LLURAK_5,
 	GOLD_LLURAK_6,
+  EXPERIENCE_1,
+  EXPERIENCE_2,
+  EXPERIENCE_3,
+  EXPERIENCE_4,
+  EXPERIENCE_5,
+  PRODUCT_1,
+  PRODUCT_2
 } from "../assets/images"
 
 import { TentIT, ReviewIT, PromotionIT, ReserveIT, ExperienceIT,ProductIT, NotificationIT } from "./interfaces"
@@ -24,42 +31,48 @@ import { TentIT, ReviewIT, PromotionIT, ReserveIT, ExperienceIT,ProductIT, Notif
 export const experiencesData:ExperienceIT[] = [
   {
     id:1,
-    title:"Experience 1",
-    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    title:"Canotaje",
+    description:"La mejor experiencia alrededor de Lunahuana.",
     duration: 90,
-    date: new Date(2024,5,28,12,0,0,0),
     price: 100,
-    quantity: 10,
-    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+    images: [EXPERIENCE_1,EXPERIENCE_2],
+    limitAge: 18,
+    qtyPeople: 10,
+    sugestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
+    date: new Date(2024,5,28,12,0,0,0),
+    quantity: 10
   },
   {
     id:2,
-    title:"Experience 2",
+    title:"Cuatrimoto",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     duration: 90,
-    date: new Date(2024,5,28,12,0,0,0),
     price: 100,
-    quantity: 10,
-    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
+    images: [EXPERIENCE_3],
+    limitAge: 18,
+    qtyPeople: 10,
+    sugestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
+    date: new Date(2024,5,28,12,0,0,0),
+    quantity: 10
   }
 ]
 
 export const productsData:ProductIT[] = [
   {
     id:1,
-    title:"Product 1",
+    title:"Pizza",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     price: 100,
+    images: [PRODUCT_1],
     quantity: 10,
-    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
   },
   {
     id:2,
-    title:"Product 2",
+    title:"Vinos",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     price: 100,
+    images: [PRODUCT_2],
     quantity: 10,
-    images: [GOLD_KULLAQ_1,GOLD_KULLAQ_2,GOLD_KULLAQ_3],
   }
 ]
 
@@ -69,6 +82,7 @@ export const notificationsData: NotificationIT[] = [
     id:1,
     type:"I",
     title:"Reservation Confirmed",
+    preview:"Your Reserve have been confirmed.",
     description:"Your Reserve have been confirmed.",
     date:"2024-07-12",
   },
@@ -77,6 +91,7 @@ export const notificationsData: NotificationIT[] = [
     id:2,
     type:"S",
     title:"Reservation Confirmed",
+    preview:"Your Reserve have been confirmed.",
     description:"Your Reserve have been confirmed.",
     date:"2024-07-12",
   },
@@ -85,6 +100,7 @@ export const notificationsData: NotificationIT[] = [
     id:3,
     type:"E",
     title:"Reservation Confirmed",
+    preview:"Your Reserve have been confirmed.",
     description:"Your Reserve have been confirmed.",
     date:"2024-07-12",
   },
@@ -296,7 +312,7 @@ export const ReservesData:ReserveIT[] = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     checkin: new Date(2024,6,21,12,0,0,0),
     checkout: new Date(2024,6,24,12,0,0,0),
     status: "PENDING",

@@ -1,6 +1,6 @@
-import React from "react";
+import { Tooltip } from 'react-tooltip'
 
-export const generateCalendar = (currentDate:Date, resevesDates?:{ checkin:Date, checkout:Date }[], handleSelectedDate?: (date: Date) => void ) => {
+export const generateCalendar = (currentDate:Date, reservedDates?:{ reserveID:number, checkin:Date, checkout:Date }[], handleSelectedDate?: (date: Date) => void ) => {
   const startOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const endOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
@@ -35,24 +35,31 @@ export const generateCalendar = (currentDate:Date, resevesDates?:{ checkin:Date,
           {i}
         </span>
       );
-    }else if(resevesDates?.some((reserve) => reserve.checkin <= currentIterationDate && reserve.checkout >= currentIterationDate)){
-      calendarDays.push(
-        <span key={`reserved-${i}`} 
-          className={`cursor-pointer bg-tertiary text-white flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
-          ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
-          {i}
-        </span>
-      );
     }else{
-      calendarDays.push(
-        <span key={`current-${i}`} 
-          onClick={handleSelectedDate ? () => handleSelectedDate(currentIterationDate) : undefined}
-          className={`cursor-pointer bg-white text-secondary flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
-          ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
-          {i}
-        </span>
-      );
+      const reserve = reservedDates?.find((reserve) => reserve.checkin <= currentIterationDate && reserve.checkout >= currentIterationDate);
+      if (reserve) {
+        calendarDays.push(
+          <span 
+            key={`reserved-${i}`} 
+            className={`cursor-pointer bg-tertiary text-white flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
+              ${currentDate.getDate() === i && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400" : ""}`}
+            data-tooltip-id="my-tooltip" data-tooltip-content={`${reserve.reserveID}`}
+          >
+            {i}
+          </span>
+        );
+      }else{
+        calendarDays.push(
+          <span key={`current-${i}`} 
+            onClick={handleSelectedDate ? () => handleSelectedDate(currentIterationDate) : undefined}
+            className={`cursor-pointer bg-white text-secondary flex items-center justify-center h-10 hover:bg-secondary hover:text-white duration-300 rounded-xl 
+            ${currentDate.getDate() === i  && currentDate.getMonth() === today.getMonth() && currentDate.getFullYear() === today.getFullYear() ? "border-2 border-slate-400": "" }`}>
+            {i}
+          </span>
+        );
+      } 
     } 
+
   }
 
   // Add days from the next month
@@ -65,7 +72,12 @@ export const generateCalendar = (currentDate:Date, resevesDates?:{ checkin:Date,
     );
   }
 
-  return calendarDays;
+  return (
+    <>
+      {calendarDays}
+      <Tooltip id="my-tooltip" style={{ backgroundColor:"#00AAA9", borderRadius:"10px" }} />
+    </>
+  );
 };
 
 export default generateCalendar;

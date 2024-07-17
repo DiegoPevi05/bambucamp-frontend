@@ -35,6 +35,15 @@ import GOLD_LLURAK_4 from './tents/suite_llurak/LLurak_4.jpg';
 import GOLD_LLURAK_5 from './tents/suite_llurak/LLurak_5.jpg';
 import GOLD_LLURAK_6 from './tents/suite_llurak/LLurak_6.jpg';
 
+import EXPERIENCE_1 from './experiences/canotaje_1.jpg';
+import EXPERIENCE_2 from './experiences/canotaje_2.webp';
+import EXPERIENCE_3 from './experiences/cuatrimoto.jpg';
+import EXPERIENCE_4 from './experiences/lunahuana.jpeg';
+import EXPERIENCE_5 from './experiences/vinos.jpeg';
+
+import PRODUCT_1 from './products/pizza.jpg';
+import PRODUCT_2 from './products/vino.jpg';
+
 
 export {
 	BG_HERO,
@@ -72,6 +81,15 @@ export {
 	GOLD_LLURAK_6,
 
 	TENT_SVG,
-	LUNAHUANA
+	LUNAHUANA,
+
+	EXPERIENCE_1,
+	EXPERIENCE_2,
+	EXPERIENCE_3,
+	EXPERIENCE_4,
+	EXPERIENCE_5,
+
+	PRODUCT_1,
+	PRODUCT_2
 
 }

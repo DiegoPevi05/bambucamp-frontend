@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
-import { CalendarCheck, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus  } from "lucide-react"
+import { CalendarCheck, DoorClosed, Tent, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User  } from "lucide-react"
 import { ExperienceIT, NotificationIT, ProductIT, ReserveIT, TentIT } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import { ReservesData, notificationsData } from "../lib/constant";
@@ -21,18 +21,36 @@ interface NotificationCardProps {
 const NotificationCard = (props:NotificationCardProps) => {
 
   const { notification } = props;
+  const [openModal,setOpenModal] = useState<boolean>(false); 
   const {t} = useTranslation();
 
   return (
-    <motion.div 
-      initial="hidden"
-      whileInView="show"
-      viewport={{once: true}}
-      variants={fadeOnly("",0.5,0.5)}
-      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto relative flex flex-col hover:bg-secondary duration-300 cursor-pointer group active:scale-95">
-      <h2 className="group-hover:text-tertiary">{notification.title}</h2>
-      <p className="text-sm text-secondary group-hover:text-white font-secondary">{notification.description}</p>
+    <>
+      <motion.div 
+        initial="hidden"
+        whileInView="show"
+        viewport={{once: true}}
+        variants={fadeOnly("",0.5,0.5)}
+        onClick={()=>setOpenModal(true)}
+        className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto relative flex flex-col hover:bg-secondary duration-300 cursor-pointer group active:scale-95">
+        <div className="w-full h-auto flex flex-row gap-x-2">
+          { notification.type === "E" && <CircleX className="h-5 w-5 text-tertiary"/>}
+          { notification.type === "S" && <CircleCheck className="h-5 w-5 text-tertiary"/>}
+          { notification.type === "I" && <Info className="h-5 w-5 text-tertiary"/>}
+          <h2 className="group-hover:text-tertiary">{notification.title}</h2>
+        </div>
+        <p className="text-sm text-secondary group-hover:text-white font-secondary">{notification.preview}</p>
       </motion.div>
+      <Modal isOpen={openModal} onClose={()=>setOpenModal(false)}>
+        <div className="w-full h-auto flex flex-col items-center justify-center text-secondary p-12">
+          { notification.type === "E" && <CircleX className="h-[60px] w-[60px] text-tertiary"/>}
+          { notification.type === "S" && <CircleCheck className="h-[60px] w-[60px] text-tertiary"/>}
+          { notification.type === "I" && <Info className="h-[60px] w-[60px] text-tertiary"/>}
+          <p className="text-primary">{notification.title}</p>
+          <p className="text-sm mt-6 text-secondary">{notification.description}</p>
+        </div>
+      </Modal>
+    </>
   )
 }
 
@@ -51,7 +69,6 @@ const ReserveCard = (props:ReserveCardProps) => {
   const [openDetails,setOpenDetails] = useState<string>("tents");
   const [selectedOption,setSelectedOption] = useState<number>(0);
   const [selectedTent,setSelectedTent] = useState<TentIT|undefined>(undefined);
-  const [selectedProduct,setSelectedProduct] = useState<ProductIT|undefined>(undefined);
   const [selectedExperience,setSelectedExperience] = useState<ExperienceIT|undefined>(undefined);
 
 
@@ -63,12 +80,6 @@ const ReserveCard = (props:ReserveCardProps) => {
       setSelectedTent(undefined);
     }
 
-    if(openDetails == "products"){
-      const product = reserve.products.find((_,index) => index === selectedOption);
-      setSelectedProduct(product);
-    }else{
-      setSelectedProduct(undefined);
-    }
     if(openDetails == "experiences"){
       const experience = reserve.experiences.find((_,index) => index === selectedOption);
       setSelectedExperience(experience);
@@ -225,21 +236,41 @@ const ReserveCard = (props:ReserveCardProps) => {
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("left","",0.5,0.5)}
-                  className="w-full flex flex-row gap-x-6 py-4">
+                  className="w-full flex flex-col gap-y-6 py-4">
                   {reserve.products.length > 0 ? (
-                    reserve.products.map((product, index) => (
-                        <InputRadio 
-                          key={"tent_option"+index} 
-                          variant="light" 
-                          value={product.id} 
-                          name="product" 
-                          placeholder={product.title} 
-                          rightIcon={<Pizza/>} 
-                          onClick={()=>(setSelectedOption(index))}
-                          checked={selectedOption === index}
-                        />
-                    )
-                  ))
+                    <>
+                      <div className="w-full h-auto flex flex-row justify-end items-center">
+                        <Button 
+                          className="w-auto mt-4"
+                          effect="default"
+                          size="sm" 
+                          variant="ghostLight" 
+                          rightIcon={<Plus/>}
+                        >{t("Add Product")}</Button>
+                      </div>
+                      {reserve.products.map((product, index) => (
+                        <div key={"product"+index} className="flex flex-row w-full border border-2 border-gray-200 p-2 rounded-lg">
+                          <div className="w-48 h-24 bg-gray-200 rounded-lg">
+                            <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover"/>
+                          </div>
+                          <div className="w-full h-auto flex flex-col gap-y-2 px-4">
+                            <p className="text-primary text-sm">{product.title}</p>
+                            <p className="text-secondary text-xs">{product.description}</p>
+                            <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
+                          </div>
+                          <div className="w-24 h-auto flex flex-col justify-center items-center">
+                            <p className="text-primary text-sm">{t("Quantity")}</p>
+                            <p className="text-primary text-sm">{product.quantity}</p>
+                            <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="w-full h-auto flex flex-row justify-between  border-t-2 border-secondary mt-auto p-4">
+                        <p className="text-primary text-sm">{t("Total Import")}</p>
+                        <p className="text-primary text-sm">{formatPrice(reserve.products.reduce((acc,product) => acc + product.price*product?.quantity,0))}</p>
+                      </div>
+                    </>
+                  )
                   : 
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <Pizza className="h-12 w-12"/>
@@ -262,20 +293,33 @@ const ReserveCard = (props:ReserveCardProps) => {
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("left","",0.5,0.5)}
-                  className="w-full flex flex-row gap-x-6 py-4">
-                  {reserve.experiences.length > 0 ? (
-                    reserve.experiences.map((experience, index) => (
-                        <InputRadio 
-                          key={"tent_option"+index} 
-                          variant="light" 
-                          value={experience.id} 
-                          name="experience" 
-                          placeholder={experience.title} 
-                          rightIcon={<FlameKindling/>} 
-                          onClick={()=>setSelectedOption(index)}
-                          checked={selectedOption === index}
-                        />
-                    )))
+                  className="w-full flex flex-row gap-x-6 py-4 items-center justify-start">
+                  {
+                  reserve.experiences.length > 0 ? (
+                    <>
+                      {
+                        reserve.experiences.map((experience, index) => (
+                            <InputRadio 
+                              key={"tent_option"+index} 
+                              variant="light" 
+                              value={experience.id} 
+                              name="experience" 
+                              placeholder={experience.title} 
+                              rightIcon={<FlameKindling/>} 
+                              onClick={()=>setSelectedOption(index)}
+                              checked={selectedOption === index}
+                            />
+                        ))
+                      }
+                      <Button 
+                        className="w-auto ml-auto"
+                        effect="default"
+                        size="sm" 
+                        variant="ghostLight" 
+                        rightIcon={<Plus/>}
+                      >{t("Add Experience")}</Button>
+                    </>
+                  )
                   :
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <FlameKindling className="h-12 w-12"/>
@@ -299,35 +343,36 @@ const ReserveCard = (props:ReserveCardProps) => {
                 animate="show"
                 exit="hidden"
                 variants={fadeIn("","up",0.5,1)}
-                className="grid grid-cols-4 grid-rows-5 gap-4 w-full h-full mt-4">
-                <div className="col-span-3 row-span-3 flex flex-col p-4">
-                  <h2 className="text-secondary">{selectedTent.header}</h2>
-                  <h1 className="text-tertiary">{selectedTent.title}</h1>
-                  <p className="text-primary text-sm">{selectedTent.description}</p>
-                  <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                    <p className="text-primary text-sm">{t("Check In")} </p>
-                    <p className="text-gray-400 text-sm">{formatDate(reserve.checkin)}</p>
+                className="flex flex-col w-full h-[400px] mt-4">
+                <div className="h-[70%] w-full flex flex-row">
+                  <div className="h-full w-[75%] flex flex-col p-4">
+                    <h2 className="text-secondary">{selectedTent.header}</h2>
+                    <h1 className="text-tertiary">{selectedTent.title}</h1>
+                    <p className="text-primary text-sm">{selectedTent.description}</p>
+                    <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                      <p className="text-primary text-sm">{t("Check In")} </p>
+                      <p className="text-gray-400 text-sm">{formatDate(reserve.checkin)}</p>
+                    </div>
+                    <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                      <p className="text-primary text-sm">{t("Check Out")} </p>
+                      <p className="text-gray-400 text-sm">{formatDate(reserve.checkout)}</p>
+                    </div>
+                    <div className="w-full h-auto flex flex-row gap-x-6 mt-auto">
+                      <p className="text-primary text-sm">{t("Total Import")} </p>
+                      <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
+                    </div>
                   </div>
-
-                  <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                    <p className="text-primary text-sm">{t("Check Out")} </p>
-                    <p className="text-gray-400 text-sm">{formatDate(reserve.checkout)}</p>
-                  </div>
-                  <div className="w-full h-auto flex flex-row gap-x-6 mt-auto">
-                    <p className="text-primary text-sm">{t("Total Import")} </p>
-                    <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
+                  <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
+                    <img src={selectedTent.images[0]} alt={selectedTent.title} className="w-full h-auto object-cover"/>
                   </div>
                 </div>
-                <div className="col-span-1 row-span-3 flex justify-center items-center overflow-hidden">
-                  <img src={selectedTent.images[0]} alt={selectedTent.title} className="w-full h-auto object-cover"/>
-                </div>
-                <div className="col-span-4 row-span-2 p-4 flex flex-col bg-secondary">
+                <div className="h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
                   <h3 className="text-white mb-4">{t("Services")}</h3>
-                  <div className="w-full h-auto flex flex-row flex-wrap gap-y-4 gap-x-12">
+                  <div className="w-full h-auto flex flex-row flex-wrap gap-4">
                   {Object.entries(selectedTent.services).map(([service, value]) => {
                       if (value) {
 
-                        return <ServiceItem key={service} icon={service} />;
+                        return <ServiceItem size="sm" key={service} icon={service} />;
                       }
                       return null;
                     })}
@@ -335,25 +380,6 @@ const ReserveCard = (props:ReserveCardProps) => {
                 </div>
               </motion.div>
             )}
-          {selectedProduct !== undefined && (
-            <motion.div 
-              key={"product_"+selectedProduct.id}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-              variants={fadeIn("","up",0.5,1)}
-              className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
-              <div className="col-span-3 row-span-3 bg-red-100">
-                {selectedProduct.title}
-              </div>
-              <div className="col-span-1 row-span-3 bg-green-100">
-                hola
-              </div>
-              <div className="col-span-4 row-span-1 bg-yellow-400">
-                hola
-              </div>
-            </motion.div>
-          )}
           {selectedExperience !== undefined && (
             <motion.div 
               key={"experience_"+selectedExperience.id}
@@ -361,15 +387,57 @@ const ReserveCard = (props:ReserveCardProps) => {
               animate="show"
               exit="hidden"
               variants={fadeIn("","up",0.5,1)}
-              className="grid grid-cols-4 grid-rows-4 gap-4 w-full h-full mt-4">
-              <div className="col-span-3 row-span-3 bg-red-100">
-                {selectedExperience.title}
+              className="flex flex-col w-full h-[400px] mt-4">
+              <div className="h-[80%] w-full flex flex-row">
+                <div className="h-full w-[75%] flex flex-col p-4">
+                  <h1 className="text-tertiary">{selectedExperience.title}</h1>
+                  <p className="text-primary text-sm">{selectedExperience.description}</p>
+                  <div className="w-full h-auto flex flex-row">
+                    <div className="w-[50%] h-full flex flex-col">
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-sm">{t("Time")} </p>
+                        <p className="text-gray-400 text-sm">{ selectedExperience.date ? formatDate(selectedExperience.date) : formatDate(new Date())}</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-sm">{t("Max People")} </p>
+
+                        <div className="w-auto h-auto flex flex-row items-start gap-x-2">
+                          <User className="text-primary h-4 w-4"/>
+                          <p className="text-gray-400 text-sm">{selectedExperience.qtyPeople}</p>
+                        </div>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-sm">{t("Limit Age")} </p>
+                        <p className="text-gray-400 text-sm">{selectedExperience.limitAge} {t("Years")}</p>
+                      </div>
+                    </div>
+                    <div className="w-[50%] h-full flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-sm">{t("Price")} </p>
+                        <p className="text-gray-400 text-sm">{formatPrice(selectedExperience.price)}</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-sm">{t("Quantity")} </p>
+                        <p className="text-gray-400 text-sm">{selectedExperience.quantity}</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-6 mt-auto border-t-2 border-secondary p-2">
+                        <p className="text-primary text-sm">{t("Total Import")} </p>
+                        <p className="text-gray-400 text-sm">{formatPrice( selectedExperience.quantity ? selectedExperience.price * selectedExperience.quantity : 0)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
+                  <img src={selectedExperience.images[0]} alt={selectedExperience.title} className="w-auto h-full object-cover"/>
+                </div>
               </div>
-              <div className="col-span-1 row-span-3 bg-green-100">
-                hola
-              </div>
-              <div className="col-span-4 row-span-1 bg-yellow-400">
-                hola
+              <div className="h-[20%] w-full px-4 py-2 flex flex-col bg-secondary">
+                <h3 className="text-white mb-1 text-md">{t("Recomendations")}</h3>
+                <div className="w-full h-full flex flex-row flex-wrap gap-y-2 gap-x-4">
+                  {selectedExperience.sugestions.map((suggestion, index) => (
+                    <p key={index} className="text-white text-xs"> * {suggestion}</p>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}
@@ -392,7 +460,7 @@ const DashboardReserves = () => {
     const handlePreviousMonth = () => {
         setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
       }
-    const calendarDays = Calendar(currentDate, ReservesData.map((reserve) => ({ checkin: reserve.checkin, checkout: reserve.checkout })));
+      const calendarDays = Calendar(currentDate, ReservesData.map((reserve) => ({ reserveID:reserve.id , checkin: reserve.checkin, checkout: reserve.checkout })));
 
     return (
     <Dashboard>

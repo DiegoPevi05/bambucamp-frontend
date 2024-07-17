@@ -55,12 +55,13 @@ export interface ExperienceIT {
   title: string;
   description: string;
   duration: number;
-  date: Date;
   price: number;
-  quantity: number;
-  startDate?: Date;
-  endDate?: Date;
   images: string[];
+  limitAge: number;
+  qtyPeople: number;
+  sugestions: string[];
+  quantity?: number;
+  date?: Date;
 }
 
 export interface ProductIT {
@@ -68,8 +69,8 @@ export interface ProductIT {
   title: string;
   description: string;
   price: number;
-  quantity: number;
   images: string[];
+  quantity?: number;
 }
 
 export interface ReviewIT {
@@ -87,6 +88,7 @@ export interface NotificationIT {
   id: number;
   type : string;
   title:string;
+  preview:string;
   description:string;
   date:string;
 }

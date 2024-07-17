@@ -17,9 +17,10 @@ const serviceIconMap: Record<string, keyof typeof LucideIcons> = {
 
 interface ServiceItemProps {
   icon: string;
+  size?:string;
 }
 
-const ServiceItem = ({icon}:ServiceItemProps) => {
+const ServiceItem = ({icon,size}:ServiceItemProps) => {
   const { t } = useTranslation();
 
   const iconName = serviceIconMap[icon];
@@ -28,9 +29,9 @@ const ServiceItem = ({icon}:ServiceItemProps) => {
   const IconComponent = LucideIcons[iconName];
 
   return(
-    <li className="text-white text-[10px] sm:text-[14px] 2xl:text-lg font-secondary flex flex-row gap-x-2">
+    <li className= {`${size == "sm" ? 'text-[12px] gap-x-1' : 'text-[10px] sm:text-[14px] 2xl:text-lg gap-x-2' } text-white font-secondary flex flex-row ` }>
       {/* @ts-ignore: Ignore TypeScript checking for IconComponent */}
-      <IconComponent className="w-4 sm:w-5 lg:w-6 h-4 sm:h-5 lg:h-6 text-white" />
+      <IconComponent className={`${size == "sm" ? 'h-5 h-5' : 'w-4 sm:w-5 lg:w-6 h-4 sm:h-5 lg:h-6' } text-white` } />
       {label}
     </li>
   )

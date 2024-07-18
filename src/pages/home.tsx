@@ -1,15 +1,15 @@
-import React, {useState} from "react"
+import  {useState} from "react"
 import Navbar from "../components/Navbar"
 import Banner from "../assets/video/Banner.mp4"
-import {LOGO_THIRD,TENT_SECONDARY, TENT_SVG, LUNAHUANA } from "../assets/images"
+import {LOGO_THIRD,TENT_SECONDARY, TENT_SVG, LUNAHUANA, SERVICE_1,SERVICE_2,SERVICE_3,SERVICE_4,SERVICE_5,SERVICE_6,SERVICE_7,SERVICE_8 } from "../assets/images"
 import {motion} from "framer-motion"
 import {styles} from "../lib/styles"
-import { fadeIn, fadeOnly } from "../lib/motions"
+import { fadeIn } from "../lib/motions"
 import SearchDatesBar from "../components/SearchBar"
 import VerticalCarousel from "../components/VerticalCarousel"
 import Reviews from "../components/Reviews"
 import Footer from "../components/Footer"
-import { useForm, Resolver } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Button from "../components/ui/Button"
@@ -19,6 +19,17 @@ import {promotionsData} from "../lib/constant"
 import Collapsible from "../components/Collapsible"
 import { Tent } from "lucide-react"
 import { useTranslation } from "react-i18next"
+
+const ServiceCard = ({name,image,href}:{name:string;image:string;href:string}) => {
+  return(
+    <div className="relative row-span-1 col-span-1 hover:scale-105 hover:z-20 transition-all flex flex-col items-center justify-center cursor-pointer bg-primary" >
+      <div className="absolute w-full h-full left-0 top-0 bg-no-repeat bg-cover bg-center opacity-[20%]" style={{backgroundImage: `url(${image})`}}></div>
+      <h2 className="text-white text-4xl z-[50]">{name}</h2>
+      <Tent className="h-12 w-12 z-[50] text-white mt-4"/>
+    </div>
+  )
+
+}
 
 const Home = () => {
   const {t} = useTranslation();
@@ -123,8 +134,19 @@ const Home = () => {
         </div>
       </div>
 
-      <div id="services" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
+      <div id="reservations" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
         <VerticalCarousel/>
+      </div>
+      <div id="services" className="h-[100vh] w-full grid grid-rows-2 grid-cols-4 relative overflow-hidden">
+        <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[80px] text-white font-primary z-[100]">{t("Services")}</h1>
+        <ServiceCard name="Adventure" image={SERVICE_1} href="" />
+        <ServiceCard name="BambuFood" image={SERVICE_2} href="" />
+        <ServiceCard name="BambuRelax" image={SERVICE_3} href="" />
+        <ServiceCard name="BambuDrinks" image={SERVICE_4} href="" />
+        <ServiceCard name="Aniversaries" image={SERVICE_5} href="" />
+        <ServiceCard name="Games" image={SERVICE_6} href="" />
+        <ServiceCard name="Extras" image={SERVICE_7} href="" />
+        <ServiceCard name="Transporte" image={SERVICE_8} href="" />
       </div>
       <div id="FAQ" className="relative w-full h-auto lg:h-[100vh] grid grid-cols-1 lg:grid-cols-2 overflow-hidden px-12 sm:px-24 2xl:px-36 py-24 bg-secondary text-white max-lg:gap-y-4">
         <div className="lg:flex w-full h-full col-span-1 flex-col justify-center items-start gap-y-6">

@@ -64,8 +64,8 @@ const Navbar = () => {
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-6">
         <NavBarItem index={1}>{t("Us")}</NavBarItem>
-        <NavBarItem index={2}>{t("Reservations")}</NavBarItem>
         <NavBarItem index={3}>{t("Promotions")}</NavBarItem>
+        <NavBarItem index={2}>{t("Reservations")}</NavBarItem>
         <NavBarItem index={4}>{t("Services")}</NavBarItem>
         <NavBarItem index={5}>{t("Contact Us")}</NavBarItem>
       </ul>

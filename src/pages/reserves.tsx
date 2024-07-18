@@ -97,7 +97,7 @@ const ReserveCard = (props:ReserveCardProps) => {
       whileInView="show"
       viewport={{once: true}}
       variants={fadeIn("up","",0,0.5)}
-      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-[500px]  gap-x-4 mt-4 grid grid-cols-6 grid-rows-7 divide-x divide-slate-200">
+      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-[500px]  gap-x-4 mt-4 grid grid-cols-6 grid-rows-7">
       <div className="col-span-4 2xl:col-span-3 row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("Identificator")}{":"}</h2>
@@ -109,18 +109,18 @@ const ReserveCard = (props:ReserveCardProps) => {
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Check In")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.checkin.toISOString().split("T")[0]+" "+reserve.checkin.toISOString().split("T")[1].split(".")[0]}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(reserve.checkin)}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Check Out")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.checkout.toISOString().split("T")[0]+" "+reserve.checkout.toISOString().split("T")[1].split(".")[0]}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(reserve.checkout)}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.total}{".00"}</p>
           </div>
         </div>
-      <div className="col-span-2 2xl:col-span-3 row-span-6 p-4 flex flex flex-row flex-wrap">
+      <div className="col-span-2 2xl:col-span-3 row-span-6 p-4 flex flex flex-row flex-wrap border-l-2 border-slate-200">
           <div className="w-full h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Tent className="h-5 w-5"/>{t("Tents")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{getTentsNames(reserve)}</p>

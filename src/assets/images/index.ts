@@ -44,6 +44,15 @@ import EXPERIENCE_5 from './experiences/vinos.jpeg';
 import PRODUCT_1 from './products/pizza.jpg';
 import PRODUCT_2 from './products/vino.jpg';
 
+import SERVICE_1 from './services/adventure.jpg';
+import SERVICE_2 from './services/food.jpg';
+import SERVICE_3 from './services/confort.jpg';
+import SERVICE_4 from './services/drinks.jpg';
+import SERVICE_5 from './services/aniversary.jpeg';
+import SERVICE_6 from './services/juegos.jpg';
+import SERVICE_7 from './services/parrilla.jpg';
+import SERVICE_8 from './services/transport.jpg';
+
 
 export {
 	BG_HERO,
@@ -90,6 +99,15 @@ export {
 	EXPERIENCE_5,
 
 	PRODUCT_1,
-	PRODUCT_2
+	PRODUCT_2,
+
+	SERVICE_1,
+	SERVICE_2,
+	SERVICE_3,
+	SERVICE_4,
+	SERVICE_5,
+	SERVICE_6,
+	SERVICE_7,
+	SERVICE_8,
 
 }

@@ -12,6 +12,7 @@ import TENT_FOURTH from './tent_4.jpg';
 import GOOGLE_ICON from './google.png';
 import TENT_SVG  from './tent_svg.svg';
 import LUNAHUANA from './lunahuana.jpg';
+import BG_BOOKING from './bg_booking.jpg';
 
 
 import GOLD_KULLAQ_1 from './tents/gold_kullaq/kullaq_1.jpeg';
@@ -109,5 +110,6 @@ export {
 	SERVICE_6,
 	SERVICE_7,
 	SERVICE_8,
+	BG_BOOKING
 
 }

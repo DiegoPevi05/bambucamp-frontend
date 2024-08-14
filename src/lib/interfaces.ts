@@ -1,39 +1,28 @@
 export interface User {
   token: string;
+  id:number;
   firstName?: string;
   lastName?: string;
+  password?:string;
   email?: string;
-  role?: string[]; // Add role or other attributes as needed
+  role?: string; // Add role or other attributes as needed
   phoneNumber?: string;
 }
 
-export interface ReserveIT{
-  id: number;
-  checkin: Date;
-  checkout: Date;
-  status: string;
-  total: number;
-  tents: TentIT[];
-  experiences: ExperienceIT[];
-  products: ProductIT[];
+export interface CustomPrice {
+  dateFrom: Date;
+  dateTo: Date;
+  price: number;
 }
 
-export interface PromotionIT {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-  discount: number;
-  remaining: number;
-}
-
-export interface TentIT {
+export interface Tent {
   id: number;
   header: string;
   title: string;
   description: string;
   images: string[];
+  qtypeople:number;
+  qtykids:number;
   price: number;
   services: {
     wifi: boolean;
@@ -48,30 +37,115 @@ export interface TentIT {
     airconditioning: boolean;
     grill: boolean;
   }
+  custom_price:CustomPrice[];
+  status:string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
 }
 
-export interface ExperienceIT {
+export interface ProductCategory {
+  id:number;
+  name: string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
+}
+
+export interface Product {
   id: number;
-  title: string;
+  categoryId:number;
+  category:ProductCategory;
+  name: string;
   description: string;
+  price: number;
+  images: string[];
+  stock: number;
+  custom_price:CustomPrice[];
+  status:string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
+}
+
+export interface ExperienceCategory {
+  id:number;
+  name: string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
+}
+
+export interface Experience {
+  id: number;
+  categoryId:number;
+  category:ExperienceCategory;
+  header:string;
+  name: string;
+  description: string;
+  price: number;
   duration: number;
-  price: number;
   images: string[];
-  limitAge: number;
-  qtyPeople: number;
-  sugestions: string[];
-  quantity?: number;
-  date?: Date;
+  status:string;
+  limit_age:number;
+  qtypeople:number;
+  suggestions:string[];
+  custom_price:CustomPrice[];
+  createdAt:Date|null;
+  updatedAt:Date|null;
 }
 
-export interface ProductIT {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  images: string[];
-  quantity?: number;
+
+export interface itemPromotion {
+  id:number;
+  label:string;
+  qty:number;
+  price:number;
 }
+
+export interface optionsPromotion {
+  tents:Tent[];
+  products:Product[];
+  experiences:Experience[];
+}
+
+export interface Promotion {
+  id: number;
+  title:string;
+  description:string;
+  images:string[];
+  expiredDate:Date;
+  status:string;
+  qtypeople:number;
+  qtykids:number;
+  netImport:number;
+  discount:number;
+  grossImport:number;
+  stock:number;
+  idtents:itemPromotion[];
+  idproducts:itemPromotion[];
+  idexperiences:itemPromotion[];
+  createdAt:Date|null;
+  updatedAt:Date|null;
+}
+
+export interface ReserveTentDto {
+  idTent:number;
+  name:string;
+  price:number;
+  quantity:number;
+}
+
+export interface ReserveProductDto {
+  idProduct:number;
+  name:string;
+  price:number;
+  quantity:number;
+}
+
+export interface ReserveExperienceDto {
+  idExperience:number;
+  name:string;
+  price:number;
+  quantity:number;
+}
+
 
 export interface ReviewIT {
   id: number;
@@ -91,4 +165,29 @@ export interface NotificationIT {
   preview:string;
   description:string;
   date:string;
+}
+
+export interface Reserve {
+  id: number;
+  qtypeople:number;
+  qtykids:number;
+  userId:number;
+  tents:ReserveTentDto[];
+  products:ReserveProductDto[];
+  experiences:ReserveExperienceDto[];
+  dateFrom:Date;
+  dateTo:Date;
+  dateSale: Date;
+  promotionId: number;
+  price_is_calculated: boolean;
+  discountCodeId: number;
+  netImport: number;
+  discount: number;
+  grossImport: number;
+  canceled_reason: string;
+  canceled_status: boolean;
+  paymentStatus: string;
+  aditionalPeople: number;
+  createdAt:Date|null;
+  updatedAt:Date|null;
 }

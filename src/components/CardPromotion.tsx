@@ -1,11 +1,11 @@
 import { fadeIn } from "../lib/motions";
 import { motion } from "framer-motion";
 import Button from "./ui/Button";
-import { PromotionIT } from "../lib/interfaces";
+import { Promotion } from "../lib/interfaces";
 import { useTranslation } from "react-i18next";
 
 interface PromptionCardProps {
-  promotion: PromotionIT,
+  promotion: Promotion,
   index: number,
 }
 
@@ -24,10 +24,10 @@ const PromotionCard = (props:PromptionCardProps) => {
       <div className="absolute -top-[32.5px] right-0 sm:-right-[32.5px] w-[65px] h-[65px] bg-secondary rounded-full flex justify-center items-center">
         <h1 className="text-sm text-center text-white">{t("Save")} {promotion.discount}%</h1>
       </div>
-      <img src={promotion.image} alt="promotion" className="w-full h-full object-cover rounded-t-2xl"/>
+      <img src={promotion.images[0]} alt="promotion" className="w-full h-full object-cover rounded-t-2xl"/>
       <div className="p-5 flex flex-col justify-end">
-        <h1 className="text-xs text-tertiary">{`${promotion.remaining < 10 ? 
-        t("Remain")+" "+promotion.remaining+" "+t("promotions")+"!":
+        <h1 className="text-xs text-tertiary">{`${promotion.stock < 10 ? 
+        t("Remain")+" "+promotion.stock+" "+t("promotions")+"!":
         t("Last promotions")}
         `}
         </h1>

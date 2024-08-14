@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { styles } from "../lib/styles"
 import { tentsData } from "../lib/constant"
-import { TentIT } from "../lib/interfaces"
+import { Tent } from "../lib/interfaces"
 import { motion, AnimatePresence } from "framer-motion"
 import { fadeIn, fadeOnly } from "../lib/motions"
 import { 
   ChevronLeftIcon, 
   ChevronRightIcon,
-  Tent
+  Tent as TentIcon
 } from "lucide-react"
 import Button from "./ui/Button"
 import { useNavigate } from "react-router-dom"
@@ -16,7 +16,7 @@ import ServiceItem from "./ServiceItem"
 
 
 interface CarouselCardProps {
-  data:TentIT
+  data:Tent
   isSelected:boolean
   handleSelect:(id:number)=>void
 }
@@ -66,7 +66,7 @@ const CarouselCard = (props:CarouselCardProps) => {
 }
 
 interface carouselImagesProps {
-  tents:TentIT[]
+  tents:Tent[]
   selectedTentId:number
   handleSelect:(id:number)=>void
 }
@@ -91,8 +91,8 @@ const VerticalCarousel = () => {
 
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const [tents, setTents] = useState<TentIT[]>(tentsData)
-  const [selectedTent, setSelectedTent] = useState<TentIT>(tentsData[0])
+  const [tents, setTents] = useState<Tent[]>(tentsData)
+  const [selectedTent, setSelectedTent] = useState<Tent>(tentsData[0])
   const [selectedImage, setSelectedImage] = useState<number>(0);
 
   const handleSelectTent = (id:number) => {
@@ -154,7 +154,7 @@ const VerticalCarousel = () => {
                 </h2>
 
                 <h1 
-                  className={`${styles.sectionHeadText} text-tertiary flex flex-row items-center`}><Tent className="h-8 w-8"/>{selectedTent.title}
+                  className={`${styles.sectionHeadText} text-tertiary flex flex-row items-center`}><TentIcon className="h-8 w-8"/>{selectedTent.title}
                 </h1>
                 <p 
                   className={`${styles.sectionBodyText} text-white`}>{selectedTent.description}

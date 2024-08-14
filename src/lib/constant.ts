@@ -5,13 +5,11 @@ import {
 	GOLD_KULLAQ_4,
 	GOLD_KULLAQ_5,
 	GOLD_KULLAQ_6,
-	GOLD_SUMAQ_1,
 	GOLD_SUMAQ_2,
 	GOLD_SUMAQ_3,
 	GOLD_SUMAQ_4,
 	GOLD_SUMAQ_5,
 	GOLD_SUMAQ_6,
-	GOLD_LLURAK_1,
 	GOLD_LLURAK_2,
 	GOLD_LLURAK_3,
 	GOLD_LLURAK_4,
@@ -19,60 +17,79 @@ import {
 	GOLD_LLURAK_6,
   EXPERIENCE_1,
   EXPERIENCE_2,
-  EXPERIENCE_3,
-  EXPERIENCE_4,
-  EXPERIENCE_5,
   PRODUCT_1,
   PRODUCT_2
 } from "../assets/images"
 
-import { TentIT, ReviewIT, PromotionIT, ReserveIT, ExperienceIT,ProductIT, NotificationIT } from "./interfaces"
+import { Tent, ReviewIT, Promotion, Reserve, Experience,Product, NotificationIT } from "./interfaces"
 
-export const experiencesData:ExperienceIT[] = [
+export const experiencesData:Experience[] = [
   {
     id:1,
-    title:"Canotaje",
+    categoryId:1,
+    category: { id:1, name:"BambuExtreme", createdAt: new Date(), updatedAt: new Date() },
+    header: "Experiencia Extrema",
+    name:"Canotaje",
     description:"La mejor experiencia alrededor de Lunahuana.",
-    duration: 90,
     price: 100,
+    duration: 90,
     images: [EXPERIENCE_1,EXPERIENCE_2],
-    limitAge: 18,
-    qtyPeople: 10,
-    sugestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
-    date: new Date(2024,5,28,12,0,0,0),
-    quantity: 10
+    status: "ACTIVE",
+    limit_age: 18,
+    qtypeople: 10,
+    suggestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
+    custom_price: [ { dateFrom: new Date(), dateTo: new Date(), price:10 } ],
+    createdAt: new Date(2024,5,28,12,0,0,0),
+    updatedAt: new Date()
   },
   {
     id:2,
-    title:"Cuatrimoto",
-    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
+    categoryId:1,
+    category: { id:1, name:"BambuExtreme", createdAt: new Date(), updatedAt: new Date() },
+    header: "Deporte Extremo",
+    name:"Cuatrimoto",
+    description:"La mejor experiencia alrededor de Lunahuana.",
+    price: 50,
     duration: 90,
-    price: 100,
-    images: [EXPERIENCE_3],
-    limitAge: 18,
-    qtyPeople: 10,
-    sugestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
-    date: new Date(2024,5,28,12,0,0,0),
-    quantity: 10
+    images: [EXPERIENCE_1,EXPERIENCE_2],
+    status: "ACTIVE",
+    limit_age: 18,
+    qtypeople: 10,
+    suggestions: ["Llevar ropa comoda","Llevar bloqueador","Llevar gorra"],
+    custom_price: [ { dateFrom: new Date(), dateTo: new Date(), price:10 } ],
+    createdAt: new Date(2024,5,28,12,0,0,0),
+    updatedAt: new Date()
   }
 ]
 
-export const productsData:ProductIT[] = [
+export const productsData:Product[] = [
   {
-    id:1,
-    title:"Pizza",
+    id: 1,
+    categoryId:1,
+    category:{ id:1, name:"BambuFood", createdAt: new Date(), updatedAt: new Date() },
+    name: "Pizza",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     price: 100,
     images: [PRODUCT_1],
-    quantity: 10,
+    stock: 10,
+    custom_price: [ { dateFrom: new Date(), dateTo: new Date(), price:90 } ],
+    status:"ACTIVE",
+    createdAt: new Date(2024,5,28,12,0,0,0),
+    updatedAt: new Date()
   },
   {
-    id:2,
-    title:"Vinos",
+    id: 2,
+    categoryId:1,
+    category:{ id:1, name:"BambuFood", createdAt: new Date(), updatedAt: new Date() },
+    name: "Vino",
     description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     price: 100,
     images: [PRODUCT_2],
-    quantity: 10,
+    stock: 10,
+    custom_price: [ { dateFrom: new Date(), dateTo: new Date(), price:80 } ],
+    status:"ACTIVE",
+    createdAt: new Date(2024,5,28,12,0,0,0),
+    updatedAt: new Date()
   }
 ]
 
@@ -108,12 +125,11 @@ export const notificationsData: NotificationIT[] = [
 ]
 
 
-export const tentsData:TentIT[] = [
+export const tentsData:Tent[] = [
   {
     id: 1,
     header: "Tent 1",
     title: "Gold Kullaq",
-    price:100,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
     images:[
       GOLD_KULLAQ_2,
@@ -122,6 +138,9 @@ export const tentsData:TentIT[] = [
       GOLD_KULLAQ_5,
       GOLD_KULLAQ_6,
     ],
+    qtypeople:2,
+    qtykids:2,
+    price:100,
     services: {
       wifi: true,
       parking: true,
@@ -134,7 +153,11 @@ export const tentsData:TentIT[] = [
       hotwater: true,
       airconditioning: true,
       grill:true,
-    }
+    },
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:80 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
   {
     id: 2,
@@ -149,6 +172,8 @@ export const tentsData:TentIT[] = [
       GOLD_SUMAQ_5,
       GOLD_SUMAQ_6,
     ],
+    qtypeople:2,
+    qtykids:2,
     services: {
       wifi: true,
       parking: true,
@@ -161,7 +186,11 @@ export const tentsData:TentIT[] = [
       hotwater: false,
       airconditioning: true,
       grill:false,
-    }
+    },
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:80 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
   {
     id: 3,
@@ -188,7 +217,13 @@ export const tentsData:TentIT[] = [
       hotwater: true,
       airconditioning: true,
       grill:false,
-    }
+    },
+    qtypeople:2,
+    qtykids:2,
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:60 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
   {
     id: 4,
@@ -215,7 +250,13 @@ export const tentsData:TentIT[] = [
       hotwater: true,
       airconditioning: true,
       grill:false,
-    }
+    },
+    qtypeople:2,
+    qtykids:2,
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:60 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
   {
     id: 5,
@@ -242,7 +283,13 @@ export const tentsData:TentIT[] = [
       hotwater: true,
       airconditioning: true,
       grill:false,
-    }
+    },
+    qtypeople:2,
+    qtykids:2,
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:60 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
   {
     id: 6,
@@ -269,61 +316,90 @@ export const tentsData:TentIT[] = [
       hotwater: false,
       airconditioning: false,
       grill:false,
-    }
+    },
+    qtypeople:2,
+    qtykids:2,
+    custom_price: [ { dateFrom: new Date(2024,6,14,0,0,0,0), dateTo: new Date(2024,7,20,0,0,0,0), price:60 } ],
+    status: "ACTIVE",
+    createdAt:new Date(),
+    updatedAt: new Date()
   },
 ]
 
 
-export const ReservesData:ReserveIT[] = [
+export const ReservesData:Reserve[] = [
   {
     id: 1,
-    checkin: new Date(2024,5,28,12,0,0,0),
-    checkout: new Date(2024,5,30,12,0,0,0),
-    status: "PENDING",
-    total: 1000,
-    tents: [
-      tentsData[0],
-      tentsData[1]
-    ],
-    experiences: [
-      experiencesData[0],
-      experiencesData[1]
-    ],
-    products: [
-      productsData[0],
-      productsData[1]
-    ]
+    userId:1,
+    qtypeople:2,
+    qtykids:2,
+    tents:[ { idTent:1, name:"Bambu Kullaq", price:100, quantity: 1 } ],
+    products:[ { idProduct:1, name:"Pizza", price:100, quantity: 1 } ],
+    experiences:[ { idExperience:1, name:"Cuatirmoto", price:100, quantity: 1 } ],
+    dateFrom: new Date(2024,5,28,12,0,0,0),
+    dateTo: new Date(2024,5,30,12,0,0,0),
+    dateSale: new Date(),
+    promotionId: 0,
+    price_is_calculated: true,
+    discountCodeId: 0,
+    netImport: 300,
+    discount: 0,
+    grossImport: 300,
+    canceled_reason: "",
+    canceled_status: false,
+    paymentStatus:"PENDING",
+    aditionalPeople:2,
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   {
     id: 2,
-    checkin: new Date(2024,6,17,12,0,0,0),
-    checkout: new Date(2024,6,19,12,0,0,0),
-    status: "PENDING",
-    total: 1000,
-    tents: [
-      tentsData[0],
-      tentsData[1]
-    ],
-    experiences: [
-      experiencesData[0],
-    ],
-    products: [
-      productsData[0],
-    ]
+    userId:1,
+    qtypeople:2,
+    qtykids:2,
+    tents:[ { idTent:1, name:"Bambu Kullaq", price:100, quantity: 1 } ],
+    products:[ { idProduct:1, name:"Pizza", price:100, quantity: 1 } ],
+    experiences:[ { idExperience:1, name:"Cuatirmoto", price:100, quantity: 1 } ],
+    dateFrom: new Date(2024,5,28,12,0,0,0),
+    dateTo: new Date(2024,5,30,12,0,0,0),
+    dateSale: new Date(),
+    promotionId: 0,
+    price_is_calculated: true,
+    discountCodeId: 0,
+    netImport: 300,
+    discount: 10,
+    grossImport: 270,
+    canceled_reason: "",
+    canceled_status: false,
+    paymentStatus:"PENDING",
+    aditionalPeople:2,
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   {
     id: 3,
-    checkin: new Date(2024,6,21,12,0,0,0),
-    checkout: new Date(2024,6,24,12,0,0,0),
-    status: "PENDING",
-    total: 1000,
-    tents: [
-      tentsData[0],
-      tentsData[1]
-    ],
-    experiences: [],
-    products: []
-  }
+    userId:1,
+    qtypeople:2,
+    qtykids:2,
+    tents:[ { idTent:1, name:"Bambu Kullaq", price:100, quantity: 1 } ],
+    products:[ { idProduct:1, name:"Pizza", price:100, quantity: 1 } ],
+    experiences:[ { idExperience:1, name:"Cuatirmoto", price:100, quantity: 1 } ],
+    dateFrom: new Date(2024,5,28,12,0,0,0),
+    dateTo: new Date(2024,5,30,12,0,0,0),
+    dateSale: new Date(),
+    promotionId: 0,
+    price_is_calculated: true,
+    discountCodeId: 0,
+    netImport: 300,
+    discount: 10,
+    grossImport: 270,
+    canceled_reason: "",
+    canceled_status: false,
+    paymentStatus:"PENDING",
+    aditionalPeople:2,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
 ]
 
 
@@ -410,41 +486,81 @@ export const reviewsData:ReviewIT[] = [
   },
 ]
 
-export const promotionsData:PromotionIT[] = [
+export const promotionsData:Promotion[] = [
   {
     id: 1,
-    discount: 20,
     title: "Promotion 1",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
-    image: GOLD_KULLAQ_2,
-    link: "/promotion/1",
-    remaining: 5,
+    images: [GOLD_KULLAQ_2],
+    expiredDate: new Date(),
+    status: "ACTIVE",
+    qtypeople: 2,
+    qtykids:2,
+    netImport: 100,
+    discount: 20,
+    grossImport:80,
+    stock:1000,
+    idtents: [ { id:1, label:"Gold Kullaq", qty:1, price:100 } ],
+    idproducts: [ { id:1, label:"Pizza", qty:1, price:20 } ], 
+    idexperiences: [ { id:2, label:"Cuatrimoto", qty:1, price:20 } ], 
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   {
     id: 2,
-    discount: 30,
     title: "Promotion 2",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
-    image: GOLD_KULLAQ_2,
-    link: "/promotion/1",
-    remaining: 5,
+    images: [GOLD_KULLAQ_2],
+    expiredDate: new Date(),
+    status: "ACTIVE",
+    qtypeople: 2,
+    qtykids:2,
+    netImport: 100,
+    discount: 20,
+    grossImport:80,
+    stock:1000,
+    idtents: [ { id:1, label:"Gold Kullaq", qty:1, price:100 } ],
+    idproducts: [ { id:1, label:"Pizza", qty:1, price:20 } ], 
+    idexperiences: [ { id:2, label:"Cuatrimoto", qty:1, price:20 } ], 
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   {
     id: 3,
-    discount: 40,
     title: "Promotion 3",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
-    image: GOLD_KULLAQ_2,
-    link: "/promotion/1",
-    remaining: 10,
+    images: [GOLD_KULLAQ_2],
+    expiredDate: new Date(),
+    status: "ACTIVE",
+    qtypeople: 2,
+    qtykids:2,
+    netImport: 100,
+    discount: 20,
+    grossImport:80,
+    stock:1000,
+    idtents: [ { id:1, label:"Gold Kullaq", qty:1, price:100 } ],
+    idproducts: [ { id:1, label:"Pizza", qty:1, price:20 } ], 
+    idexperiences: [ { id:2, label:"Cuatrimoto", qty:1, price:20 } ], 
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   {
     id: 4,
-    discount: 50,
-    title: "Promotion 4",
+    title: "Promotion 3",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, consequat nibh. Etiam non.",
-    image: GOLD_KULLAQ_2,
-    link: "/promotion/1",
-    remaining: 100,
+    images: [GOLD_KULLAQ_2],
+    expiredDate: new Date(),
+    status: "ACTIVE",
+    qtypeople: 2,
+    qtykids:2,
+    netImport: 100,
+    discount: 20,
+    grossImport:80,
+    stock:1000,
+    idtents: [ { id:1, label:"Gold Kullaq", qty:1, price:100 } ],
+    idproducts: [ { id:1, label:"Pizza", qty:1, price:20 } ], 
+    idexperiences: [ { id:2, label:"Cuatrimoto", qty:1, price:20 } ], 
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
 ]

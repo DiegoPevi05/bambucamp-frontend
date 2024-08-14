@@ -15,6 +15,7 @@ import ValidateAccount from './pages/validate-account';
 import DashboardReserves from './pages/reserves';
 import DashboardAccount from './pages/account';
 import DashboardSettings from './pages/settings';
+import {CartProvider} from './contexts/CartContext';
 
 
 const AppRoutes: React.FC = () => {
@@ -76,11 +77,13 @@ const App: React.FC = () => {
   return (
     <Suspense fallback={<LoadingComponent isLoading={true} />}>
       <AuthProvider>
-        <Providers>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </Providers>
+        <CartProvider>
+          <Providers>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </Providers>
+        </CartProvider>
       </AuthProvider>
     </Suspense>
   );

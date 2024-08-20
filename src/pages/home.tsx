@@ -21,6 +21,7 @@ import { Tent, CarTaxiFront  } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as LucideIcons from 'lucide-react';
+import ChatComponent from "../components/Chat.tsx"
 
 const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:string,iconName:any}) => {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ const Home = () => {
 
   return (
     <div className="overflow-hidden">
+      <ChatComponent/>
       <Navbar/>
       <div id="hero" className="relative w-full h-[100vh] flex flex-col justify-center items-center z-[20]">
         <video src={Banner} autoPlay loop  muted className="absolute top-0 left-0 w-full h-full object-cover"/>

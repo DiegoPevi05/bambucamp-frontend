@@ -76,7 +76,6 @@ const ChatComponent = () => {
     }
   };
 
-  console.log(messages)
 
 
   return (

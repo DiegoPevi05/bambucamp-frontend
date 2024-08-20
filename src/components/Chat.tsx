@@ -3,10 +3,15 @@ import { MessageSquare, SendHorizonal, Tent, X, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { NO_CHAT } from "../assets/images";
 import {useTranslation} from "react-i18next";
+import io, { Socket } from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
 
-interface Message {
-  text: string;
-  sender: "user" | "bot";
+interface ChatMessage {
+  user: string;
+  message: string;
+  user_type:string;
+  userName:string;
+  timestamp: string;
 }
 
 const ChatComponent = () => {
@@ -14,7 +19,7 @@ const ChatComponent = () => {
   const {t} = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   // Ref for the messages container
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -30,10 +35,33 @@ const ChatComponent = () => {
 
   const toggleChat = (): void => setIsOpen(!isOpen);
 
+  const socketRef = useRef<Socket | null>(null);
+  const sessionIdRef = useRef<string>(uuidv4());
+
+  useEffect(() => {
+    // Initialize WebSocket connection
+    socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`);
+
+    socketRef.current.emit('joinChannel', sessionIdRef.current.toString() );
+
+    // Listen for incoming messages
+    socketRef.current.on('receiveMessage', (message: any) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      socketRef.current?.disconnect();
+    };
+  }, []);
+
   const handleSendMessage = (): void => {
     if (input.trim()) {
-      const newMessage: Message = { text: input, sender: "user" };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      //const newMessage: Message = { text: input, sender: "user" };
+      //setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+      // Emit the message through WebSocket
+      socketRef.current?.emit('sendMessage', input);
+
       setInput("");
     }
   };
@@ -47,6 +75,9 @@ const ChatComponent = () => {
       handleSendMessage();
     }
   };
+
+  console.log(messages)
+
 
   return (
     <div className="fixed -bottom-1 sm:right-0 right-1/2 sm:mr-4 sm:transform-none transform translate-x-1/2 z-50 duration-300 w-80">
@@ -88,9 +119,9 @@ const ChatComponent = () => {
           :
           <>
             {messages.map((msg, index) => (
-              <div className={`flex w-full ${ msg.sender === "user" ? "flex-row-reverse justify-start" : "flex-row justify-start" } gap-x-2`}>
-                <div className={`${ msg.sender === "user" ? "bg-secondary " : "bg-white border-2 border-secondary" } w-8 h-8 rounded-full flex items-center justify-center`}>
-                  {msg.sender !== "user" ?
+              <div className={`flex w-full ${ msg.user_type === "external" ? "flex-row-reverse justify-start" : "flex-row justify-start" } gap-x-2`}>
+                <div className={`${ msg.user_type === "external" ? "bg-secondary " : "bg-white border-2 border-secondary" } w-8 h-8 rounded-full flex items-center justify-center`}>
+                  {msg.user_type !== "external" ?
                     <Tent className="text-secondary h-5 w-5"/>
                   :
                     <User className="text-white h-6 w-6"/>
@@ -99,19 +130,19 @@ const ChatComponent = () => {
                 <motion.div
                   initial={{
                       scale: 0,
-                      originX: msg.sender === "user" ? 1 : 0, // Right bottom for user, left bottom for bot
+                      originX: msg.user_type === "external" ? 1 : 0, // Right bottom for user, left bottom for bot
                       originY: 1, // Bottom scale
                     }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.2 }}
                   key={index}
                   className={`mb-2 p-2 text-xs w-auto max-w-[70%] h-auto bg-secondary text-white ${
-                    msg.sender === "user"
+                    msg.user_type === "external"
                       ? "text-right rounded-l-lg rounded-tr-lg"
                       : "text-left rounded-r-lg rounded-tl-lg"
                   }`}
                 >
-                  {msg.text}
+                  {msg.message}
                 </motion.div>
               </div>
             ))}

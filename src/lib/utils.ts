@@ -59,3 +59,13 @@ export const getCurrentCustomPrice = (customPrices: CustomPrice[]): number => {
   
   return matchingPrices[0].price;
 }
+
+export const formatTime = (utcDateString: string): string =>  {
+  const currentDate = new Date(utcDateString);
+  
+  // Format to HH:MM
+  const hours = currentDate.getHours().toString().padStart(2, '0');
+  const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+}

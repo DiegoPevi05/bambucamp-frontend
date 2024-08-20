@@ -1,4 +1,4 @@
-import  { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
+import  { useState, useEffect, useRef, useCallback, ChangeEvent, KeyboardEvent } from "react";
 import { MessageSquare, SendHorizonal, Tent, X, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { NO_CHAT } from "../assets/images";
@@ -6,6 +6,9 @@ import {useTranslation} from "react-i18next";
 import io, { Socket } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
 import Button from "./ui/Button";
+import {toast} from "sonner";
+import { setCookie, getCookie } from '../lib/cookies';
+import {formatTime} from "../lib/utils";
 
 interface ChatMessage {
   user: string;
@@ -25,6 +28,10 @@ const ChatComponent = () => {
   // Ref for the messages container
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const socketRef = useRef<Socket | null>(null);
+  const sessionIdRef = useRef<string>(uuidv4());
+  const [errorShown, setErrorShown] = useState(false);
+
   // Scroll to the bottom when messages change
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -32,36 +39,75 @@ const ChatComponent = () => {
     }
   }, [messages]);
 
+// Initialize the socket connection if conversation is started
+  const initializeSocket = useCallback((channelId: string) => {
+    if (socketRef.current) return; // Prevent re-initialization
+
+    // Initialize WebSocket connection
+    socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`);
+
+    // Listen for connection errors
+    const handleConnectionError = (_: any) => {
+      if (!errorShown) {
+        toast.error(t("Error trying to connect to the server"));
+        setErrorShown(true); // Ensure the toast is only shown once
+      }
+    };
+
+    socketRef.current.on('connect_error', handleConnectionError);
+
+    console.log(channelId);
+    socketRef.current.emit('joinChannel', channelId);
+
+    // Listen for incoming messages
+    socketRef.current.on('receiveMessage', (message: ChatMessage) => {
+      setMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages, message];
+
+        // Store updated messages in cookies with a 1-hour expiration
+        setCookie('chatMessages', JSON.stringify(updatedMessages), 3600000);
+
+        return updatedMessages;
+      });
+    });
+  }, [errorShown, t]);
+
+  console.log(messages)
+
+  useEffect(() => {
+    const storedChannelId = getCookie('channelId');
+    const storedMessages = getCookie('chatMessages');
+
+    if (storedChannelId && storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+      setStartConversation(true);
+      sessionIdRef.current = storedChannelId;
+      initializeSocket(storedChannelId);
+    }
+  }, [initializeSocket]);
+
+  useEffect(() => {
+    if (startConversation) {
+      const channelId = sessionIdRef.current.toString();
+      initializeSocket(channelId);
+
+      // Store channelId in cookies with a 1-hour expiration
+      setCookie('channelId', channelId, 3600000);
+    }
+    
+    return () => {
+      socketRef.current?.disconnect();
+      setErrorShown(false);
+    };
+  }, [startConversation, initializeSocket]);
+
+
   const [input, setInput] = useState<string>("");
 
   const toggleChat = (): void => setIsOpen(!isOpen);
 
-  const socketRef = useRef<Socket | null>(null);
-  const sessionIdRef = useRef<string>(uuidv4());
-
-  useEffect(() => {
-    if(startConversation){
-      // Initialize WebSocket connection
-      socketRef.current = io(`${import.meta.env.VITE_BACKEND_URL}`);
-
-      socketRef.current.emit('joinChannel', sessionIdRef.current.toString() );
-
-      // Listen for incoming messages
-      socketRef.current.on('receiveMessage', (message: any) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
-
-      return () => {
-        socketRef.current?.disconnect();
-      };
-    }
-  }, [startConversation]);
-
   const handleSendMessage = (): void => {
     if (input.trim()) {
-      //const newMessage: Message = { text: input, sender: "user" };
-      //setMessages((prevMessages) => [...prevMessages, newMessage]);
-
       // Emit the message through WebSocket
       socketRef.current?.emit('sendMessage', input);
 
@@ -128,7 +174,7 @@ const ChatComponent = () => {
               <>
                 {messages.map((msg, index) => (
                   <div className={`flex w-full ${ msg.user_type === "external" ? "flex-row-reverse justify-start" : "flex-row justify-start" } gap-x-2`}>
-                    <div className={`${ msg.user_type === "external" ? "bg-secondary " : "bg-white border-2 border-secondary" } w-8 h-8 rounded-full flex items-center justify-center`}>
+                    <div className={`${ msg.user_type === "external" ? "bg-secondary " : "bg-white border-2 border-secondary" } w-8 h-8 rounded-full flex items-center justify-center mt-auto`}>
                       {msg.user_type !== "external" ?
                         <Tent className="text-secondary h-5 w-5"/>
                       :
@@ -144,13 +190,14 @@ const ChatComponent = () => {
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.2 }}
                       key={index}
-                      className={`mb-2 p-2 text-xs w-auto max-w-[70%] h-auto bg-secondary text-white ${
+                      className={`mb-2 py-2 text-xs w-auto max-w-[70%] flex h-auto bg-secondary text-white ${
                         msg.user_type === "external"
-                          ? "text-right rounded-l-lg rounded-tr-lg"
-                          : "text-left rounded-r-lg rounded-tl-lg"
+                          ? "text-left rounded-l-lg rounded-tr-lg flex-row-reverse"
+                          : "text-right rounded-r-lg rounded-tl-lg flex-row-reverse"
                       }`}
                     >
-                      {msg.message}
+                      <span className="w-10 text-[10px] mt-auto ml-auto">{formatTime(msg.timestamp)}</span>
+                      <p className="px-2 w-auto">{msg.message}</p>
                     </motion.div>
                   </div>
                 ))}

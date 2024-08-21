@@ -22,8 +22,6 @@ const SignIn = () => {
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [formData,setFormData] = useState<SignInIT>({email:"",password:""});
-
   const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
 
   const validateFields = (): SignInIT |null => {
@@ -55,18 +53,6 @@ const SignIn = () => {
       }
   };
 
-  const onChangeFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      const fieldValue = value;
-
-      setFormData(prevFormData => {
-          return {
-              ...prevFormData,
-              [name]: fieldValue,
-          };
-      });
-  };
-
   const onSubmitCreation = async (e:FormEvent ) => {
       e.preventDefault();
       setLoadingForm(true);
@@ -95,7 +81,7 @@ const SignIn = () => {
           <p className="text-secondary text-sm my-2">{t("Sign in to your account")}</p>
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6">{t("Email")}</label>
-            <input name="email" value={formData.email} onChange={(e)=>onChangeFormData(e)} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
             <div className="w-full h-6">
               {errorMessages.email && 
                 <motion.p 
@@ -103,7 +89,7 @@ const SignIn = () => {
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("up","", 0, 1)}
-                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.email}
+                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errorMessages.email)}
                 </motion.p>
               }
             </div>
@@ -112,7 +98,7 @@ const SignIn = () => {
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="password" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6">{t("Password")}</label>
             <div className="h-auto w-full relative">
-              <input name="password" value={formData.password} onChange={(e)=>onChangeFormData(e)} type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
+              <input name="password" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
             <div className="w-full h-6">
@@ -122,7 +108,7 @@ const SignIn = () => {
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("up","", 0, 1)}
-                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.password}
+                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errorMessages.password)}
                 </motion.p>
               }
             </div>

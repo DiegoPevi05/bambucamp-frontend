@@ -31,7 +31,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path="/booking" element={<Booking />} />
 
-      <Route path="/validated-account" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateAccount /></ProtectedRoute>} />
+
       <Route path="/signin" element={<ProtectedRoute  redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignIn /></ProtectedRoute>} />
       <Route path="/signup" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignUp /></ProtectedRoute>} />
       <Route path="/forgot-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ForgotPassword /></ProtectedRoute>} />

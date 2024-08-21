@@ -10,6 +10,7 @@ export interface SignUp {
   confirmPassword?:string;
   firstName:string;
   lastName:string;
+  phoneNumber:string;
 }
 
 export interface VerifyAcccount {

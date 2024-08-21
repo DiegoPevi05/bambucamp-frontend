@@ -92,12 +92,13 @@ const validateCode = () => {
       setLoadingForm(true);
       const fieldsValidated = validateFields();
       if(fieldsValidated != null){
+        console.log(fieldsValidated.code);
+        localStorage.setItem("code_reset_password", fieldsValidated.code || "");
         const isSuccess = await VerifyPasswordResetCode(fieldsValidated,i18n.language);
         if(!isSuccess){
             setLoadingForm(false);
             return;
         }
-        localStorage.setItem("code_reset_password", fieldsValidated.code || "");
       }
       setLoadingForm(false);
       goToRoute("/change-password");

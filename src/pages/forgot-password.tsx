@@ -66,7 +66,7 @@ const ForgotPassword = () => {
         setEndTimer(fieldsValidated.email);
       }
       setLoadingForm(false);
-      goToRoute("/");
+      goToRoute("/validate-code");
   };
 
   const goToRoute = (route:string) => {

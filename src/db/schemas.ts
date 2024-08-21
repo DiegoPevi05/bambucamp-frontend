@@ -11,6 +11,7 @@ const signUpSchema = z.object({
   confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
   firstName: z.string().nonempty({ message: "First name is required." }),
   lastName: z.string().nonempty({ message: "Last name is required." }),
+  phoneNumber:z.string().nonempty({ message: "Phone number is required." }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords do not match.", path: ["confirmPassword"], });
 

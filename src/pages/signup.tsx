@@ -29,17 +29,19 @@ const SignUp = () => {
       const confirmPassword = (form.querySelector('input[name="confirmPassword"]') as HTMLInputElement).value;
       const firstName = (form.querySelector('input[name="firstName"]') as HTMLInputElement).value;
       const lastName = (form.querySelector('input[name="lastName"]') as HTMLInputElement).value;
+      const phoneNumber = (form.querySelector('input[name="phoneNumber"]') as HTMLInputElement).value;
 
       setErrorMessages({});
 
       try {
 
-        signUpSchema.parse({  email, password, confirmPassword, firstName,lastName });
+        signUpSchema.parse({  email, password,phoneNumber, confirmPassword, firstName,lastName });
 
         return {
             email,
             password,
             firstName,
+            phoneNumber,
             lastName
         };
 
@@ -68,7 +70,7 @@ const SignUp = () => {
         }
       }
       setLoadingForm(false);
-      goToRoute("/");
+      //goToRoute("/");
   };
 
   const goToRoute = (route:string) => {
@@ -83,7 +85,7 @@ const SignUp = () => {
           <p className="text-secondary text-sm my-2">{t("Sign up for a new account")}</p>
 
           <div className="flex flex-row justify-start items-center w-full h-auto gap-x-2">
-            <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden my-1 gap-y-2  sm:gap-y-1">
+            <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden gap-y-2  sm:gap-y-1">
               <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Firstname")}</label>
               <input name="firstName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Firstname")}/>
               <div className="w-full h-6">
@@ -98,8 +100,8 @@ const SignUp = () => {
                 }
               </div>
             </div>
-            <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-              <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Lastname")}</label>
+            <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden gap-y-2 sm:gap-y-1">
+              <label htmlFor="lastName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Lastname")}</label>
               <input name="lastName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Lastname")}/>
               <div className="w-full h-6">
                 {errorMessages.lastName && 
@@ -118,7 +120,7 @@ const SignUp = () => {
 
 
 
-          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-2 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Email")}</label>
             <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
             <div className="w-full h-6">
@@ -134,13 +136,29 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-2 sm:gap-y-1">
+            <label htmlFor="phoneNumber" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("PhoneNumber")}</label>
+            <input name="phoneNumber" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("PhoneNumber")}/>
+            <div className="w-full h-6">
+              {errorMessages.phoneNumber && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errorMessages.phoneNumber)}
+                </motion.p>
+              }
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-1 sm:gap-y-1">
             <label htmlFor="password" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Password")}</label>
             <div className="h-auto w-full relative">
               <input name="password" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
-            <div className="w-full h-8 sm:h-10">
+            <div className="w-full h-8">
               {errorMessages.password && 
                 <motion.p 
                   initial="hidden"
@@ -153,13 +171,13 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <label htmlFor="confirmPassword" className="font-primary text-secondary text-xs  sm:text-lg h-auto sm:h-6">{t("Confirmation Password")}</label>
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-1 sm:gap-y-1">
+            <label htmlFor="confirmPassword" className="font-primary text-secondary text-xs  sm:text-lg h-auto">{t("Confirmation Password")}</label>
             <div className="h-auto w-full relative">
               <input name="confirmPassword" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Confirmation Password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
-            <div className="w-full h-8 sm:h-10">
+            <div className="w-full h-8">
               {errorMessages.confirmPassword && 
                 <motion.p 
                   initial="hidden"
@@ -173,7 +191,7 @@ const SignUp = () => {
           </div>
 
 
-          <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("Sign Up")}</Button>
+          <Button type="submit" className="mb-4" isRound={true} isLoading={loadingForm}>{t("Sign Up")}</Button>
           <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("You have an account?")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("Sign In")}</span></p>
         </form>
       </div>

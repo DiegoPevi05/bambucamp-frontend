@@ -1,34 +1,87 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Button from "../components/ui/Button";
 import { LUNAHUANA, LOGO_PRIMARY } from "../assets/images";
-import { useForm } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod';
 import { signUpSchema } from "../db/schemas.ts"
 import { motion } from "framer-motion";
-import { z } from 'zod';
 import { fadeIn } from "../lib/motions";
 import { useNavigate } from "react-router-dom";
-import { Lock, Eye, EyeOff } from "lucide-react";
+import {  Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { SignUp as SignUpIT } from "../lib/interfaces.ts";
+import { ZodError } from "zod";
+import {SignUpAccount} from "../db/actions/auth.ts";
 
 const SignUp = () => {
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  type FormValues = z.infer<typeof signUpSchema>;
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(signUpSchema),
-  });
 
-  const onSubmit = (data: FormValues) => {
-    setLoadingForm(true);
-    console.log(data);
-    setTimeout(() => {
+  const [formData,setFormData] = useState<SignUpIT>({email:"",password:"", firstName:"", lastName:"" });
+
+  const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
+
+  const validateFields = (): SignUpIT |null => {
+      const form = document.getElementById("form_user_sign_up") as HTMLFormElement;
+      const email = (form.querySelector('input[name="email"]') as HTMLInputElement).value;
+      const password = (form.querySelector('input[name="password"]') as HTMLInputElement).value;
+      const confirmPassword = (form.querySelector('input[name="confirmPassword"]') as HTMLInputElement).value;
+      const firstName = (form.querySelector('input[name="firstName"]') as HTMLInputElement).value;
+      const lastName = (form.querySelector('input[name="lastName"]') as HTMLInputElement).value;
+
+      setErrorMessages({});
+
+      try {
+
+        signUpSchema.parse({  email, password, confirmPassword, firstName,lastName });
+
+        return {
+            email,
+            password,
+            firstName,
+            lastName
+        };
+
+      } catch (error) {
+        if (error instanceof ZodError) {
+          const newErrorMessages: Record<string, string> = {};
+          error.errors.forEach(err => {
+            const fieldName = err.path[0] as string;
+            newErrorMessages[fieldName] = err.message;
+          });
+          setErrorMessages(newErrorMessages);
+        }
+        return null;
+      }
+  };
+
+  const onChangeFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      const fieldValue = value;
+
+      setFormData(prevFormData => {
+          return {
+              ...prevFormData,
+              [name]: fieldValue,
+          };
+      });
+  };
+
+  const onSubmitSignUp = async (e:FormEvent ) => {
+      e.preventDefault();
+      setLoadingForm(true);
+      const fieldsValidated = validateFields();
+      if(fieldsValidated != null){
+        const isSuccess = await SignUpAccount(fieldsValidated,i18n.language);
+        if(!isSuccess){
+            setLoadingForm(false);
+            return;
+        }
+      }
       setLoadingForm(false);
-    }, 2000);
+      goToRoute("/");
   };
 
   const goToRoute = (route:string) => {
@@ -38,37 +91,37 @@ const SignUp = () => {
   return (
     <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: `url(${LUNAHUANA})`}}>
       <div className="w-full h-full flex justify-center items-center">
-        <form className="w-[350px] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={handleSubmit(onSubmit)}>
+        <form id="form_user_sign_up" className="w-[350px] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitSignUp(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
           <p className="text-secondary text-sm my-2">{t("Sign up for a new account")}</p>
 
           <div className="flex flex-row justify-start items-center w-full h-auto gap-x-2">
             <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden my-1 gap-y-2  sm:gap-y-1">
               <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Firstname")}</label>
-              <input {...register("firstName")} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Firstname")}/>
+              <input name="firstName" value={formData.firstName} onChange={(e)=>onChangeFormData(e)} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Firstname")}/>
               <div className="w-full h-6">
-                {errors?.firstName && 
+                {errorMessages.firstName && 
                   <motion.p 
                     initial="hidden"
                     animate="show"
                     exit="hidden"
                     variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errors.firstName.message ? errors.firstName.message : "Firstname is required.")}
+                    className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.firstName}
                   </motion.p>
                 }
               </div>
             </div>
             <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
               <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Lastname")}</label>
-              <input {...register("lastName")} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Lastname")}/>
+              <input name="lastName" value={formData.lastName} onChange={(e)=>onChangeFormData(e)} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Lastname")}/>
               <div className="w-full h-6">
-                {errors?.lastName && 
+                {errorMessages.lastName && 
                   <motion.p 
                     initial="hidden"
                     animate="show"
                     exit="hidden"
                     variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errors.lastName.message ? errors.lastName.message : "Lastname is required.")}
+                    className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.lastName}
                   </motion.p>
                 }
               </div>
@@ -80,15 +133,15 @@ const SignUp = () => {
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Email")}</label>
-            <input {...register("email")} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+            <input name="email" value={formData.email} onChange={(e)=>onChangeFormData(e)} className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
             <div className="w-full h-6">
-              {errors?.email && 
+              {errorMessages.email && 
                 <motion.p 
                   initial="hidden"
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("up","", 0, 1)}
-                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{t(errors.email.message ? errors.email.message : "Email is required.")}
+                  className="h-6 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.email}
                 </motion.p>
               }
             </div>
@@ -97,17 +150,17 @@ const SignUp = () => {
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="password" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Password")}</label>
             <div className="h-auto w-full relative">
-              <input {...register("password")} type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
+              <input name="password" value={formData.password} onChange={(e)=>onChangeFormData(e)} type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
             <div className="w-full h-8 sm:h-10">
-              {errors?.password && 
+              {errorMessages.password && 
                 <motion.p 
                   initial="hidden"
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("up","", 0, 1)}
-                  className="h-8 sm:h-10 text-[10px] sm:text-xs text-primary font-tertiary">{t(errors.password.message ? errors.password.message : "Password is required.")}
+                  className="h-8 sm:h-10 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.password}
                 </motion.p>
               }
             </div>
@@ -116,17 +169,17 @@ const SignUp = () => {
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="confirmPassword" className="font-primary text-secondary text-xs  sm:text-lg h-auto sm:h-6">{t("Confirmation Password")}</label>
             <div className="h-auto w-full relative">
-              <input {...register("confirmPassword")} type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Confirmation Password")}/>
+              <input name="confirmPassword" value={formData.confirmPassword} onChange={(e)=>onChangeFormData(e)} type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Confirmation Password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
             <div className="w-full h-8 sm:h-10">
-              {errors?.confirmPassword && 
+              {errorMessages.confirmPassword && 
                 <motion.p 
                   initial="hidden"
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("up","", 0, 1)}
-                  className="h-8 sm:h-10 text-[10px] sm:text-xs text-primary font-tertiary">{t(errors.confirmPassword.message ? errors.confirmPassword.message : "Confirmation Password is required.")}
+                  className="h-8 sm:h-10 text-[10px] sm:text-xs text-primary font-tertiary">{errorMessages.confirmPassword}
                 </motion.p>
               }
             </div>

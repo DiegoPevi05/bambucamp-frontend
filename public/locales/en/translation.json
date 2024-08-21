@@ -123,5 +123,6 @@
 	"Type a message...": "Type a message...",
 	"Send to us a message, and we will answer soon": "Send to us a message, and we will answer soon",
 	"Start a conversation": "Start a conversation",
-	"Error trying connect to the server": "Error trying connect to the server"
+	"Error trying connect to the server": "Error trying connect to the server",
+	"No params found, copy correct the link from the email.": "No params found, copy correct the link from the email."
 }

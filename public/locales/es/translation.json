@@ -123,5 +123,6 @@
 	"Type a message...": "Escribe un mensaje",
 	"Send to us a message, and we will answer soon": "Escrbienos un mensaje y responderemos a la brevedad",
 	"Start a conversation": "Empezar una conversacion",
-	"Error trying connect to the server": "Error tratando de conectar el servidor"
+	"Error trying connect to the server": "Error tratando de conectar el servidor",
+	"No params found, copy correct the link from the email.": "No parametros encontrados, copia correctamente el enlace del email"
 }

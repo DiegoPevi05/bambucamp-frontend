@@ -2,7 +2,6 @@ import  { useState, useRef, useEffect } from "react";
 import { MapPin, CalendarDays, User, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../lib/motions";
-import { SearchReservation } from "../db/actions";
 import {useTranslation} from "react-i18next";
 import CalendarComponent from "./Calendar";
 
@@ -206,7 +205,7 @@ const SearchDatesBar = () => {
   const handleSearchReservation = () => {
     toggleBar(null);
     const searchValues = { startDate, endDate, guests };
-    SearchReservation(searchValues);
+    //SearchReservation(searchValues);
   };
 
 

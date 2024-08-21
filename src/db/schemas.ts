@@ -1,16 +1,8 @@
 import { z } from 'zod';
 
-const formHomeSchema = z.object({
-  name: z.string().nonempty({ message: 'Name is required.' }),
-  email: z.string().nonempty({ message: 'Email is required.' }).email({ message: 'Email is not valid.' }),
-  title: z.string().nonempty({ message: 'Title is required.' }),
-  message: z.string().nonempty({ message: 'Message is required.' }),
-  saveinfo: z.boolean(),
-});
-
 const signInSchema = z.object({
-  email: z.string().email({ message: "Email is not valid." }),
-  password: z.string().min(6, { message: "Password must be at least 8 characters." }),
+  email: z.string().email({ message: "Correo no es valido." }),
+  password: z.string().min(6, { message: "La Contraseña debe tener almenos 8 caracteres." }),
 });
 
 const signUpSchema = z.object({
@@ -36,6 +28,16 @@ const resetPasswordSchema = z.object({
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords do not match.", path: ["confirmPassword"], });
 
+
+
+
+const formHomeSchema = z.object({
+  name: z.string().nonempty({ message: 'Name is required.' }),
+  email: z.string().nonempty({ message: 'Email is required.' }).email({ message: 'Email is not valid.' }),
+  title: z.string().nonempty({ message: 'Title is required.' }),
+  message: z.string().nonempty({ message: 'Message is required.' }),
+  saveinfo: z.boolean(),
+});
 
 const guestsSchema = z.object({
   adults: z.number().min(1, { message: "There must be at least one adult." }),

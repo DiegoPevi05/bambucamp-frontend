@@ -43,7 +43,7 @@ const AppRoutes: React.FC = () => {
         path="/dashboard/reserves"
         element={
           <ProtectedRoute
-            isAllowed={!!user && user.role && user.role.includes('CLIENT')}
+            isAllowed={!!user && user.role != undefined && (user.role == "CLIENT")}
           >
             <DashboardReserves/>
           </ProtectedRoute>
@@ -52,7 +52,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/dashboard/account"
         element={
           <ProtectedRoute
-            isAllowed={!!user && user.role && user.role.includes('CLIENT')}
+            isAllowed={!!user && user.role != undefined && (user.role == "CLIENT")}
           >
             <DashboardAccount/>
           </ProtectedRoute>
@@ -62,7 +62,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/dashboard/settings"
         element={
           <ProtectedRoute
-            isAllowed={!!user && user.role && user.role.includes('CLIENT')}
+            isAllowed={!!user && user.role != undefined && (user.role == "CLIENT")}
           >
             <DashboardSettings/>
           </ProtectedRoute>

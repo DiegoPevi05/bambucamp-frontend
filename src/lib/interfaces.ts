@@ -1,3 +1,28 @@
+
+export interface SignIn {
+  email:string;
+  password:string;
+}
+
+export interface SignUp {
+  email:string;
+  password:string;
+  confirmPassword?:string;
+  firstName:string;
+  lastName:string;
+}
+
+export interface VerifyAcccount {
+  email:string;
+  code:string;
+}
+
+export interface ForgotPassword {
+  email:string;
+  code?:string;
+  password?:string;
+}
+
 export interface User {
   token: string;
   id:number;

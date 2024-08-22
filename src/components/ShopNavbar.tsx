@@ -12,8 +12,12 @@ import LanguageDropDownList from "./ui/LanguageSelector";
 import {useAuth} from "../contexts/AuthContext";
 import {useCart} from "../contexts/CartContext";
 
+interface ShopNavbarProps {
+  screen?:string;
+}
 
-const ShopNavbar = () => {
+const ShopNavbar = (props:ShopNavbarProps) => {
+  const { screen } = props;
   const { user  } = useAuth();
   const  { cart, totalItems, getTotalCost } = useCart();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
@@ -30,13 +34,13 @@ const ShopNavbar = () => {
 
 
   return (
-    <nav className={`${styles.paddingX} absolute w-full flex flex-row justify-start items-start absolute top-0 left-0 z-[100] h-[80px]`}>
+    <nav className={`${styles.paddingX} z-50 absolute w-full flex flex-row ${screen == "extras" ?  "justify-end" : "justify-start" } items-start absolute top-0 left-0 z-[100] h-[80px]`}>
       <div className="w-auto flex justify-start lg:justify-center items-center">
         <a href="/" className="relative hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 rounded-full bg-white top-8 w-[80px] sm:w-[125px] h-[80px] sm:h-[125px] flex items-center justify-center">
           <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
         </a>
       </div>
-      <div className="w-auto h-[40px] flex flex-row justify-center items-start text-white mt-12">
+      <div className={`text-white w-auto h-[40px] flex flex-row justify-center items-start mt-12`}>
         <LanguageDropDownList/>
         <button onClick={toogleSidebar} className="duration-300 group active:scale-95 hover:scale-105 flex justify-center items-center relative"> 
           <ShoppingCart className="h-6 sm:h-8 w-8 sm:w-8 group-hover:text-secondary duration-300"/> 

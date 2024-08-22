@@ -61,7 +61,7 @@ const CarouselTent: React.FC<CarouselTentProps> = ({idTent}) => {
 };
 
 const Booking: React.FC = () => {
-  const { cart, dates } = useCart();
+  const { dates } = useCart();
   const { t, i18n } = useTranslation();
   const [tents,setTents] = useState<Tent[]>([]);
   const [selectedTent,setSelectedTent] = useState(0);

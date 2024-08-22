@@ -69,3 +69,9 @@ export const formatTime = (utcDateString: string): string =>  {
 
   return `${hours}:${minutes}`;
 }
+
+export const convertStrToCurrentTimezoneDate = (utcDateString: string): Date => {
+  const date = new Date(utcDateString);
+  const localOffset = date.getTimezoneOffset(); // getTimezoneOffset() returns the difference in minutes
+  return new Date(date.getTime() + localOffset);
+};

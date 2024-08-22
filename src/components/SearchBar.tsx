@@ -5,6 +5,7 @@ import { fadeIn } from "../lib/motions";
 import {useTranslation} from "react-i18next";
 import CalendarComponent from "./Calendar";
 import {useCart} from "../contexts/CartContext";
+import {useNavigate} from "react-router-dom";
 
 
 const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number } }) => {
@@ -53,7 +54,7 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
   );
 }
 
-const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setDate:React.Dispatch<React.SetStateAction<Date>>,openBar:boolean, type:"startDate" | "endDate" | "guests", toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {
+const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setDate:(newDateFrom: Date) => void,openBar:boolean, type:"startDate" | "endDate" | "guests", toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {
   const [selectedDate, setSelectedDate] = useState(date);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerDimensions, setContainerDimensions] = useState({ height:0, width:0, left: 0 })
@@ -186,14 +187,12 @@ const GuestPicker = ({openBar, containerRef, toggleBar, guests, setGuests}:
 
 const SearchDatesBar = () => {
   const {t} = useTranslation();
-  const { dates, updateDates } = useCart();
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const navigate = useNavigate();
+  const { dates, updateDateFrom, updateDateTo } = useCart();
   const [guests, setGuests] = useState<{adults:number, kids:number, babys:number}>({ adults:1, kids:0, babys:0 });
   const [openBar, setOpenBar] = useState<{startDate:boolean, endDate: boolean, guests: boolean }>({ startDate: false, endDate: false, guests: false });
 
   const toggleBar = (type: "startDate" | "endDate" | "guests" | null) => {
-    //change all values to false and the selected value to true
     if(type === null){
       setOpenBar({ startDate: false, endDate: false, guests: false });
     }else{
@@ -206,8 +205,12 @@ const SearchDatesBar = () => {
 
   const handleSearchReservation = () => {
     toggleBar(null);
-    updateDates(startDate, endDate);
-    //SearchReservation(searchValues);
+    goToRoute("/booking")
+  };
+
+
+  const goToRoute = (route:string) => {
+    navigate(route);
   };
 
 
@@ -222,8 +225,8 @@ const SearchDatesBar = () => {
       <div className="max-sm:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary">
         <span className="text-slate-700 flex flex-row gap-x-4"><MapPin /> Bambucamp</span>
       </div>
-      <DatePicker openBar={ openBar['startDate']} type="startDate" toggleBar={toggleBar} date={startDate} setDate={setStartDate} />
-      <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} date={endDate} setDate={setEndDate} />
+      <DatePicker openBar={ openBar['startDate']} type="startDate" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
+      <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
       <GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>
       <button className="bg-tertiary text-white w-full col-span-1 sm:col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
     </motion.div>

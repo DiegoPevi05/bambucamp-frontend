@@ -28,8 +28,6 @@ const ShopNavbar = () => {
     setOpenSideBar(!openSideBar);
   };
 
-  console.log(totalItems)
-
 
   return (
     <nav className={`${styles.paddingX} absolute w-full flex flex-row justify-start items-start absolute top-0 left-0 z-[100] h-[80px]`}>

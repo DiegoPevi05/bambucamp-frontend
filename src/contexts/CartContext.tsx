@@ -1,4 +1,4 @@
-import  { createContext, useContext, useState, ReactNode } from 'react';
+import  { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto } from '../lib/interfaces';
 
 interface CartItem {
@@ -23,7 +23,8 @@ interface CartContextType {
   updateExperienceQuantity: (idExperience: number, quantity: number) => void;
   isTentInCart: (idTent: number) => boolean;
   getTotalNights: () => number;
-  updateDates: (newDateFrom: Date, newDateTo: Date) => void;
+  updateDateFrom: (newDateFrom: Date) => void;
+  updateDateTo: (newDateTo: Date) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -41,14 +42,23 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const [dates, setDates] = useState<{ dateFrom: Date, dateTo: Date }>({
     dateFrom: new Date(), // Initialize with current date
-    dateTo: new Date(),
+    dateTo: new Date(new Date().setDate(new Date().getDate() + 1)),
   });
 
-  const updateDates = (newDateFrom: Date, newDateTo: Date) => {
-    setDates({
+
+
+  const updateDateFrom = (newDateFrom: Date) => {
+    setDates(prevDates => ({
+      ...prevDates,
       dateFrom: newDateFrom,
+    }));
+  };
+
+  const updateDateTo = (newDateTo: Date) => {
+    setDates(prevDates => ({
+      ...prevDates,
       dateTo: newDateTo,
-    });
+    }));
   };
 
   const updateCart = (updateFn: (prevCart: CartItem) => CartItem) => {
@@ -128,7 +138,7 @@ export function CartProvider({ children }: CartProviderProps) {
     return cart.tents.some(tent => tent.idTent === idTent);
   };
 
-  const getTotalNights = (): number => {
+  const getTotalNights = useCallback((): number => {
     const start = new Date(dates.dateFrom);
     const end = new Date(dates.dateTo);
 
@@ -143,7 +153,7 @@ export function CartProvider({ children }: CartProviderProps) {
     const totalNights = timeDifference / (1000 * 3600 * 24);
 
     return totalNights > 0 ? totalNights : 0; // Ensure no negative nights
-  };
+  },[dates]);
 
   const getTotalCost = (): number => {
     const tentTotal = cart.tents.reduce((sum, tent) => sum + (tent.price  * getTotalNights()), 0);
@@ -154,8 +164,22 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const totalItems = cart.tents.length + cart.products.length + cart.experiences.length;
 
+  // Recalculate tent nights when dates change
+  useEffect(() => {
+    const totalNights = getTotalNights();
+
+    // Update the nights for all tents in the cart
+    setCart(prevCart => ({
+      ...prevCart,
+      tents: prevCart.tents.map(tent => ({
+        ...tent,
+        nights: totalNights, // Update nights
+      })),
+    }));
+  }, [dates, getTotalNights]);
+
   return (
-    <CartContext.Provider value={{ cart, updateDates, dates,  totalItems, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights }}>
       {children}
     </CartContext.Provider>
   );

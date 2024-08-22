@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {  useGLTF } from '@react-three/drei';
 import { a } from '@react-spring/three';
 import { BG_BOOKING, NOTICE_BOARD } from '../assets/images';
 import { motion } from 'framer-motion';
-import { fadeIn } from '../lib/motions';
-import {ChevronLeftIcon, ChevronRightIcon, ToyBrick, UserIcon} from 'lucide-react';
+import { fadeIn, fadeOnly } from '../lib/motions';
+import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, UserIcon} from 'lucide-react';
 import { tentsData } from '../lib/constant';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
@@ -14,6 +14,10 @@ import ShopNavbar from '../components/ShopNavbar';
 import {useCart} from '../contexts/CartContext';
 import Button from '../components/ui/Button';
 import SearchDatesBar from '../components/SearchBar';
+import {Tent} from '../lib/interfaces';
+import {useTranslation} from 'react-i18next';
+import {SearchAvailableTents} from '../db/actions/reservation';
+import {toast} from 'sonner';
 
 interface ModelTentProps {
   position: [number, number, number];
@@ -57,8 +61,11 @@ const CarouselTent: React.FC<CarouselTentProps> = ({idTent}) => {
 };
 
 const Booking: React.FC = () => {
-  const [tents,setTents] = useState(tentsData);
+  const { cart, dates } = useCart();
+  const { t, i18n } = useTranslation();
+  const [tents,setTents] = useState<Tent[]>([]);
   const [selectedTent,setSelectedTent] = useState(0);
+  const [loadingTent,setLoadingTents] = useState(true);
 
   const { addTent, removeTent, isTentInCart, totalItems, getTotalNights } = useCart();
 
@@ -82,6 +89,25 @@ const Booking: React.FC = () => {
     }
   }
 
+  useEffect(()=>{
+
+    const searchAvailableTentsHandler = async() => {
+      if(dates.dateFrom > dates.dateTo){
+        toast.error(t("Start date must be before end date."))
+        return;
+      }
+      setLoadingTents(true);
+      const tentsDB = await SearchAvailableTents(dates, i18n.language);
+      if(tentsDB != null){
+        setTents(tentsDB);
+        setLoadingTents(false);
+      }
+    }
+
+    searchAvailableTentsHandler();
+
+  },[dates, i18n.language])
+
   return (
     <div className="w-full h-screen relative">
       <ShopNavbar/>
@@ -89,85 +115,107 @@ const Booking: React.FC = () => {
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${BG_BOOKING})`, filter: 'blur(10px)' }}></div>
         <div className="absolute inset-0 bg-black" style={{ opacity: 0.1 }}></div>
       </div>
-      {tents.map((tent,index)=>{
-        if(index == selectedTent){
-        return(
-          <div key={`tent-content-${tent.id}`} className='w-full h-full'>
+      {loadingTent ?
+        <div className='absolute right-1/2 top-1/2 left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <LoaderCircle  className='h-16 w-16 text-secondary animate-spin'/>
+          </div>
+      :
+      <>
+        {
+          tents.length ==  0 ?
             <motion.div 
-              key={`tent-catalog-${tent.id}`}
               initial="hidden"
               animate="show"
               exit="hidden"
-              variants={fadeIn("down","",0.5,0.5)}
-              className='flex flex-col items-start justify-start w-[600px] h-screen absolute right-0 top-0'>
-              <div 
-                className="relative right-0 -top-[60px] w-[600px] h-[600px] bg-cover bg-no-repeat bg-center flex flex-col justify-start items-center pt-[140px]" style={{ backgroundImage: `url(${NOTICE_BOARD})` }}>
-                <div className="flex flex-col items-center justify-center w-[450px] h-[100px] p-4">
-                  <h2 className="font-primary text-white text-sm uppercase">{tent.header}</h2>
-                  <h1 className="font-primary text-tertiary text-3xl uppercase">{tent.title}</h1>
-                  <div className="flex flex-row gap-x-4 mt-1">
-                    <div className="w-auto h-auto flex flex-row gap-x-2">
-                      <UserIcon className="h-4 w-4 text-white"/>
-                      <span className="text-white text-sm">{tent.qtypeople} Adultos</span>
-                    </div>
-                    <div className="w-auto h-auto flex flex-row gap-x-2">
-                      <ToyBrick className="h-4 w-4 text-white"/>
-                      <span className="text-white text-sm">{tent.qtykids} Niños</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start justify-start flex-col  w-[450px] h-[100px] py-4 px-12 mt-4">
-                  <p className="font-primary text-white text-xs">{tent.description}</p>
-                </div>
-                <div className="flex items-start justify-start flex-col w-[450px] h-[100px] py-4 px-10 mt-4 ">
-                  <label className="text-white">{"Services"}</label>
-                  <div className="flex flex-row flex-wrap items-start justify-start w-full h-full gap-x-4">
-                    {Object.entries(tent.services).map(([service, value]) => {
-                        if (value) {
-
-                          return <ServiceItem size="sm" key={service} icon={service} />;
-                        }
-                        return null;
-                      })}
-                  </div>
-                </div>
-                <div className="flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
-                  {calculatePrice(tent.price,tent.custom_price) != tent.price ?
-                    <>
-                      <h2 className="font-primary text-white text-sm uppercase line-through">S/{calculatePrice(tent.price,tent.custom_price)}</h2>
-                      <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
-                      <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}% de descuento solo por hoy</span>
-                    </>
-                  :
-                    <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
-                  }
-                </div>
-
-              </div>
-              <div className='w-full h-auto items-start justify-start z-[12]'>
-                <div className='flex flex-row justify-around mx-auto mb-12'>
-                  <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? 'Reservado' : 'Agregar a la Reserva'} checked={isTentInCart(tent.id)} readOnly/>
-                </div>
-
-                <div className="flex flex-row justify-around w-[400px] mx-auto">
-                  <button onClick={()=>handlePrevious()} className='rounded-full bg-white h-16 w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group'>
-                    <ChevronLeftIcon className="h-10 w-10 group-hover:text-white"/>
-                  </button>
-                  <button onClick={()=>handleNext()} className='rounded-full bg-white h-16 w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group'>
-                    <ChevronRightIcon className="h-10 w-10 group-hover:text-white"/>
-                  </button>
-                </div>
-              </div>
+              variants={fadeOnly("down",0.5,0.5)}
+              className='w-[300px] h-[200px] absolute right-1/2 top-1/2 left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 bg-secondary rounded-xl border-4 border-white flex items-center justify-center flex-col gap-y-2 text-white p-2' >
+              <p className='font-secondary text-center mx-auto'>{t("There are no glampings available for the range of dates selected")}</p>
+              <TentIcon className='h-12 w-12'/>
             </motion.div>
-            <CarouselTent   
-              key={`tent-catalog-model-${tent.id}`}
-              idTent={selectedTent}
-            />
-          </div>
-        )
 
-        }
-        })
+          :
+          tents.map((tent,index)=>{
+            if(index == selectedTent){
+            return(
+              <div key={`tent-content-${tent.id}`} className='w-full h-full'>
+                <motion.div 
+                  key={`tent-catalog-${tent.id}`}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("down","",0.5,0.5)}
+                  className='flex flex-col items-start justify-start w-[600px] h-screen absolute right-0 top-0'>
+                  <div 
+                    className="relative right-0 -top-[60px] w-[600px] h-[600px] bg-cover bg-no-repeat bg-center flex flex-col justify-start items-center pt-[140px]" style={{ backgroundImage: `url(${NOTICE_BOARD})` }}>
+                    <div className="flex flex-col items-center justify-center w-[450px] h-[100px] p-4">
+                      <h2 className="font-primary text-white text-sm uppercase">{tent.header}</h2>
+                      <h1 className="font-primary text-tertiary text-3xl uppercase">{tent.title}</h1>
+                      <div className="flex flex-row gap-x-4 mt-1">
+                        <div className="w-auto h-auto flex flex-row gap-x-2">
+                          <UserIcon className="h-4 w-4 text-white"/>
+                          <span className="text-white text-sm">{tent.qtypeople} Adultos</span>
+                        </div>
+                        <div className="w-auto h-auto flex flex-row gap-x-2">
+                          <ToyBrick className="h-4 w-4 text-white"/>
+                          <span className="text-white text-sm">{tent.qtykids} Niños</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start justify-start flex-col  w-[450px] h-[100px] py-4 px-12 mt-4">
+                      <p className="font-primary text-white text-xs">{tent.description}</p>
+                    </div>
+                    <div className="flex items-start justify-start flex-col w-[450px] h-[100px] py-4 px-10 mt-4 ">
+                      <label className="text-white">{"Services"}</label>
+                      <div className="flex flex-row flex-wrap items-start justify-start w-full h-full gap-x-4">
+                        {Object.entries(tent.services).map(([service, value]) => {
+                            if (value) {
+
+                              return <ServiceItem size="sm" key={service} icon={service} />;
+                            }
+                            return null;
+                          })}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
+                      {calculatePrice(tent.price,tent.custom_price) != tent.price ?
+                        <>
+                          <h2 className="font-primary text-white text-sm uppercase line-through">S/{calculatePrice(tent.price,tent.custom_price)}</h2>
+                          <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
+                          <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}% de descuento solo por hoy</span>
+                        </>
+                      :
+                        <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
+                      }
+                    </div>
+
+                  </div>
+                  <div className='w-full h-auto items-start justify-start z-[12]'>
+                    <div className='flex flex-row justify-around mx-auto mb-12'>
+                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? 'Reservado' : 'Agregar a la Reserva'} checked={isTentInCart(tent.id)} readOnly/>
+                    </div>
+
+                    <div className="flex flex-row justify-around w-[400px] mx-auto">
+                      <button onClick={()=>handlePrevious()} className='rounded-full bg-white h-16 w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group'>
+                        <ChevronLeftIcon className="h-10 w-10 group-hover:text-white"/>
+                      </button>
+                      <button onClick={()=>handleNext()} className='rounded-full bg-white h-16 w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group'>
+                        <ChevronRightIcon className="h-10 w-10 group-hover:text-white"/>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+                <CarouselTent   
+                  key={`tent-catalog-model-${tent.id}`}
+                  idTent={selectedTent}
+                />
+              </div>
+            )
+
+            }
+            })
+          } 
+      </>
+
       }
 
       <div className='absolute bottom-24 left-12 w-[1200px] flex flex-row'>

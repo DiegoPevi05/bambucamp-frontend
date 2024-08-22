@@ -125,5 +125,6 @@
 	"Start a conversation": "Start a conversation",
 	"Error trying connect to the server": "Error trying connect to the server",
 	"No params found, copy correct the link from the email.": "No params found, copy correct the link from the email.",
-	"Send Email": "Send Email"
+	"Send Email": "Send Email",
+	"There are no glampings available for the range of dates selected": "There are no glampings available for the range of dates selected"
 }

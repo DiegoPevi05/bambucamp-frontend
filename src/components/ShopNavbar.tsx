@@ -75,11 +75,11 @@ const ShopNavbar = () => {
                       <div key={`cart_tentItem_${index}`} className="w-full h-auto flex flex-row p-2 border-b-2 border-slate-200">
                         <div className="w-[60%] h-full flex flex-col justify-start items-start">
                           <label className="text-tertiary text-sm font-primary">{tentItem.name}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">Qty x {tentItem.quantity}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">Nights x {tentItem.nights}</label>
                           <label className="text-secondary text-xs font-secondary flex flex-row">Price Unt: {tentItem.price}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                          <label>{tentItem.quantity * tentItem.price}</label>
+                          <label>{tentItem.nights * tentItem.price}</label>
                         </div>
                       </div>
                     )

@@ -76,6 +76,7 @@ const ChangePassword = () => {
 
         return {
             email,
+            password,
             code
         };
 

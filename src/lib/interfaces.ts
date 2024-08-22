@@ -155,7 +155,7 @@ export interface ReserveTentDto {
   idTent:number;
   name:string;
   price:number;
-  quantity:number;
+  nights:number;
 }
 
 export interface ReserveProductDto {

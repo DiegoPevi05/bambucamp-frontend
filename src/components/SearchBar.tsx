@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {useTranslation} from "react-i18next";
 import CalendarComponent from "./Calendar";
+import {useCart} from "../contexts/CartContext";
 
 
 const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number } }) => {
@@ -185,6 +186,7 @@ const GuestPicker = ({openBar, containerRef, toggleBar, guests, setGuests}:
 
 const SearchDatesBar = () => {
   const {t} = useTranslation();
+  const { dates, updateDates } = useCart();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [guests, setGuests] = useState<{adults:number, kids:number, babys:number}>({ adults:1, kids:0, babys:0 });
@@ -204,7 +206,7 @@ const SearchDatesBar = () => {
 
   const handleSearchReservation = () => {
     toggleBar(null);
-    const searchValues = { startDate, endDate, guests };
+    updateDates(startDate, endDate);
     //SearchReservation(searchValues);
   };
 

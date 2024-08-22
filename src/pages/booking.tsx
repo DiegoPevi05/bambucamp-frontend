@@ -60,7 +60,7 @@ const Booking: React.FC = () => {
   const [tents,setTents] = useState(tentsData);
   const [selectedTent,setSelectedTent] = useState(0);
 
-  const { addTent, removeTent, isTentInCart, totalItems } = useCart();
+  const { addTent, removeTent, isTentInCart, totalItems, getTotalNights } = useCart();
 
   const handleNext = () => {
     setSelectedTent((prevIndex) => (prevIndex + 1) % tents.length);
@@ -77,7 +77,7 @@ const Booking: React.FC = () => {
     }else{
       const tent = tents.find(tent => tent.id === Number(idTent))
       if(tent){
-        addTent({idTent,  name: tent.title , price: tent.price , quantity: 1 })
+        addTent({idTent,  name: tent.title , price: tent.price , nights: getTotalNights() })
       }
     }
   }

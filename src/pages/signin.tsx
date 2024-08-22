@@ -64,9 +64,9 @@ const SignIn = () => {
             return;
         }
         login(userDB)
+        goToRoute("/");
       }
       setLoadingForm(false);
-      goToRoute("/");
   };
 
   const goToRoute = (route:string) => {

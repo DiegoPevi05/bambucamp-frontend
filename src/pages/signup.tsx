@@ -70,7 +70,6 @@ const SignUp = () => {
         }
       }
       setLoadingForm(false);
-      //goToRoute("/");
   };
 
   const goToRoute = (route:string) => {

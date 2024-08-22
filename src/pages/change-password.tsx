@@ -102,12 +102,11 @@ const ChangePassword = () => {
             setLoadingForm(false);
             return;
         }
-        localStorage.setItem("code_reset_password", fieldsValidated.code || "");
+        localStorage.removeItem("timer_reset_password");
+        localStorage.removeItem("email_reset_password");
+        localStorage.removeItem("code_reset_password");
+        goToRoute("/signin");
       }
-
-      localStorage.removeItem("timer_reset_password");
-      localStorage.removeItem("email_reset_password");
-      localStorage.removeItem("code_reset_password");
       setLoadingForm(false);
   };
 

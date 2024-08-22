@@ -20,7 +20,7 @@ const forgotPasswordSchema = z.object({
 });
 
 const validateCodeSchema = z.object({
-  code: z.string().length(4, { message: "Code must be 4 characters." }),
+  code: z.string().length(6, { message: "Code must be 6 characters." }),
 });
 
 const resetPasswordSchema = z.object({

@@ -215,7 +215,7 @@ export const VerifyPasswordResetCode = async (VerifyForgotPasswordValues: Forgot
 export const UpdatePassword = async (UpdatePasswordValues: ForgotPassword, language:string): Promise<boolean> => {
 
   try {
-    const UpdatedPasswordResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/verify-password-reset-code`, UpdatePasswordValues, {
+    const UpdatedPasswordResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/update-password`, UpdatePasswordValues, {
       headers: {
         'Accept-Language':language,
       }

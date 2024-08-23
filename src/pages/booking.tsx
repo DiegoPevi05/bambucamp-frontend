@@ -6,7 +6,6 @@ import { BG_BOOKING, NOTICE_BOARD } from '../assets/images';
 import { motion } from 'framer-motion';
 import { fadeIn, fadeOnly } from '../lib/motions';
 import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, UserIcon} from 'lucide-react';
-import { tentsData } from '../lib/constant';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
 import {calculatePrice, getDiscount} from '../lib/utils';
@@ -19,6 +18,7 @@ import {useTranslation} from 'react-i18next';
 import {SearchAvailableTents} from '../db/actions/reservation';
 import {toast} from 'sonner';
 import {useNavigate} from 'react-router-dom';
+import SectionHeader from '../components/SectionHeader';
 
 interface ModelTentProps {
   position: [number, number, number];
@@ -117,6 +117,7 @@ const Booking: React.FC = () => {
 
   return (
     <div className="w-full h-screen relative">
+      <SectionHeader identifier="glampings"/>
       <ShopNavbar/>
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${BG_BOOKING})`, filter: 'blur(10px)' }}></div>
@@ -244,7 +245,7 @@ const Booking: React.FC = () => {
               variant="default" effect="default" size="lg"  
               className="group text-xs sm:text-lg h-8 sm:h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
-              disabled={totalItems == 0}>
+              disabled={totalItems == 1000}>
               Continuar
         </Button>
       </div>

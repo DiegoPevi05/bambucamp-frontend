@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Tooltip } from 'react-tooltip'
-import { Blocks, ChevronLeftIcon, ChevronRightIcon, CircleAlert, Clock, FlameKindlingIcon, HashIcon, Pizza, User} from "lucide-react";
+import { Blocks, ChevronLeftIcon, ChevronRightIcon, CircleAlert, Clock, FlameKindlingIcon, Pizza, User} from "lucide-react";
 import { styles } from "../lib/styles";
 import {Experience, Product} from "../lib/interfaces";
 import { experiencesData, productsData } from "../lib/constant";
@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
+import SectionHeader from "../components/SectionHeader";
 
 interface propsItemExtra {
   index:number;
@@ -166,6 +167,7 @@ const Extras:React.FC = () => {
   return(
     <>
       <div className="w-full min-h-screen relative overflow-x-hidden">
+        <SectionHeader identifier="extras"/>
         <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
           <div className="flex flex-row w-auto h-auto gap-x-4">
@@ -217,7 +219,7 @@ const Extras:React.FC = () => {
           </Button>
         </div>
       </div>
-      <Tooltip id="my-tooltip" style={{ backgroundColor:"#00AAA9", borderRadius:"10px" }} />
+      <Tooltip id="my-tooltip" style={{ backgroundColor:"#00AAA9", borderRadius:"10px" , padding:"6px" , fontSize:"10px" }} />
     </>
   );
 }

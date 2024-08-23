@@ -4,7 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { fadeOnly } from '../../lib/motions';
 
-const LanguageDropDownList = () => {
+interface LanguageDropDownList {
+  variant?:string;
+}
+
+const LanguageDropDownList = (props:LanguageDropDownList) => {
+  const {variant} = props;
   const { i18n } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -19,7 +24,7 @@ const LanguageDropDownList = () => {
 
   return (
     <div className="relative w-auto h-full mx-6">
-      <div onClick={toogleDropDown} className="text-xl text-white px-2 flex flex-row gap-x-1 z-50 items-center justify-center cursor-pointer hover:text-tertiary duration-300"><Earth className="h-5 w-5"/>{i18n.language}<ChevronDown/></div>
+      <div onClick={toogleDropDown} className={`${variant == "dark" ? "text-secondary hover:text-tertiary" : "text-white hover:text-tertiary"}  text-xl px-2 flex flex-row gap-x-1 z-50 items-center justify-center cursor-pointer  duration-300`}><Earth className="h-5 w-5"/>{i18n.language}<ChevronDown/></div>
       <AnimatePresence>
         {open && 
           <motion.div 

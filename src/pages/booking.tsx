@@ -18,6 +18,7 @@ import {Tent} from '../lib/interfaces';
 import {useTranslation} from 'react-i18next';
 import {SearchAvailableTents} from '../db/actions/reservation';
 import {toast} from 'sonner';
+import {useNavigate} from 'react-router-dom';
 
 interface ModelTentProps {
   position: [number, number, number];
@@ -63,6 +64,7 @@ const CarouselTent: React.FC<CarouselTentProps> = ({idTent}) => {
 const Booking: React.FC = () => {
   const { dates } = useCart();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [tents,setTents] = useState<Tent[]>([]);
   const [selectedTent,setSelectedTent] = useState(0);
   const [loadingTent,setLoadingTents] = useState(true);
@@ -107,6 +109,11 @@ const Booking: React.FC = () => {
     searchAvailableTentsHandler();
 
   },[dates, i18n.language])
+
+  const goToRoute = (route:string) => {
+    navigate(route);
+  };
+
 
   return (
     <div className="w-full h-screen relative">
@@ -202,6 +209,15 @@ const Booking: React.FC = () => {
                         <ChevronRightIcon className="h-10 w-10 group-hover:text-white"/>
                       </button>
                     </div>
+                    <div className="flex flex-row justify-center items-center w-full h-auto">
+                      {tents.map((_,index)=>{
+                          return(
+                            <span 
+                            onClick={()=>setSelectedTent(index)}
+                              key={`bullet_tent_options_${index}`} className={`${ selectedTent == index ? "bg-white" : "bg-secondary" } hover:bg-white cursor-pointer  h-5 w-5 border-2 border-secondary rounded-full transition-all duration-300 `}></span>
+                          )
+                      })}
+                    </div>
                   </div>
                 </motion.div>
                 <CarouselTent   
@@ -223,7 +239,9 @@ const Booking: React.FC = () => {
       </div>
 
       <div className='absolute right-12 bottom-12'>
-        <Button variant="default" effect="default" size="lg"  
+        <Button 
+          onClick={()=>goToRoute("/extras")}
+              variant="default" effect="default" size="lg"  
               className="group text-xs sm:text-lg h-8 sm:h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
               disabled={totalItems == 0}>

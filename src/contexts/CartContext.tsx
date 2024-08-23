@@ -25,6 +25,7 @@ interface CartContextType {
   getTotalNights: () => number;
   updateDateFrom: (newDateFrom: Date) => void;
   updateDateTo: (newDateTo: Date) => void;
+  getRangeDates: () => {date:Date, label:string}[];
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -95,18 +96,18 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   };
 
-  const removeProduct = (idProduct: number) => {
+  const removeProduct = (index: number) => {
     updateCart(prevCart => ({
       ...prevCart,
-      products: prevCart.products.filter(product => product.idProduct !== idProduct),
+      products: prevCart.products.filter((_, i) => i !== index),
     }));
   };
 
-  const updateProductQuantity = (idProduct: number, quantity: number) => {
+  const updateProductQuantity = (index: number, quantity: number) => {
     updateCart(prevCart => ({
       ...prevCart,
-      products: prevCart.products.map(product =>
-        product.idProduct === idProduct ? { ...product, quantity } : product
+      products: prevCart.products.map((product, i) =>
+        i === index ? { ...product, quantity } : product
       ),
     }));
   };
@@ -118,18 +119,18 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   };
 
-  const removeExperience = (idExperience: number) => {
+  const removeExperience = (index: number) => {
     updateCart(prevCart => ({
       ...prevCart,
-      experiences: prevCart.experiences.filter(experience => experience.idExperience !== idExperience),
+      experiences: prevCart.experiences.filter((_, i) => i !== index),
     }));
   };
 
-  const updateExperienceQuantity = (idExperience: number, quantity: number) => {
+  const updateExperienceQuantity = (index: number, quantity: number) => {
     updateCart(prevCart => ({
       ...prevCart,
-      experiences: prevCart.experiences.map(experience =>
-        experience.idExperience === idExperience ? { ...experience, quantity } : experience
+      experiences: prevCart.experiences.map((experience,i) =>
+        i === index ? { ...experience, quantity } : experience
       ),
     }));
   };
@@ -162,6 +163,24 @@ export function CartProvider({ children }: CartProviderProps) {
     return tentTotal + productTotal + experienceTotal;
   };
 
+  const getRangeDates = useCallback(() => {
+    // Initialize an array to store the date range
+    const dateRange = [];
+    // Loop through the dates from dateFrom to dateTo
+    let currentDate = new Date(dates.dateFrom);
+    while (currentDate <= dates.dateTo) {
+        const formattedDate = currentDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+        dateRange.push({
+            date: new Date(currentDate),
+            label: formattedDate
+        });
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dateRange;
+  },[dates])
+
   const totalItems = cart.tents.length + cart.products.length + cart.experiences.length;
 
   // Recalculate tent nights when dates change
@@ -179,7 +198,7 @@ export function CartProvider({ children }: CartProviderProps) {
   }, [dates, getTotalNights]);
 
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates }}>
       {children}
     </CartContext.Provider>
   );

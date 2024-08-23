@@ -100,6 +100,7 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                           <div key={`cart_productItem_${index}`} className={`w-full h-auto flex flex-row p-2      ${index != 0 ? "border-t-2 border-slate-200" : "" }`}>
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
                               <label className="text-tertiary text-sm font-primary">{experienceItem.name}</label>
+                              <label className="text-tertiary text-xs font-primary">Dia: {experienceItem.day.toISOString().split("T")[0]}</label>
                               <label className="text-secondary text-xs font-secondary flex flex-row">Quantity x {experienceItem.quantity}</label>
                               <label className="text-secondary text-xs font-secondary flex flex-row">Price Unt: {experienceItem.price}</label>
                             </div>

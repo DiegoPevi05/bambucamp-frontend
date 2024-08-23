@@ -245,7 +245,7 @@ const Booking: React.FC = () => {
               variant="default" effect="default" size="lg"  
               className="group text-xs sm:text-lg h-8 sm:h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
-              disabled={totalItems == 1000}>
+              disabled={totalItems == 0}>
               Continuar
         </Button>
       </div>

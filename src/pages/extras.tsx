@@ -61,7 +61,7 @@ const ItemProductExtra:React.FC<propsItemExtra> = (props:propsItemExtra) => {
 interface propsItemExperience {
   index:number;
   experience:Experience;
-  handleAddExperience:(idExperience:number,quantity:number) => void;
+  handleAddExperience:(idExperience:number,quantity:number, day:Date) => void;
   rangeDates: {date:Date, label:string}[];
 }
 
@@ -75,6 +75,15 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
 
   const handleReduceQuantity = () => {
     setQuantity(prevQuantity => prevQuantity <= 1 ? prevQuantity : prevQuantity - 1 );
+  }
+
+  const handleSelectExperience = (idExperience:number) => {
+    const indexDay =  Number((document.querySelector(`#experience_day_selector_${idExperience}`) as HTMLInputElement).value)
+    const dayObjectSelected  = rangeDates.find((_,i) => i == indexDay); 
+    if(dayObjectSelected){
+      handleAddExperience(experience.id,quantity, dayObjectSelected.date);
+    }
+
   }
 
   return(
@@ -118,10 +127,10 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
       </div>
       <div className="w-full h-auto mt-auto flex flex-col relative rounded-b-lg px-4 gap-y-2 my-2">
         <label className="text-xs text-secondary">Dia de la experiencia</label>
-        <select className="w-[80%] mx-auto h-auto text-secondary border-2  rounded-md border-secondary text-sm">
+        <select id={`experience_day_selector_${experience.id}`} className="w-[80%] mx-auto h-auto text-secondary border-2  rounded-md border-secondary text-sm">
           {rangeDates.map((itemDate,index)=>{
             return(
-              <option value={itemDate.date.toString()}>{itemDate.label}</option>
+              <option value={index}>{itemDate.label}</option>
             )
           })}
         </select>
@@ -134,7 +143,7 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
         </div>
       </div>
       <div className="w-full h-[50px] flex flex-row justify-end px-4 py-2">
-        <button onClick={()=>handleAddExperience(experience.id,quantity)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">Agregar al carrito</button>
+        <button onClick={()=>handleSelectExperience(experience.id)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">Agregar al carrito</button>
       </div>
     </motion.div>
   )
@@ -153,10 +162,10 @@ const Extras:React.FC = () => {
     }
   }
 
-  const handleAddExperienceToCart = (idExperience:number, quantity:number) => {
+  const handleAddExperienceToCart = (idExperience:number, quantity:number, day:Date) => {
     const experience = experiences.find(experience => experience.id === Number(idExperience))
     if(experience){
-      addExperience({idExperience,  name: experience.name , price: experience.price , quantity: quantity  })
+      addExperience({idExperience,  name: experience.name , price: experience.price , quantity: quantity, day: day  })
     }
   }
 

@@ -170,6 +170,7 @@ export interface ReserveExperienceDto {
   name:string;
   price:number;
   quantity:number;
+  day:Date;
 }
 
 

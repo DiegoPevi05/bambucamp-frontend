@@ -8,8 +8,29 @@ import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
 
 
-const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number } }) => {
+const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [calendarDimensions, setCalendarDimensions] = useState({ height:0, width:0, left: 0, top:0 })
+  const [isCalendarOverflowingY, setIsCalendarOverflowingY] = useState<boolean>(true);
+
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      const rect = calendarRef.current.getBoundingClientRect();
+      setCalendarDimensions({
+        height: rect.height,
+        width: rect.width,
+        left: rect.left,
+        top: rect.top
+      });
+    }
+
+    if(containerDimensions.top + calendarDimensions.height > window.innerHeight){
+      setIsCalendarOverflowingY(true);
+    }
+  }, [containerDimensions,calendarRef]);
+
   const {t} = useTranslation()
 
   const handleNextMonth = () => {
@@ -29,13 +50,14 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
     <AnimatePresence>
       {show && (
         <motion.div 
+        ref={calendarRef}
         initial="hidden"
         animate="show"
         exit="hidden"
         variants={fadeIn("left","",0,0.5)}
-        className="absolute h-auto w-[350px] w-[400px] bg-white duration-800 transition-all transition-opacity rounded-b-xl" 
-        style={{
-          top: `${containerDimensions.height}px`,
+        className="absolute h-auto  w-[400px] bg-white duration-800 transition-all transition-opacity rounded-b-xl" 
+          style={{
+          top: isCalendarOverflowingY ? `-${containerDimensions.height + calendarDimensions.height}px` : `${containerDimensions.height}px`,
           left: isCalendarOverflowing ? 'auto' : '0',
           right: isCalendarOverflowing ? '0' : 'auto'
         }}
@@ -57,7 +79,7 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
 const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setDate:(newDateFrom: Date) => void,openBar:boolean, type:"startDate" | "endDate" | "guests", toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {
   const [selectedDate, setSelectedDate] = useState(date);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerDimensions, setContainerDimensions] = useState({ height:0, width:0, left: 0 })
+  const [containerDimensions, setContainerDimensions] = useState({ height:0, width:0, left: 0, top:0 })
 
   useEffect(() => {
     if (containerRef.current) {
@@ -65,7 +87,8 @@ const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setD
       setContainerDimensions({
         height: rect.height,
         width: rect.width,
-        left: rect.left
+        left: rect.left,
+        top: rect.top
       });
     }
   }, []);
@@ -221,14 +244,14 @@ const SearchDatesBar = () => {
       animate="show"
       variants={fadeIn("up","",0.5,1)}
       ref={containerRef} 
-      className="relative  mt-24 w-[100%] sm:w-[80%] h-[120px] sm:h-[180px] lg:h-[60px] bg-white z-[50] grid grid-cols-2 lg:grid-cols-5">
-      <div className="max-sm:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary">
+      className="relative  mt-24 w-[100%] sm:w-[80%] h-[120px] sm:h-[180px] lg:h-[60px] bg-white z-[50] grid grid-cols-2 lg:grid-cols-4">
+      <div className="max-lg:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary">
         <span className="text-slate-700 flex flex-row gap-x-4"><MapPin /> Bambucamp</span>
       </div>
       <DatePicker openBar={ openBar['startDate']} type="startDate" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
       <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
-      <GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>
-      <button className="bg-tertiary text-white w-full col-span-1 sm:col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
+      {/*<GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>*/}
+      <button className="bg-tertiary text-white w-full col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
     </motion.div>
 
   );

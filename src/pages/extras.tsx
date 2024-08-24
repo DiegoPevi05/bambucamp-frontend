@@ -11,6 +11,7 @@ import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import SectionHeader from "../components/SectionHeader";
+import {TENT_SVG_2} from "../assets/images";
 
 interface propsItemExtra {
   index:number;
@@ -175,7 +176,7 @@ const Extras:React.FC = () => {
 
   return(
     <>
-      <div className="w-full min-h-screen relative overflow-x-hidden">
+      <div className="w-full min-h-screen relative flex flex-row overflow-x-hidden">
         <SectionHeader identifier="extras"/>
         <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
@@ -224,7 +225,7 @@ const Extras:React.FC = () => {
             variant="dark" effect="default" size="lg"  
                 className="group text-xs sm:text-lg h-8 sm:h-10"
                 rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}>
-                Continuar
+                Ir a Reservar
           </Button>
         </div>
       </div>

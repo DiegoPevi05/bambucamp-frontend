@@ -8,28 +8,41 @@ import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
 
 
-const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolean, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
+const Calendar = ({ show, type, handleSelectedDate, containerDimensions }:{show:boolean, type:string, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarDimensions, setCalendarDimensions] = useState({ height:0, width:0, left: 0, top:0 })
   const [isCalendarOverflowingY, setIsCalendarOverflowingY] = useState<boolean>(true);
+  const [isCalendarOVerflowingX, setIsCalendarOverflowingX] = useState<boolean>(true);
 
   const calendarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     if (calendarRef.current) {
       const rect = calendarRef.current.getBoundingClientRect();
       setCalendarDimensions({
         height: rect.height,
         width: rect.width,
         left: rect.left,
-        top: rect.top
+        top: rect.top,
       });
     }
+  }, [show, currentDate,type]); // Run whenever the calendar is shown or the current month changes
 
-    if(containerDimensions.top + calendarDimensions.height > window.innerHeight){
-      setIsCalendarOverflowingY(true);
+  useEffect(() => {
+    // Now that calendarDimensions is set, calculate if it overflows
+    if (calendarDimensions.height > 0) {
+      setIsCalendarOverflowingY(
+        containerDimensions.top + calendarDimensions.height > window.innerHeight
+      );
     }
-  }, [containerDimensions,calendarRef]);
+
+    if(calendarDimensions.width > 0){
+      setIsCalendarOverflowingX(
+        calendarDimensions.left + calendarDimensions.width > window.innerWidth
+      );
+    }
+  }, [calendarDimensions, containerDimensions]);
 
   const {t} = useTranslation()
 
@@ -43,26 +56,28 @@ const Calendar = ({ show, handleSelectedDate, containerDimensions }:{show:boolea
 
   const calendarDays = CalendarComponent(currentDate,[], handleSelectedDate);
 
-  const calendarWidth = 400;
-  const isCalendarOverflowing = containerDimensions.left + calendarWidth > window.innerWidth;
+  console.log(calendarDimensions.left)
+  console.log(isCalendarOVerflowingX);
+
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div 
+        key={"calendar_date_selection_"+type}
         ref={calendarRef}
         initial="hidden"
         animate="show"
         exit="hidden"
         variants={fadeIn("left","",0,0.5)}
-        className="absolute h-auto  w-[400px] bg-white duration-800 transition-all transition-opacity rounded-b-xl" 
+        className="absolute h-auto  w-[400px] bg-white duration-800 transition-all transition-opacity rounded-xl z-[2000]" 
           style={{
-          top: isCalendarOverflowingY ? `-${containerDimensions.height + calendarDimensions.height}px` : `${containerDimensions.height}px`,
-          left: isCalendarOverflowing ? 'auto' : '0',
-          right: isCalendarOverflowing ? '0' : 'auto'
+          top: isCalendarOverflowingY ? `-${calendarDimensions.height + 10 }px` : `${containerDimensions.height}px`,
+          left: isCalendarOVerflowingX ? `auto` : '0',
+          right: isCalendarOVerflowingX ? '0' : 'auto',
         }}
         >
-          <div className="flex flex-row justify-between items-center mb-4 px-4">
+          <div className="flex flex-row justify-between items-center mb-4 p-4">
             <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
             <h1 className="text-slate-700">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
             <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
@@ -109,7 +124,7 @@ const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setD
         <CalendarDays />
         {selectedDate.toISOString().split("T")[0]}
       </div>
-      <Calendar show={openBar} handleSelectedDate={handleDateChange} containerDimensions={containerDimensions}/>
+      <Calendar key={"calendar_date_selected_"+type} type={type} show={openBar} handleSelectedDate={handleDateChange} containerDimensions={containerDimensions}/>
     </div>
   );
 };

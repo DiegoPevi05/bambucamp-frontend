@@ -72,7 +72,7 @@ const Home = () => {
           whileInView='show'
           viewport={{ once: true }}
           variants={fadeIn("down","",0,2)}
-          className="h-auto  sm:h-[20%] lg:h-[30%] w-[90%] sm:w-auto bg-transparent z-[100]">
+          className="h-auto  sm:h-[20%] lg:h-[30%] w-[90%] sm:w-auto bg-transparent z-[10]">
           <img src={LOGO_THIRD} alt="logo_lg" className="w-full h-full object-cover"/>
         </motion.div>
         <SearchDatesBar/>

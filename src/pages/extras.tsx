@@ -11,7 +11,6 @@ import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import SectionHeader from "../components/SectionHeader";
-import {TENT_SVG_2} from "../assets/images";
 
 interface propsItemExtra {
   index:number;

@@ -17,6 +17,7 @@ import DashboardAccount from './pages/account';
 import DashboardSettings from './pages/settings';
 import {CartProvider} from './contexts/CartContext';
 import Extras from './pages/extras';
+import Reserve from './pages/reserve';
 
 
 const AppRoutes: React.FC = () => {
@@ -32,6 +33,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path="/booking" element={<Booking />} />
       <Route path="/extras" element={<Extras />} />
+      <Route path="/reserve" element={<Reserve />} />
 
 
       <Route path="/signin" element={<ProtectedRoute  redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignIn /></ProtectedRoute>} />

@@ -8,41 +8,19 @@ import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
 
 
-const Calendar = ({ show, type, handleSelectedDate, containerDimensions }:{show:boolean, type:string, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
+const Calendar = ({ show, type, section, handleSelectedDate, containerDimensions }:{show:boolean, type:string, section?:string, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [calendarDimensions, setCalendarDimensions] = useState({ height:0, width:0, left: 0, top:0 })
-  const [isCalendarOverflowingY, setIsCalendarOverflowingY] = useState<boolean>(true);
-  const [isCalendarOVerflowingX, setIsCalendarOverflowingX] = useState<boolean>(true);
-
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const [topValue,setTopValue] = useState<string>(0);
+  const [isSmallScreen,setIsSmallScreen] = useState(false);
 
   useEffect(() => {
 
-    if (calendarRef.current) {
-      const rect = calendarRef.current.getBoundingClientRect();
-      setCalendarDimensions({
-        height: rect.height,
-        width: rect.width,
-        left: rect.left,
-        top: rect.top,
-      });
-    }
-  }, [show, currentDate,type]); // Run whenever the calendar is shown or the current month changes
-
-  useEffect(() => {
-    // Now that calendarDimensions is set, calculate if it overflows
-    if (calendarDimensions.height > 0) {
-      setIsCalendarOverflowingY(
-        containerDimensions.top + calendarDimensions.height > window.innerHeight
-      );
+    if(window.innerWidth <= 640){
+      setIsSmallScreen(true);
     }
 
-    if(calendarDimensions.width > 0){
-      setIsCalendarOverflowingX(
-        calendarDimensions.left + calendarDimensions.width > window.innerWidth
-      );
-    }
-  }, [calendarDimensions, containerDimensions]);
+    setTopValue(section === "booking"  ? `-400px`  : `${containerDimensions.height}px`);
+  }, [show, currentDate,type]);
 
   const {t} = useTranslation()
 
@@ -56,26 +34,18 @@ const Calendar = ({ show, type, handleSelectedDate, containerDimensions }:{show:
 
   const calendarDays = CalendarComponent(currentDate,[], handleSelectedDate);
 
-  console.log(calendarDimensions.left)
-  console.log(isCalendarOVerflowingX);
-
-
   return (
     <AnimatePresence>
       {show && (
         <motion.div 
         key={"calendar_date_selection_"+type}
-        ref={calendarRef}
         initial="hidden"
         animate="show"
         exit="hidden"
-        variants={fadeIn("left","",0,0.5)}
-        className="absolute h-auto  w-[400px] bg-white duration-800 transition-all transition-opacity rounded-xl z-[2000]" 
-          style={{
-          top: isCalendarOverflowingY ? `-${calendarDimensions.height + 10 }px` : `${containerDimensions.height}px`,
-          left: isCalendarOVerflowingX ? `auto` : '0',
-          right: isCalendarOVerflowingX ? '0' : 'auto',
-        }}
+        variants={fadeIn( !isSmallScreen ?  "left" : "up","",0,0.5) }
+          className={`absolute h-[380px]  w-screen sm:w-[400px] bg-white duration-800 transition-all transition-opacity rounded-xl 
+          z-[2000] ${ type == "startDate" ? "left-0" : "right-0" } `} 
+          style={{ top: topValue }}
         >
           <div className="flex flex-row justify-between items-center mb-4 p-4">
             <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
@@ -91,7 +61,7 @@ const Calendar = ({ show, type, handleSelectedDate, containerDimensions }:{show:
   );
 }
 
-const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setDate:(newDateFrom: Date) => void,openBar:boolean, type:"startDate" | "endDate" | "guests", toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {
+const DatePicker = ({ date, setDate, openBar, type, section, toggleBar }:{date:Date, setDate:(newDateFrom: Date) => void,openBar:boolean, type:"startDate" | "endDate" | "guests",section?:string, toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {
   const [selectedDate, setSelectedDate] = useState(date);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerDimensions, setContainerDimensions] = useState({ height:0, width:0, left: 0, top:0 })
@@ -124,7 +94,7 @@ const DatePicker = ({ date, setDate, openBar, type, toggleBar }:{date:Date, setD
         <CalendarDays />
         {selectedDate.toISOString().split("T")[0]}
       </div>
-      <Calendar key={"calendar_date_selected_"+type} type={type} show={openBar} handleSelectedDate={handleDateChange} containerDimensions={containerDimensions}/>
+      <Calendar key={"calendar_date_selected_"+type} type={type} section={section} show={openBar} handleSelectedDate={handleDateChange} containerDimensions={containerDimensions}/>
     </div>
   );
 };
@@ -223,7 +193,11 @@ const GuestPicker = ({openBar, containerRef, toggleBar, guests, setGuests}:
   );
 };
 
-const SearchDatesBar = () => {
+interface propssSearchBar {
+  section?:string;
+}
+
+const SearchDatesBar = ({section}:propssSearchBar) => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const { dates, updateDateFrom, updateDateTo } = useCart();
@@ -263,8 +237,8 @@ const SearchDatesBar = () => {
       <div className="max-lg:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary">
         <span className="text-slate-700 flex flex-row gap-x-4"><MapPin /> Bambucamp</span>
       </div>
-      <DatePicker openBar={ openBar['startDate']} type="startDate" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
-      <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
+      <DatePicker openBar={ openBar['startDate']} type="startDate" section={section}  toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
+      <DatePicker openBar={ openBar['endDate']} type="endDate" section={section} toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
       {/*<GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>*/}
       <button className="bg-tertiary text-white w-full col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
     </motion.div>

@@ -236,7 +236,7 @@ const Booking: React.FC = () => {
       }
 
       <div className='absolute bottom-24 left-12 w-[1200px] flex flex-row'>
-        <SearchDatesBar/>
+        <SearchDatesBar section="booking"/>
       </div>
 
       <div className='absolute right-12 bottom-12'>

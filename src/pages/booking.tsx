@@ -192,14 +192,14 @@ const Booking: React.FC = () => {
                           <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}%{"off of discount only for today"}</span>
                         </>
                       :
-                        <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
+                        <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
                       }
                     </div>
 
                   </div>
                   <div className='w-full h-auto items-start justify-start z-[12]'>
                     <div className='flex flex-row justify-around mx-auto mb-12'>
-                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserve') : t('Add to the reserve')} checked={isTentInCart(tent.id)} readOnly/>
+                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserved') : t('Add to reserve')} checked={isTentInCart(tent.id)} readOnly/>
                     </div>
 
                     <div className="flex flex-row justify-around w-[400px] mx-auto">

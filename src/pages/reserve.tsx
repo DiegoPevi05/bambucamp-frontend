@@ -8,8 +8,10 @@ import Button from "../components/ui/Button";
 import SectionHeader from "../components/SectionHeader";
 import {useAuth} from '../contexts/AuthContext';
 import {formatPrice, formatDateToYYYYMMDD} from '../lib/utils';
+import {useTranslation} from 'react-i18next';
 
 const Reservation:React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { cart, dates, getTotalNights, getTotalCost  } = useCart();
   const navigate = useNavigate();
@@ -28,33 +30,33 @@ const Reservation:React.FC = () => {
             <button onClick={()=>goToRoute("/extras")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
               <ChevronLeftIcon className="h-full w-full group-hover:text-white"/>
             </button>
-            <h1 className="font-primary text-secondary  text-6xl">Reserva</h1>
+            <h1 className="font-primary text-secondary  text-6xl">{t("Reserve")}</h1>
           </div>
           <div className="grid grid-cols-2 w-full h-auto">
             <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-tertiary">
               <span className="flex flex-row items-end gap-x-2">
                 <List className="h-8 w-8"/>
-                <h2 className="text-2xl">Resumen</h2>
+                <h2 className="text-2xl">{t("Summary")}</h2>
               </span>
               <span className="flex flex-row items-end gap-x-2">
                 <Tent className="h-5 w-5"/>
-                <h2 className="text-lg">Glapmings</h2>
+                <h2 className="text-lg">Glampings</h2>
               </span>
               <div className="w-full h-auto flex flex-col">
               </div>
               <span className="flex flex-row items-end gap-x-2">
                 <FlameKindlingIcon className="h-5 w-5"/>
-                <h2 className="text-lg">Experiences</h2>
+                <h2 className="text-lg">{t("Experiences")}</h2>
               </span>
               <div className="w-full h-auto flex flex-col gap-y-3">
                 {cart.experiences.map((experienceCart,index)=>{
                   return(
                     <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
                       <div className="flex flex-col h-full w-auto">
-                        <div className="flex flex-row gap-x-2"><span className="text-sm text-secondary">Producto :</span><span className="text-sm mt-auto">{experienceCart.name}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Cantidad :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Precio Unitario :</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Dia :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                        <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
                       </div>
                       <div className="flex flex-col items-end h-full w-[20%] ml-auto">
                         <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
@@ -65,16 +67,16 @@ const Reservation:React.FC = () => {
               </div>
               <span className="flex flex-row items-end gap-x-2">
                 <Pizza className="h-5 w-5"/>
-                <h2 className="text-lg">Productos</h2>
+                <h2 className="text-lg">{t("Products")}</h2>
               </span>
               <div className="w-full h-auto flex flex-col gap-y-3">
                 {cart.products.map((productCart,index)=>{
                   return(
                     <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
                       <div className="flex flex-col h-full w-auto">
-                        <div className="flex flex-row gap-x-2"><span className="text-sm text-secondary">Producto :</span><span className="text-sm mt-auto">{productCart.name}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Cantidad :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Precio Unitario :</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
+                        <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{productCart.name}</span>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
                       </div>
                       <div className="flex flex-col items-end h-full w-[20%] ml-auto">
                         <span>{formatPrice(productCart.quantity*productCart.price)}</span>
@@ -91,22 +93,22 @@ const Reservation:React.FC = () => {
                   <Coins className="h-6 w-6"/>
                 </span>
                 <div className="w-full h-auto flex flex-row justify-between">
-                  <h3 className="text-tertiary">Importe Total</h3>
+                  <h3 className="text-tertiary">{t("Total Amount")}</h3>
                   <span>{formatPrice(getTotalCost())}</span>
                 </div>
                 <div className="w-full h-auto flex flex-col justify-between gap-y-2">
-                  <label className="text-xs">Aplicar codigo de descuento</label>
+                  <label className="text-xs">{t("Apply any discount code")}</label>
                   <div className="w-full h-auto flex flex-row justify-between gap-x-4">
                     <input className="w-auto border-2 border-secondary rounded-lg px-2 text-sm" value={"S/0.00"}/>
-                    <button className="w-[30%] rounded-full h-8 bg-tertiary text-white hover:text-secondary hover:bg-white hover:border-2 hover:border-primary duration-300 transition-all active:scale-95 text-sm">Aplicar</button>
+                    <button className="w-[30%] rounded-full h-8 bg-tertiary text-white hover:text-secondary hover:bg-white hover:border-2 hover:border-primary duration-300 transition-all active:scale-95 text-sm">{t("Apply")}</button>
                   </div>
                 </div>
                 <div className="w-full h-auto flex flex-row justify-between">
-                  <h3>Descuento</h3>
+                  <h3>{t("Discount")}</h3>
                   <span>{formatPrice(0)}</span>
                 </div>
                 <div className="w-full h-auto flex flex-row justify-between mt-2">
-                  <h3>Total a pagar</h3>
+                  <h3>{t("Total to Pay")}</h3>
                   <span className="text-lg text-primary">{formatPrice(getTotalCost())}</span>
                 </div>
               </div>
@@ -119,9 +121,9 @@ const Reservation:React.FC = () => {
                       rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
                       disabled={user == null}
                 >
-                      Reservar
+                  {t("Reserve now")}
                 </Button>
-                <label className="text-xs">Para finalizar la reserva <span onClick={()=>goToRoute("/siginin")} className="text-secondary cursor-pointer hover:underline">inicia sesion</span>.</label>
+                <label className="text-xs">{t("To end your reservation please")}{" "}<span onClick={()=>goToRoute("/siginin")} className="text-secondary cursor-pointer hover:underline">{t("Sign In")}</span>.</label>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import  { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto } from '../lib/interfaces';
+import {getCookie, setCookie} from '../lib/cookies';
 
 interface CartItem {
   tents: ReserveTentDto[];
@@ -33,20 +34,26 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 interface CartProviderProps {
   children: ReactNode;
 }
+const CART_COOKIE_NAME = 'cart';
+const CART_COOKIE_MAX_AGE_MS = 60 * 60 * 1000;
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<CartItem>({
-    tents: [],
-    products: [],
-    experiences: [],
-  });
+
+  const getInitialCart = (): CartItem => {
+    const savedCart = getCookie(CART_COOKIE_NAME);
+    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [] };
+  };
+
+  const [cart, setCart] = useState<CartItem>(getInitialCart);
 
   const [dates, setDates] = useState<{ dateFrom: Date, dateTo: Date }>({
     dateFrom: new Date(), // Initialize with current date
     dateTo: new Date(new Date().setDate(new Date().getDate() + 1)),
   });
 
-
+   useEffect(() => {
+    setCookie(CART_COOKIE_NAME, JSON.stringify(cart), CART_COOKIE_MAX_AGE_MS);
+  }, [cart]);
 
   const updateDateFrom = (newDateFrom: Date) => {
     setDates(prevDates => ({

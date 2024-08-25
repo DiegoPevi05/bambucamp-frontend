@@ -55,7 +55,7 @@ const ItemProductExtra:React.FC<propsItemExtra> = (props:propsItemExtra) => {
         </div>
       </div>
       <div className="w-full h-[15%] flex flex-row justify-end px-4 py-2">
-        <button onClick={()=>handleAddProduct(product.id,quantity)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">{t("Add to the Cart")}</button>
+        <button onClick={()=>handleAddProduct(product.id,quantity)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">{t("Add to reserve")}</button>
       </div>
     </motion.div>
   )

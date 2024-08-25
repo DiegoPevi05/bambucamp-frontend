@@ -80,7 +80,7 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
                               <label className="text-tertiary text-sm font-primary">{tentItem.name}</label>
                               <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {tentItem.nights}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {tentItem.price}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(tentItem.price)}</label>
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
                               <label>{formatPrice(tentItem.nights * tentItem.price)}</label>
@@ -148,7 +148,7 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                   <label className="text-tertiary w-full">{t("Total Amount")}</label>
                 </div>
                 <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                  <label>{getTotalCost()}</label>
+                  <label>{formatPrice(getTotalCost())}</label>
                 </div>
               </div>
 

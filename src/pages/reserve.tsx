@@ -1,20 +1,17 @@
 import { Tooltip } from 'react-tooltip'
-import { ChevronLeftIcon, ChevronRightIcon, Coins, FlameKindlingIcon, List, Pizza, Receipt, Tent, User} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Coins, FlameKindlingIcon, List, Pizza, Tent} from "lucide-react";
 import { styles } from "../lib/styles";
-import {Experience, Product} from "../lib/interfaces";
-import { experiencesData, productsData } from "../lib/constant";
 import ShopNavbar from "../components/ShopNavbar";
 import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
 import Button from "../components/ui/Button";
-import { motion } from "framer-motion";
-import { fadeIn } from "../lib/motions";
 import SectionHeader from "../components/SectionHeader";
 import {useAuth} from '../contexts/AuthContext';
+import {formatPrice, formatDateToYYYYMMDD} from '../lib/utils';
 
 const Reservation:React.FC = () => {
   const { user } = useAuth();
-  const { cart, dates, getTotalNights, getTotalCost,  } = useCart();
+  const { cart, dates, getTotalNights, getTotalCost  } = useCart();
   const navigate = useNavigate();
 
   const goToRoute = (route:string) => {
@@ -25,6 +22,7 @@ const Reservation:React.FC = () => {
     <>
       <div className="w-full min-h-screen relative flex flex-row overflow-x-hidden">
         <SectionHeader identifier="payment"/>
+        <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
           <div className="flex flex-row w-full h-auto gap-x-4">
             <button onClick={()=>goToRoute("/extras")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
@@ -35,21 +33,56 @@ const Reservation:React.FC = () => {
           <div className="grid grid-cols-2 w-full h-auto">
             <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-tertiary">
               <span className="flex flex-row items-end gap-x-2">
-                <List className="h-6 w-6"/>
-                <h2 className="text-xl">Resumen</h2>
+                <List className="h-8 w-8"/>
+                <h2 className="text-2xl">Resumen</h2>
               </span>
               <span className="flex flex-row items-end gap-x-2">
                 <Tent className="h-5 w-5"/>
                 <h2 className="text-lg">Glapmings</h2>
               </span>
+              <div className="w-full h-auto flex flex-col">
+              </div>
               <span className="flex flex-row items-end gap-x-2">
                 <FlameKindlingIcon className="h-5 w-5"/>
                 <h2 className="text-lg">Experiences</h2>
               </span>
+              <div className="w-full h-auto flex flex-col gap-y-3">
+                {cart.experiences.map((experienceCart,index)=>{
+                  return(
+                    <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                      <div className="flex flex-col h-full w-auto">
+                        <div className="flex flex-row gap-x-2"><span className="text-sm text-secondary">Producto :</span><span className="text-sm mt-auto">{experienceCart.name}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Cantidad :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Precio Unitario :</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Dia :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                      </div>
+                      <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                        <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
               <span className="flex flex-row items-end gap-x-2">
                 <Pizza className="h-5 w-5"/>
                 <h2 className="text-lg">Productos</h2>
               </span>
+              <div className="w-full h-auto flex flex-col gap-y-3">
+                {cart.products.map((productCart,index)=>{
+                  return(
+                    <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                      <div className="flex flex-col h-full w-auto">
+                        <div className="flex flex-row gap-x-2"><span className="text-sm text-secondary">Producto :</span><span className="text-sm mt-auto">{productCart.name}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Cantidad :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
+                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">Precio Unitario :</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
+                      </div>
+                      <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                        <span>{formatPrice(productCart.quantity*productCart.price)}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-secondary">
@@ -59,7 +92,7 @@ const Reservation:React.FC = () => {
                 </span>
                 <div className="w-full h-auto flex flex-row justify-between">
                   <h3 className="text-tertiary">Importe Total</h3>
-                  <span>S/100.00</span>
+                  <span>{formatPrice(getTotalCost())}</span>
                 </div>
                 <div className="w-full h-auto flex flex-col justify-between gap-y-2">
                   <label className="text-xs">Aplicar codigo de descuento</label>
@@ -70,11 +103,11 @@ const Reservation:React.FC = () => {
                 </div>
                 <div className="w-full h-auto flex flex-row justify-between">
                   <h3>Descuento</h3>
-                  <span>S/0.00</span>
+                  <span>{formatPrice(0)}</span>
                 </div>
                 <div className="w-full h-auto flex flex-row justify-between mt-2">
                   <h3>Total a pagar</h3>
-                  <span className="text-lg text-primary">S/100.00</span>
+                  <span className="text-lg text-primary">{formatPrice(getTotalCost())}</span>
                 </div>
               </div>
 

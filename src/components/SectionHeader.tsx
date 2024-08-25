@@ -1,4 +1,5 @@
 import { CreditCard, FlameKindling, Tent} from "lucide-react";
+import {useTranslation} from "react-i18next";
 
 interface propSectionHeader {
   identifier:string;
@@ -6,6 +7,7 @@ interface propSectionHeader {
 
 const SectionHeader = (props:propSectionHeader) => {
   const { identifier } = props;
+  const {t} = useTranslation();
 
   return(
     <div
@@ -27,7 +29,7 @@ const SectionHeader = (props:propSectionHeader) => {
       <div className="w-1/3 h-auto flex flex-col items-center justify-start z-20">
         <div className={`${identifier == "payment" ? "border-secondary bg-white text-primary" : "border-slate-300 text-slate-300 bg-white" } w-[50px] h-[50px]  border-4 rounded-full flex items-center justify-center text-2xl`}
         ><CreditCard/></div>
-        <label className={`text-xs ${identifier == "glampings" ? "text-white": "text-primary" }`}>Reserva</label>
+        <label className={`text-xs ${identifier == "glampings" ? "text-white": "text-primary" }`}>{t("Reserve")}</label>
       </div>
     </div>
   )

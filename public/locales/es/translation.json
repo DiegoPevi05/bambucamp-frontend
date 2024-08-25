@@ -18,7 +18,7 @@
 	"You have an account?": "¿Tienes una cuenta?",
 	"Forgot your password?": "¿Olvidaste tu contraseña?",
 	"Don't have an account?": "No tienes una cuenta?",
-	"Book now": "Reserva ahora",
+	"Book now": "Buscar reserva",
 	"See our Tents": "Nuestros Glapnings",
 	"See our Services": "Nuestros Servicios",
 	"Learn More": "Ver Más",
@@ -126,5 +126,13 @@
 	"Error trying connect to the server": "Error tratando de conectar el servidor",
 	"No params found, copy correct the link from the email.": "No parametros encontrados, copia correctamente el enlace del email",
 	"Send Email": "Enviar Correo",
-	"There are no glampings available for the range of dates selected": "No hay glampings disponibles para los dias seleccionados"
+	"There are no glampings available for the range of dates selected": "No hay glampings disponibles para los dias seleccionados",
+	"off of discount only for today": " de descuento solo por hoy",
+	"Continue": "Continuar",
+	"Nights": "Noches",
+	"Unit Price.": "Precio Unit.",
+	"Day": "Dia",
+	"Quantity": "Cantidad",
+	"Total Amount": "Importe Total",
+	"My Account": "Mi Cuenta"
 }

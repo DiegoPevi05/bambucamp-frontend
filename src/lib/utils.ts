@@ -75,3 +75,17 @@ export const convertStrToCurrentTimezoneDate = (utcDateString: string): Date => 
   const localOffset = date.getTimezoneOffset(); // getTimezoneOffset() returns the difference in minutes
   return new Date(date.getTime() + localOffset);
 };
+
+export const formatDateToYYYYMMDD = (date: Date): string => {
+  // Create a new Date object with the current time zone
+  const localDate = new Date(date);
+
+  // Get the year, month, and day from the localDate object
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(localDate.getDate()).padStart(2, '0');
+
+  // Return the date in the desired format YYYYY-MM-DD
+  return `${year}-${month}-${day}`;
+}
+

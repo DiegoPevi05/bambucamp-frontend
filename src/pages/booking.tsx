@@ -8,7 +8,7 @@ import { fadeIn, fadeOnly } from '../lib/motions';
 import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, UserIcon} from 'lucide-react';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
-import {calculatePrice, getDiscount} from '../lib/utils';
+import {calculatePrice, formatPrice, getDiscount} from '../lib/utils';
 import ShopNavbar from '../components/ShopNavbar';
 import {useCart} from '../contexts/CartContext';
 import Button from '../components/ui/Button';
@@ -161,11 +161,11 @@ const Booking: React.FC = () => {
                       <div className="flex flex-row gap-x-4 mt-1">
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <UserIcon className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtypeople} Adultos</span>
+                          <span className="text-white text-sm">{tent.qtypeople} {t('adults')}</span>
                         </div>
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <ToyBrick className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtykids} Niños</span>
+                          <span className="text-white text-sm">{tent.qtykids} {t('kids')}</span>
                         </div>
                       </div>
                     </div>
@@ -173,7 +173,7 @@ const Booking: React.FC = () => {
                       <p className="font-primary text-white text-xs">{tent.description}</p>
                     </div>
                     <div className="flex items-start justify-start flex-col w-[450px] h-[100px] py-4 px-10 mt-4 ">
-                      <label className="text-white">{"Services"}</label>
+                      <label className="text-white">{t("Services")}</label>
                       <div className="flex flex-row flex-wrap items-start justify-start w-full h-full gap-x-4">
                         {Object.entries(tent.services).map(([service, value]) => {
                             if (value) {
@@ -187,9 +187,9 @@ const Booking: React.FC = () => {
                     <div className="flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
                       {calculatePrice(tent.price,tent.custom_price) != tent.price ?
                         <>
-                          <h2 className="font-primary text-white text-sm uppercase line-through">S/{calculatePrice(tent.price,tent.custom_price)}</h2>
-                          <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
-                          <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}% de descuento solo por hoy</span>
+                          <h2 className="font-primary text-white text-sm uppercase line-through">{formatPrice(calculatePrice(tent.price,tent.custom_price))}</h2>
+                          <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
+                          <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}%{"off of discount only for today"}</span>
                         </>
                       :
                         <h1 className="font-primary text-tertiary text-3xl uppercase">S/{tent.price}.00</h1>
@@ -199,7 +199,7 @@ const Booking: React.FC = () => {
                   </div>
                   <div className='w-full h-auto items-start justify-start z-[12]'>
                     <div className='flex flex-row justify-around mx-auto mb-12'>
-                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? 'Reservado' : 'Agregar a la Reserva'} checked={isTentInCart(tent.id)} readOnly/>
+                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserve') : t('Add to the reserve')} checked={isTentInCart(tent.id)} readOnly/>
                     </div>
 
                     <div className="flex flex-row justify-around w-[400px] mx-auto">
@@ -246,7 +246,7 @@ const Booking: React.FC = () => {
               className="group text-xs sm:text-lg h-8 sm:h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
               disabled={totalItems == 0}>
-              Continuar
+              {t('Continue')}
         </Button>
       </div>
     </div>

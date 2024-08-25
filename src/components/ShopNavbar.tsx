@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import LanguageDropDownList from "./ui/LanguageSelector";
 import {useAuth} from "../contexts/AuthContext";
 import {useCart} from "../contexts/CartContext";
+import {formatDateToYYYYMMDD, formatPrice} from "../lib/utils";
 
 interface ShopNavbarProps {
   variant?:string;
@@ -78,11 +79,11 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                           <div key={`cart_tentItem_${index}`} className={`w-full h-auto flex flex-row p-2 ${index != 0 ? "border-t-2 border-slate-200" : "" } `}>
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
                               <label className="text-tertiary text-sm font-primary">{tentItem.name}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Nights x {tentItem.nights}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Price Unt: {tentItem.price}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {tentItem.nights}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {tentItem.price}</label>
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                              <label>{tentItem.nights * tentItem.price}</label>
+                              <label>{formatPrice(tentItem.nights * tentItem.price)}</label>
                             </div>
                           </div>
                         )
@@ -93,20 +94,20 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                 )}
                 {cart.experiences.length != 0 && (
                   <>
-                    <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">Experiences</label>
+                    <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Experiences")}</label>
                     <div className="w-full h-auto flex flex-col pt-4">
                       {cart.experiences.map((experienceItem,index)=>{
                         return(
                           <div key={`cart_productItem_${index}`} className={`w-full h-auto flex flex-row p-2      ${index != 0 ? "border-t-2 border-slate-200" : "" }`}>
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
                               <label className="text-tertiary text-sm font-primary">{experienceItem.name}</label>
-                              <label className="text-tertiary text-xs font-primary">Dia: {experienceItem.day.toISOString().split("T")[0]}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Quantity x {experienceItem.quantity}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Price Unt: {experienceItem.price}</label>
+                              <label className="text-tertiary text-xs font-primary">{t('Day')}: {formatDateToYYYYMMDD(experienceItem.day)}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Quantity')} x {experienceItem.quantity}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price')}: {experienceItem.price}</label>
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
                               <button onClick={()=>removeExperience(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
-                              <label className="mt-auto">{experienceItem.quantity * experienceItem.price}</label>
+                              <label className="mt-auto">{formatPrice(experienceItem.quantity * experienceItem.price)}</label>
                             </div>
                           </div>
                         )
@@ -117,19 +118,19 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                 )}
                 {cart.products.length != 0 && (
                   <>
-                    <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">Products</label>
+                    <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Products")}</label>
                     <div className="w-full h-auto flex flex-col pt-4">
                       {cart.products.map((productItem,index)=>{
                         return(
                           <div key={`cart_productItem_${index}`} className={`w-full h-auto flex flex-row p-2 ${index != 0 ? "border-t-2 border-slate-200" : "" } `}>
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
                               <label className="text-tertiary text-sm font-primary">{productItem.name}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Quantity x {productItem.quantity}</label>
-                              <label className="text-secondary text-xs font-secondary flex flex-row">Price Unt: {productItem.price}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t("Quantity")} x {productItem.quantity}</label>
+                              <label className="text-secondary text-xs font-secondary flex flex-row">{t("Unit Price.")}: {formatPrice(productItem.price)}</label>
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
                               <button onClick={()=>removeProduct(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
-                              <label className="mt-auto">{productItem.quantity * productItem.price}</label>
+                              <label className="mt-auto">{formatPrice(productItem.quantity * productItem.price)}</label>
                             </div>
                           </div>
                         )
@@ -144,14 +145,14 @@ const ShopNavbar = (props:ShopNavbarProps) => {
 
               <div key={`cart_total`} className="w-full h-auto flex flex-row p-2 border-t-2 border-tertiary">
                 <div className="w-[60%] h-full flex flex-col justify-start items-start">
-                  <label className="text-tertiary w-full">{"Total"}</label>
+                  <label className="text-tertiary w-full">{t("Total Amount")}</label>
                 </div>
                 <div className="w-[40%] h-full flex flex-col justify-start items-end">
                   <label>{getTotalCost()}</label>
                 </div>
               </div>
 
-              <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">Mi Cuenta</label>
+              <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">{t("My Account")}</label>
               <div className="w-full h-auto flex justify-start items-center">
                 {user ?
                   <Button onClick={()=>goToRoute("/dashboard")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>

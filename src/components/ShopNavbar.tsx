@@ -20,7 +20,7 @@ interface ShopNavbarProps {
 const ShopNavbar = (props:ShopNavbarProps) => {
   const { variant } = props;
   const { user  } = useAuth();
-  const  { cart, totalItems, getTotalCost, removeProduct, removeExperience } = useCart();
+  const  { cart, totalItems, getTotalCost, removeTent, removeProduct, removeExperience } = useCart();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -83,7 +83,8 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                               <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(tentItem.price)}</label>
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                              <label>{formatPrice(tentItem.nights * tentItem.price)}</label>
+                              <button onClick={()=>removeTent(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                              <label className="mt-auto">{formatPrice(tentItem.nights * tentItem.price)}</label>
                             </div>
                           </div>
                         )

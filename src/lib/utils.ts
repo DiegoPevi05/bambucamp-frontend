@@ -26,8 +26,15 @@ export const formatPrice = (price:number) => {
 };
 
 export const formatDate = (date:Date) => {
+  date.setHours(12);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
   //format with time 
   return new Intl.DateTimeFormat("en-US", {dateStyle: "medium", timeStyle: "short"}).format(date);
+}
+
+export const formatDateCorrectly = (date:Date) => {
 }
 
 export const getDiscount = (basePrice:number, discountedPrice:number) => {
@@ -89,3 +96,9 @@ export const formatDateToYYYYMMDD = (date: Date): string => {
   return `${year}-${month}-${day}`;
 }
 
+export const parseSuggestions = (suggestions: string[]): string => {
+  if (suggestions.length === 0) {
+    return "No Suggestions";
+  }
+  return suggestions.join('; ');
+};

@@ -1,4 +1,4 @@
-import { User, Tent  } from "../lib/interfaces"
+import { User, Tent, Product, Experience  } from "../lib/interfaces"
 import { convertStrToCurrentTimezoneDate } from "../lib/utils";
 
 export const serializeUser = (data:any):User|null => {
@@ -47,4 +47,41 @@ export const serializeTent = (data:any):Tent|null => {
   };
 
   return tent;
+}
+
+export const serializeProduct = (data:any):Product|null => {
+  let product:Product|null = null;
+
+  product = {
+    categoryId:data.categoryId,
+    category:data.category,
+    id: data.id,
+    name:data.name,
+    description: data.description,
+    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    price: data.price || 0,
+    custom_price: data.custom_price
+  };
+  return product;
+}
+
+export const serializeExperience = (data:any):Experience|null => {
+  let experience:Experience|null = null;
+
+  experience = {
+    id: data.id,
+    categoryId:data.categoryId,
+    category:data.category,
+    header:data.header,
+    name:data.name,
+    description: data.description,
+    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    price: data.price || 0,
+    duration:data.duration || 0,
+    qtypeople:data.qtypeople || 0,
+    limit_age:data.limit_age || 0,
+    suggestions: data.suggestions ? JSON.parse(data.suggestions) : [],
+    custom_price: data.custom_price
+  };
+  return experience;
 }

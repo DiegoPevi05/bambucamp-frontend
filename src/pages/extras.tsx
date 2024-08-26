@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tooltip } from 'react-tooltip'
 import { Blocks, ChevronLeftIcon, ChevronRightIcon, CircleAlert, Clock, FlameKindlingIcon, Pizza, User} from "lucide-react";
 import { styles } from "../lib/styles";
 import {Experience, Product} from "../lib/interfaces";
-import { experiencesData, productsData } from "../lib/constant";
 import ShopNavbar from "../components/ShopNavbar";
 import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
@@ -11,8 +10,9 @@ import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import SectionHeader from "../components/SectionHeader";
-import {formatPrice} from "../lib/utils";
+import {formatPrice, parseSuggestions} from "../lib/utils";
 import {useTranslation} from "react-i18next";
+import {getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
 
 interface propsItemExtra {
   index:number;
@@ -41,11 +41,11 @@ const ItemProductExtra:React.FC<propsItemExtra> = (props:propsItemExtra) => {
       exit="hidden"
       variants={fadeIn("left","",0.5*index, 0.5)}
       className="bg-white w-[250px] h-[300px] flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md ">
-      <div className="w-full h-[30%] bg-center bg-cover rounded-t-lg" style={{ backgroundImage: `url(${product.images[0]})`}}></div>
+      <div className="w-full h-[30%] bg-center bg-cover rounded-t-lg" style={{ backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${product.images[0]})`}}></div>
       <div className="w-full h-[25%] flex flex-col justify-start items-start py-2 px-4">
         <h1 className="text-lg text-tertiary">{product.name}</h1>
         <p className="text-xs text-secondary">{product.description.slice(0,50)+"..."}</p>
-        <p className="text-md">{formatPrice(product.price)}</p>
+        <p className="text-md">{formatPrice((product.price == product.custom_price ? product.price : product.custom_price ))}</p>
       </div>
       <div className="w-full h-[20%] mt-auto flex flex-row relative rounded-b-lg">
         <span className="w-[30%] h-auto flex items-center justify-center">{quantity}</span>
@@ -98,11 +98,11 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
       exit="hidden"
       variants={fadeIn("left","",0.5*index, 0.5)}
       className="bg-white w-[250px] h-auto flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md ">
-      <div className="w-full h-[150px] bg-center bg-cover rounded-t-lg" style={{ backgroundImage: `url(${experience.images[0]})`}}></div>
+      <div className="w-full h-[150px] bg-center bg-cover rounded-t-lg" style={{ backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${experience.images[0]})`}}></div>
       <div className="w-full h-auto flex flex-col justify-start items-start py-2 px-4">
         <h1 className="text-lg text-tertiary">{experience.name}</h1>
         <p className="text-xs text-secondary">{experience.description.slice(0,50)+"..."}</p>
-        <p className="text-md">{formatPrice(experience.price)}</p>
+        <p className="text-md">{formatPrice((experience.price == experience.custom_price ? experience.price : experience.custom_price ))}</p>
         <div className="w-full h-auto flex flex-col">
           <div className="w-full h-[50%] flex flex-row">
             <div className="w-[50%] h-[40px] flex flex-row gap-x-2 justify-center items-center text-tertiary">
@@ -124,7 +124,7 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
             </div>
             <div className="w-[50%] h-[40px] flex flex-row gap-x-2 justify-center items-center p-2 text-tertiary">
               <p className="text-xs text-secondary">{"Sugerencias"}</p>
-              <CircleAlert className=" cursor-pointer h-4 w-4 flex items-center justify-center bg-slate-300 rounded-full hover:bg-secondary text-white hover:text-primary text-xs" data-tooltip-id="my-tooltip" data-tooltip-content="Tiempo de duracion; Tiempo de cogida"/>
+              <CircleAlert className=" cursor-pointer h-4 w-4 flex items-center justify-center bg-slate-300 rounded-full hover:bg-secondary text-white hover:text-primary text-xs" data-tooltip-id="my-tooltip" data-tooltip-content={t(parseSuggestions(experience.suggestions))}/>
             </div>
           </div>
         </div>
@@ -154,11 +154,11 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
 }
 
 const Extras:React.FC = () => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const { addProduct, addExperience, getRangeDates } = useCart();
   const navigate = useNavigate();
-  const [products,setProducts] = useState<Product[]>(productsData);
-  const [experiences,setExperiences] = useState<Experience[]>(experiencesData);
+  const [products,setProducts] = useState<Product[]>([]);
+  const [experiences,setExperiences] = useState<Experience[]>([]);
 
   const handleAddProductToCart = (idProduct:number, quantity:number) => {
     const product = products.find(product => product.id === Number(idProduct))
@@ -173,6 +173,25 @@ const Extras:React.FC = () => {
       addExperience({idExperience,  name: experience.name , price: experience.price , quantity: quantity, day: day  })
     }
   }
+  
+  useEffect(()=> {
+    getProductsHandler();
+    getExperiencesHandler();
+  },[])
+
+  const getProductsHandler = async() => {
+      const productsDB = await getPublicProducts(i18n.language);
+      if(productsDB != null){
+        setProducts(productsDB);
+      }
+  };
+
+  const getExperiencesHandler = async() => {
+      const experiencesDB = await getPublicExperiences(i18n.language);
+      if(experiencesDB != null){
+        setExperiences(experiencesDB);
+      }
+  };
 
   const goToRoute = (route:string) => {
     navigate(route);

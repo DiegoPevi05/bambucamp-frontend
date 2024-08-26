@@ -151,5 +151,6 @@
 	"Apply": "Apply",
 	"Discount": "Discount",
 	"Total to Pay": "Total to Pay",
-	"To end your reservation please": "To end your reservation please"
+	"To end your reservation please": "To end your reservation please",
+	"You must provide a valid code": "You must provide a valid code"
 }

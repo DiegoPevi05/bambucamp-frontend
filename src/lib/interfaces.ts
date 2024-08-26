@@ -84,11 +84,7 @@ export interface Product {
   description: string;
   price: number;
   images: string[];
-  stock: number;
-  custom_price:CustomPrice[];
-  status:string;
-  createdAt:Date|null;
-  updatedAt:Date|null;
+  custom_price:number;
 }
 
 export interface ExperienceCategory {
@@ -108,13 +104,10 @@ export interface Experience {
   price: number;
   duration: number;
   images: string[];
-  status:string;
   limit_age:number;
   qtypeople:number;
   suggestions:string[];
-  custom_price:CustomPrice[];
-  createdAt:Date|null;
-  updatedAt:Date|null;
+  custom_price:number;
 }
 
 
@@ -217,4 +210,21 @@ export interface Reserve {
   aditionalPeople: number;
   createdAt:Date|null;
   updatedAt:Date|null;
+}
+
+export interface ReserveFormData {
+  tents:ReserveTentDto[];
+  products:ReserveProductDto[];
+  experiences:ReserveExperienceDto[];
+  dateFrom:Date;
+  dateTo:Date;
+  promotionId: number;
+  discountCodeId: number;
+  additionalPeople: number;
+}
+
+export interface DiscountCode {
+  id:number,
+  code: string , 
+  discount:number, 
 }

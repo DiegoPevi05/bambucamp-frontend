@@ -1,11 +1,12 @@
 import  { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto } from '../lib/interfaces';
+import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto, DiscountCode } from '../lib/interfaces';
 import {getCookie, setCookie} from '../lib/cookies';
 
 interface CartItem {
   tents: ReserveTentDto[];
   products: ReserveProductDto[];
   experiences: ReserveExperienceDto[];
+  discount:DiscountCode;
 }
 
 interface CartContextType {
@@ -13,6 +14,7 @@ interface CartContextType {
   cart: CartItem;
   totalItems: number;
   getTotalCost: () => number;
+  addDiscountCode: (discountCode: DiscountCode) => void;
   addTent: (tent: ReserveTentDto) => void;
   removeTent: (idTent: number) => void;
   updateTentNights: (idTent: number, nights: number) => void;
@@ -41,7 +43,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const getInitialCart = (): CartItem => {
     const savedCart = getCookie(CART_COOKIE_NAME);
-    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [] };
+    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [], discountCode: { id:0, code:"", discount:0 } };
   };
 
   const [cart, setCart] = useState<CartItem>(getInitialCart);
@@ -80,10 +82,17 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   };
 
-  const removeTent = (idTent: number) => {
+  const addDiscountCode = (discountCode:DiscountCode) => {
     updateCart(prevCart => ({
       ...prevCart,
-      tents: prevCart.tents.filter(tent => tent.idTent !== idTent),
+      discount:discountCode,
+    }));
+  }
+
+  const removeTent = (index: number) => {
+    updateCart(prevCart => ({
+      ...prevCart,
+      tents: prevCart.tents.filter((_,i) => i !== index),
     }));
   };
 
@@ -205,7 +214,7 @@ export function CartProvider({ children }: CartProviderProps) {
   }, [dates, getTotalNights]);
 
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates }}>
       {children}
     </CartContext.Provider>
   );

@@ -104,7 +104,7 @@ const Reservation:React.FC = () => {
               </span>
               <div className="w-full h-auto flex flex-col gap-y-3">
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>
-                  <span className="text-lg font-primary text-secondary">Un total de Noches:</span>
+                  <span className="text-lg font-primary text-secondary">{t("Number of Nights")}:</span>
                   <span className="text-md font-secondary">{getTotalNights()}</span>
                 </div>
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>

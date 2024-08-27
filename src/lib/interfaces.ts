@@ -220,7 +220,7 @@ export interface ReserveFormData {
   dateTo:Date;
   promotionId: number;
   discountCodeId: number;
-  additionalPeople: number;
+  aditionalPeople: number;
 }
 
 export interface DiscountCode {

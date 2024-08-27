@@ -18,6 +18,7 @@ import DashboardSettings from './pages/settings';
 import {CartProvider} from './contexts/CartContext';
 import Extras from './pages/extras';
 import Reserve from './pages/reserve';
+import SuccessReservation from './pages/SuccessReservation';
 
 
 const AppRoutes: React.FC = () => {
@@ -35,7 +36,6 @@ const AppRoutes: React.FC = () => {
       <Route path="/extras" element={<Extras />} />
       <Route path="/reserve" element={<Reserve />} />
 
-
       <Route path="/signin" element={<ProtectedRoute  redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignIn /></ProtectedRoute>} />
       <Route path="/signup" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignUp /></ProtectedRoute>} />
       <Route path="/forgot-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ForgotPassword /></ProtectedRoute>} />
@@ -50,6 +50,17 @@ const AppRoutes: React.FC = () => {
             isAllowed={!!user && user.role != undefined && (user.role == "CLIENT")}
           >
             <DashboardReserves/>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/reserve-success"
+        element={
+          <ProtectedRoute
+            isAllowed={!!user && user.role != undefined && (user.role == "CLIENT")}
+          >
+            <SuccessReservation/>
           </ProtectedRoute>
         }
       />

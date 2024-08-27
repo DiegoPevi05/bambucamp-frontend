@@ -154,5 +154,6 @@
 	"To end your reservation please": "Para finalizar tu reserva por favor",
 	"You must provide a valid code": "Debes ingresar un codigo valido",
 	"User must be log in to create a reservation": "El usuario debe estar loggeado para poder crear una reserva",
-	"Number of Nights": "Numero de Noches"
+	"Number of Nights": "Numero de Noches",
+	"CODE": "CODIGO"
 }

@@ -67,7 +67,7 @@ const Reservation:React.FC = () => {
       dateTo:dates.dateTo,
       promotionId:0,
       discountCodeId:discountCode.id,
-      additionalPeople:0
+      aditionalPeople:0
     }
 
     if(user == null){
@@ -79,7 +79,7 @@ const Reservation:React.FC = () => {
     const responseReserve = await createReserve(data,user.token,i18n.language);
     if(responseReserve != null){
       setLoadingReserve(false);
-      goToRoute("/success-reservation");
+      goToRoute("/reserve-success");
     }
     setLoadingReserve(false);
   }
@@ -136,47 +136,55 @@ const Reservation:React.FC = () => {
                   )
                 })}
               </div>
-              <span className="flex flex-row items-end gap-x-2">
-                <FlameKindlingIcon className="h-5 w-5"/>
-                <h2 className="text-lg">{t("Experiences")}</h2>
-              </span>
-              <div className="w-full h-auto flex flex-col gap-y-3">
-                {cart.experiences.map((experienceCart,index)=>{
-                  return(
-                    <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
-                      <div className="flex flex-col h-full w-auto">
-                        <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
-                      </div>
-                      <div className="flex flex-col items-end h-full w-[20%] ml-auto">
-                        <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-              <span className="flex flex-row items-end gap-x-2">
-                <Pizza className="h-5 w-5"/>
-                <h2 className="text-lg">{t("Products")}</h2>
-              </span>
-              <div className="w-full h-auto flex flex-col gap-y-3">
-                {cart.products.map((productCart,index)=>{
-                  return(
-                    <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
-                      <div className="flex flex-col h-full w-auto">
-                        <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{productCart.name}</span>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
-                      </div>
-                      <div className="flex flex-col items-end h-full w-[20%] ml-auto">
-                        <span>{formatPrice(productCart.quantity*productCart.price)}</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+              {cart.experiences.length > 0 && (
+                <>
+                  <span className="flex flex-row items-end gap-x-2">
+                    <FlameKindlingIcon className="h-5 w-5"/>
+                    <h2 className="text-lg">{t("Experiences")}</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3">
+                    {cart.experiences.map((experienceCart,index)=>{
+                      return(
+                        <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                          <div className="flex flex-col h-full w-auto">
+                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                          </div>
+                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                            <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
+              {cart.products.length > 0 && (
+                <>
+                  <span className="flex flex-row items-end gap-x-2">
+                    <Pizza className="h-5 w-5"/>
+                    <h2 className="text-lg">{t("Products")}</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3">
+                    {cart.products.map((productCart,index)=>{
+                      return(
+                        <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                          <div className="flex flex-col h-full w-auto">
+                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{productCart.name}</span>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
+                          </div>
+                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                            <span>{formatPrice(productCart.quantity*productCart.price)}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-secondary">
@@ -191,7 +199,7 @@ const Reservation:React.FC = () => {
                 <div className="w-full h-auto flex flex-col justify-between gap-y-2">
                   <label className="text-xs">{t("Apply any discount code")}</label>
                   <div className="w-full h-auto flex flex-row justify-between gap-x-4">
-                    <input name="reserve_discount_code" value={discountCode.code} onChange={(e)=>handleDiscountCode(e)} className="w-auto border-2 border-secondary rounded-lg px-2 text-sm"/>
+                    <input name="reserve_discount_code" value={discountCode.code} onChange={(e)=>handleDiscountCode(e)} className="w-auto border-2 border-secondary rounded-lg px-2 text-sm" placeholder={t("CODE")}/>
                     <button onClick={()=>ValidateDiscountCodeHandler()} className="w-[30%] rounded-full h-8 bg-tertiary text-white hover:text-secondary hover:bg-white hover:border-2 hover:border-primary duration-300 transition-all active:scale-95 text-sm" disabled={loadingDiscountCode}>{t("Apply")}</button>
                   </div>
                 </div>

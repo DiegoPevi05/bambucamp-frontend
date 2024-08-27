@@ -56,7 +56,6 @@ const ChatComponent = () => {
 
     socketRef.current.on('connect_error', handleConnectionError);
 
-    console.log(channelId);
     socketRef.current.emit('joinChannel', channelId);
 
     // Listen for incoming messages
@@ -72,7 +71,6 @@ const ChatComponent = () => {
     });
   }, [errorShown, t]);
 
-  console.log(messages)
 
   useEffect(() => {
     const storedChannelId = getCookie('channelId');

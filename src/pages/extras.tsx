@@ -134,7 +134,7 @@ const ItemExperienceExtra:React.FC<propsItemExperience> = (props:propsItemExperi
         <select id={`experience_day_selector_${experience.id}`} className="w-[80%] mx-auto h-auto text-secondary border-2  rounded-md border-secondary text-sm">
           {rangeDates.map((itemDate,index)=>{
             return(
-              <option value={index}>{itemDate.label}</option>
+              <option key={"option_day_selector"+index} value={index}>{itemDate.label}</option>
             )
           })}
         </select>

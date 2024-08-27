@@ -44,7 +44,6 @@ const DashboardAccount = () => {
 
   const onSubmit = (data: FormValues) => {
     setLoadingForm(true);
-    console.log(data);
     setTimeout(() => {
       setLoadingForm(false);
     }, 2000);

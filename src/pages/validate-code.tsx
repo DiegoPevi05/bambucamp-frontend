@@ -79,8 +79,6 @@ const validateCode = () => {
           error.errors.forEach(err => {
             const fieldName = err.path[0] as string;
             newErrorMessages[fieldName] = err.message;
-            console.log(fieldName)
-            console.log(err.message)
           });
           setErrorMessages(newErrorMessages);
         }

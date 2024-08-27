@@ -23,7 +23,6 @@ export const SearchAvailableTents = async (dates:{dateFrom:Date,dateTo:Date}, la
     });
 
 
-    console.log(SearchAvailableTentsResponse)
     data =  SearchAvailableTentsResponse.data.map((tent: any) => serializeTent(tent));
 
     return data;

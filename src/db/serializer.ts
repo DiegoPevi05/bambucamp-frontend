@@ -1,4 +1,4 @@
-import { User, Tent, Product, Experience  } from "../lib/interfaces"
+import { User, Tent, Product, Experience, NotificationDto, Reserve  } from "../lib/interfaces"
 import { convertStrToCurrentTimezoneDate } from "../lib/utils";
 
 export const serializeUser = (data:any):User|null => {
@@ -85,3 +85,98 @@ export const serializeExperience = (data:any):Experience|null => {
   };
   return experience;
 }
+
+export const serializeReserve = (data:any):Reserve|null => {
+  let reserve:Reserve|null = null;
+
+  reserve = {
+    id: data.id,
+    qtypeople:data.title,
+    qtykids:data.qtykids,
+    userId:data.userId,
+    dateFrom: data.dateFrom ? convertStrToCurrentTimezoneDate(data.dateFrom) : data.dateFrom,
+    dateTo: data.dateTo ? convertStrToCurrentTimezoneDate(data.dateTo) : data.dateTo,
+    dateSale: data.dateSale ? convertStrToCurrentTimezoneDate(data.dateSale) : data.dateSale,
+    promotionId: data.promotionId || 0,
+    price_is_calculated : data.price_is_calculated,
+    discountCodeId:data.discountCodeId || 0,
+    netImport: data.netImport || 0,
+    discount: data.discount || 0,
+    grossImport: data.grossImport || 0,
+    tents: data.tents,
+    products: data.products,
+    experiences: data.experiences,
+    canceled_reason:data.canceled_reason,
+    canceled_status:data.canceled_status,
+    paymentStatus:data.paymentStatus,
+    aditionalPeople: data.aditionalPeople || 0,
+    createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
+    updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
+  };
+  return reserve;
+}
+
+export const serializeMyReserves = (data:any):Reserve|null => {
+  let reserve = serializeReserve(data);
+
+  reserve?.tents?.forEach((tent) => {
+    if (tent?.tentDB) {
+      const serialized = serializeTent(tent.tentDB);
+      if (serialized != null) {
+        tent.tentDB = serialized;
+      }
+    }
+  });
+
+  reserve?.experiences?.forEach((experience) => {
+    if (experience?.experienceDB) {
+      const serialized = serializeExperience(experience.experienceDB);
+      if (serialized != null) {
+        experience.experienceDB = serialized;
+      }
+    }
+  });
+
+  reserve?.products?.forEach((product) => {
+    if (product?.productDB) {
+      const serialized = serializeProduct(product.productDB);
+      if (serialized != null) {
+        product.productDB = serialized;
+      }
+    }
+  });
+
+  return reserve;
+}
+
+export const serializeMyReservesCalendar = (data:any):{ id:number, dateFrom:Date, dateTo:Date } |null => {
+
+  let reserve:{ id:number, dateFrom:Date, dateTo:Date }|null = null;
+
+  reserve = {
+    id: data.id,
+    dateFrom: data.dateFrom ? convertStrToCurrentTimezoneDate(data.dateFrom) : data.dateFrom,
+    dateTo: data.dateTo ? convertStrToCurrentTimezoneDate(data.dateTo) : data.dateTo,
+  };
+
+  return reserve 
+}
+
+export const serializeNotification = (data:any): NotificationDto | null => {
+
+  let notification:NotificationDto|null = null;
+
+  notification = {
+    id:data.id,
+    title: data.title,
+    preview: data.preview,
+    description: data.description,
+    type: data.type,
+    date: data.date ? convertStrToCurrentTimezoneDate(data.date) : data.date,
+    isRead: data.isRead
+  }
+
+  return notification;
+}
+
+

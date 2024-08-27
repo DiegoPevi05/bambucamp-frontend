@@ -149,6 +149,7 @@ export interface ReserveTentDto {
   name:string;
   price:number;
   nights:number;
+  tentDB?:Tent;
 }
 
 export interface ReserveProductDto {
@@ -156,6 +157,7 @@ export interface ReserveProductDto {
   name:string;
   price:number;
   quantity:number;
+  productDB?:Product;
 }
 
 export interface ReserveExperienceDto {
@@ -164,6 +166,7 @@ export interface ReserveExperienceDto {
   price:number;
   quantity:number;
   day:Date;
+  experienceDB?:Experience;
 }
 
 
@@ -178,13 +181,21 @@ export interface ReviewIT {
   profile_image: string;
 }
 
-export interface NotificationIT {
-  id: number;
-  type : string;
-  title:string;
-  preview:string;
-  description:string;
-  date:string;
+
+export interface NotificationDto {
+  id:number;
+  title: string;
+  preview: string;
+  description: string;
+  type: string;
+  date: Date;
+  isRead: boolean;
+}
+
+export interface notifcationFilters {
+  date?:string;
+  target?:string[]; 
+  type?:string[];
 }
 
 export interface Reserve {
@@ -228,3 +239,4 @@ export interface DiscountCode {
   code: string , 
   discount:number, 
 }
+

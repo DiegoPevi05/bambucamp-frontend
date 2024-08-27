@@ -17,7 +17,7 @@ import { DiscountCode, ReserveFormData } from '../lib/interfaces';
 const Reservation:React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { cart, dates, getTotalNights, getTotalCost, addDiscountCode  } = useCart();
+  const { cart, dates, getTotalNights, getTotalCost, addDiscountCode, cleanCart  } = useCart();
   const navigate = useNavigate();
   const [discountCode, setDiscountCode] = useState<DiscountCode>({id:0,code:"",discount:0});
   const [loadingDiscountCode, setLoadingDiscountcode] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const Reservation:React.FC = () => {
   };
 
   const onSubmitCreateReserve = async() => {
-    setLoadingReserve(false);
+    setLoadingReserve(true);
 
     const data:ReserveFormData = {
       tents:cart.tents,
@@ -79,6 +79,7 @@ const Reservation:React.FC = () => {
     const responseReserve = await createReserve(data,user.token,i18n.language);
     if(responseReserve != null){
       setLoadingReserve(false);
+      cleanCart();
       goToRoute("/reserve-success");
     }
     setLoadingReserve(false);

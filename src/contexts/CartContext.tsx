@@ -29,6 +29,7 @@ interface CartContextType {
   updateDateFrom: (newDateFrom: Date) => void;
   updateDateTo: (newDateTo: Date) => void;
   getRangeDates: () => {date:Date, label:string}[];
+  cleanCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -43,7 +44,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const getInitialCart = (): CartItem => {
     const savedCart = getCookie(CART_COOKIE_NAME);
-    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [], discountCode: { id:0, code:"", discount:0 } };
+    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [], discount: { id:0, code:"", discount:0 } };
   };
 
   const [cart, setCart] = useState<CartItem>(getInitialCart);
@@ -213,8 +214,14 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   }, [dates, getTotalNights]);
 
+  const cleanCart = () => {
+    setCart({ tents: [], products: [], experiences: [], discount: { id:0, code:"", discount:0 } });
+    // Clear the cart cookie by setting an expired date
+    setCookie(CART_COOKIE_NAME, '', 0); // Set the cookie with an empty string and max age 0 to remove it
+  }
+
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart }}>
       {children}
     </CartContext.Provider>
   );

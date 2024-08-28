@@ -63,11 +63,8 @@ const Reservation:React.FC = () => {
       tents:cart.tents,
       products:cart.products,
       experiences:cart.experiences,
-      dateFrom:dates.dateFrom,
-      dateTo:dates.dateTo,
-      promotionId:0,
-      discountCodeId:discountCode.id,
-      aditionalPeople:0
+      promotions:[],
+      discount_code_id:discountCode.id,
     }
 
     if(user == null){

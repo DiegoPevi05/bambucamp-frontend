@@ -153,7 +153,30 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const isTentInCart = (idTent: number): boolean => {
-    return cart.tents.some(tent => tent.idTent === idTent);
+    // Filter tents by idTent
+    const filteredTents = cart.tents.filter(tent => tent.idTent === idTent);
+
+    // Iterate over the filtered tents and compare dateFrom and dateTo
+    return filteredTents.some(tent => {
+      const tentDateFrom = tent.dateFrom;
+      const tentDateTo = tent.dateTo;
+
+      // Extract day, month, and year
+      const sameDateFrom = (
+        tentDateFrom.getDate() === dates.dateFrom.getDate() &&
+        tentDateFrom.getMonth() === dates.dateFrom.getMonth() &&
+        tentDateFrom.getFullYear() === dates.dateFrom.getFullYear()
+      );
+
+      const sameDateTo = (
+        tentDateTo.getDate() === dates.dateTo.getDate() &&
+        tentDateTo.getMonth() === dates.dateTo.getMonth() &&
+        tentDateTo.getFullYear() === dates.dateTo.getFullYear()
+      );
+
+      // Return true if either dateFrom or dateTo matches
+      return sameDateFrom || sameDateTo;
+    });
   };
 
   const getTotalNights = useCallback((): number => {

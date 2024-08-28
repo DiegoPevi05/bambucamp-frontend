@@ -62,14 +62,13 @@ const CarouselTent: React.FC<CarouselTentProps> = ({idTent}) => {
 };
 
 const Booking: React.FC = () => {
-  const { dates } = useCart();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [tents,setTents] = useState<Tent[]>([]);
   const [selectedTent,setSelectedTent] = useState(0);
   const [loadingTent,setLoadingTents] = useState(true);
 
-  const { addTent, removeTent, isTentInCart, totalItems, getTotalNights } = useCart();
+  const {dates, addTent, removeTent, isTentInCart, totalItems, getTotalNights } = useCart();
 
   const handleNext = () => {
     setSelectedTent((prevIndex) => (prevIndex + 1) % tents.length);
@@ -86,7 +85,8 @@ const Booking: React.FC = () => {
     }else{
       const tent = tents.find(tent => tent.id === Number(idTent))
       if(tent){
-        addTent({idTent,  name: tent.title , price: tent.price , nights: getTotalNights() })
+
+        addTent({idTent,  name: tent.title , price: tent.price , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:0 })
       }
     }
   }

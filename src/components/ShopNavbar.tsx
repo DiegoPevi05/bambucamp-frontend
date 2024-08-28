@@ -78,6 +78,9 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                         return(
                           <div key={`cart_tentItem_${index}`} className={`w-full h-auto flex flex-row p-2 ${index != 0 ? "border-t-2 border-slate-200" : "" } `}>
                             <div className="w-[60%] h-full flex flex-col justify-start items-start">
+
+                              <label className="text-tertiary text-xs font-primary">{t('From')}: {formatDateToYYYYMMDD(tentItem.dateFrom)}</label>
+                              <label className="text-tertiary text-xs font-primary">{t('To')}: {formatDateToYYYYMMDD(tentItem.dateTo)}</label>
                               <label className="text-tertiary text-sm font-primary">{tentItem.name}</label>
                               <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {tentItem.nights}</label>
                               <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(tentItem.price)}</label>

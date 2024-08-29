@@ -165,8 +165,8 @@ const ReserveCard = (props:ReserveCardProps) => {
       </Modal>
 
       <Modal isOpen={openReserve} onClose={()=>setOpenReserve(false)}>
-        <div className="w-[800px] h-[600px] flex flex-col items-start justify-start text-secondary p-6 overflow-hidden">
-            <div className="w-full h-auto flex flex-row gap-x-6 pb-4 border-b-2 border-secondary">
+        <div className="w-screen lg:w-[800px] h-auto lg:h-[600px] flex flex-col items-start justify-start text-secondary py-16 px-4 sm:p-6 overflow-hidden">
+          <div className="w-full h-auto flex flex-row gap-x-4 sm:gap-x-6 pb-4 border-b-2 border-secondary">
               <InputRadio  
                 className="w-auto" 
                 onClick={()=>{setOpenDetails("tents") ; setSelectedOption(0)}} 
@@ -192,7 +192,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 checked={openDetails === "experiences"}
               />
             </div>
-            <div className="w-full h-auto">
+            <div className="w-full h-auto overflow-scroll-x">
               {openDetails === "tents" && (
                   <motion.div 
                     initial="hidden"
@@ -328,34 +328,34 @@ const ReserveCard = (props:ReserveCardProps) => {
                 animate="show"
                 exit="hidden"
                 variants={fadeIn("","up",0.5,1)}
-                className="flex flex-col w-full h-[400px] mt-4">
-                <div className="h-[70%] w-full flex flex-row">
-                  <div className="h-full w-[75%] flex flex-col p-4">
+                className="flex flex-col w-full h-auto lg:h-[400px] mt-4">
+                <div className="h-[70%] w-full flex flex-row pb-4">
+                  <div className="h-full w-[50%] lg:w-[75%] flex flex-col lg:p-2 gap-y-2">
                     <h2 className="text-secondary">{selectedTent.tentDB?.header}</h2>
                     <h1 className="text-tertiary">{selectedTent.tentDB?.title}</h1>
-                    <p className="text-primary text-sm">{selectedTent.tentDB?.description}</p>
-                    <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                    <p className="text-primary text-xs">{selectedTent.tentDB?.description}</p>
+                    <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
                       <p className="text-primary text-sm">Desde</p>
                       <p className="text-gray-400 text-sm">
                       {formatDate(selectedTent.dateFrom)}
                       </p>
                     </div>
-                    <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
+                    <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
                       <p className="text-primary text-sm">Hasta</p>
                       <p className="text-gray-400 text-sm">
                       {formatDate(selectedTent.dateTo)}
                       </p>
                     </div>
-                    <div className="w-full h-auto flex flex-row gap-x-6 mt-auto">
+                    <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-auto">
                       <p className="text-primary text-sm">Importe Total</p>
                       <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
                     </div>
                   </div>
-                  <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
+                  <div className="h-full w-[50%] lg:w-[25%] flex justify-center items-center overflow-hidden p-2">
                     <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedTent.tentDB?.images[0]}`} alt={selectedTent.name} className="w-full h-auto object-cover"/>
                   </div>
                 </div>
-                <div className="h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
+                <div className="h-auto lg:h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
                   <h3 className="text-white mb-4">Servicios</h3>
                   <div className="w-full h-auto flex flex-row flex-wrap gap-4">
                   {selectedTent.tentDB?.services && Object.entries(selectedTent.tentDB.services).map(([service, value]) => {
@@ -376,39 +376,39 @@ const ReserveCard = (props:ReserveCardProps) => {
               animate="show"
               exit="hidden"
               variants={fadeIn("","up",0.5,1)}
-              className="flex flex-col w-full h-[400px] mt-4">
+              className="flex flex-col w-full h-auto lg:h-[400px] mt-4">
               <div className="h-[80%] w-full flex flex-row">
-                <div className="h-full w-[75%] flex flex-col p-4">
+                <div className="h-full w-[50%] lg:w-[75%] flex flex-col p-4">
                   <h1 className="text-tertiary">{selectedExperience.experienceDB?.name}</h1>
-                  <p className="text-primary text-sm">{selectedExperience.experienceDB?.description}</p>
-                  <div className="w-full h-auto flex flex-row">
-                    <div className="w-[50%] h-full flex flex-col">
-                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Dia y Hora:</p>
+                  <p className="text-primary text-xs">{selectedExperience.experienceDB?.description}</p>
+                  <div className="w-full h-auto flex flex-col lg:flex-row">
+                    <div className="w-[100%] lg:w-[50%] h-full flex flex-col">
+                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">Dia y Hora:</p>
                         <p className="text-gray-400 text-sm">
                           {formatDate(selectedExperience.day)}
                         </p>
                       </div>
-                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Duracion:</p>
+                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">Duracion:</p>
                         <p className="text-gray-400 text-sm">
                           { `${selectedExperience.experienceDB?.duration} min.`  }
                         </p>
                       </div>
-                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Cantidad de Personas:</p>
+                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">Cantidad de Personas:</p>
 
-                        <div className="w-auto h-auto flex flex-row items-start gap-x-2">
+                        <div className="w-auto h-auto flex flex-col lg:flex-row items-start gap-x-2">
                           <User className="text-primary h-4 w-4"/>
                           <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.qtypeople}</p>
                         </div>
                       </div>
-                      <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Limite de Edad</p>
+                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">Limite de Edad</p>
                         <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age} Años</p>
                       </div>
                     </div>
-                    <div className="w-[50%] h-full flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
+                    <div className="hidden w-[50%] h-full lg:flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">Precio</p>
                         <p className="text-gray-400 text-sm">{formatPrice(selectedExperience.price)}</p>
@@ -426,13 +426,29 @@ const ReserveCard = (props:ReserveCardProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
+                <div className="h-full w-[50%] lg:w-[25%] flex max-lg:flex-col justify-center items-center overflow-hidden p-2">
                   <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedExperience.experienceDB?.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
+                    <div className="flex w-[100%] h-full lg:hidden flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
+                      <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
+                        <p className="text-primary text-xs">Precio</p>
+                        <p className="text-gray-400 text-sm ml-auto">{formatPrice(selectedExperience.price)}</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
+                        <p className="text-primary text-xs">Cantidad</p>
+                        <p className="text-gray-400 text-sm ml-auto">{ selectedExperience.quantity }</p>
+                      </div>
+                      <div className="w-full h-auto flex flex-row gap-x-4 mt-auto border-t-2 border-secondary py-4">
+                        <p className="text-primary text-xs">Importe Total:</p>
+                          <p className="text-gray-400 text-sm ml-auto">
+                            {formatPrice(selectedExperience.price * selectedExperience.quantity)}
+                          </p>
+                      </div>
+                    </div>
                 </div>
               </div>
               <div className="h-[20%] w-full px-4 py-2 flex flex-col bg-secondary">
                 <h3 className="text-white mb-1 text-md">Recomendaciones</h3>
-                <div className="w-full h-full flex flex-row flex-wrap gap-y-2 gap-x-4">
+                <div className="w-full h-full flex flex-col lg:flex-row lg:flex-wrap gap-y-2 gap-x-4">
                   {selectedExperience.experienceDB?.suggestions.map((suggestion, index) => (
                     <p key={index} className="text-white text-xs"> * {suggestion}</p>
                   ))}

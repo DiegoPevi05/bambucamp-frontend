@@ -53,8 +53,10 @@ export const InputRadio: FC<RadioProps> = ({
         {...props}
       />
       <span className="flex justify-center items-center gap-x-2 px-4 py-2 h-10">
-        {props.placeholder}
-        {rightIcon && <div className="transform transition-transform group-hover:translate-x-2 duration-300">{rightIcon}</div>}
+        <div className="hidden sm:flex p-0 m-0">
+          {props.placeholder}
+        </div>
+        {rightIcon && <div className="px-4 sm:p-0 transform transition-transform group-hover:translate-x-2 duration-300">{rightIcon}</div>}
       </span>
       <div className="checkIcon"> 
         <Check className="h-4 w-4"/>

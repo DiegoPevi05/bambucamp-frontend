@@ -1,6 +1,6 @@
 import {ClassValue,clsx} from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice} from './interfaces'
+import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice, Tent} from './interfaces'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -102,4 +102,29 @@ export const parseSuggestions = (suggestions: string[]): string => {
     return "No Suggestions";
   }
   return suggestions.join('; ');
+};
+
+
+export const getReserveDates = (tents: ReserveTentDto[]): { dateFrom: Date; dateTo: Date } => {
+  // Initialize the earliest start date and latest end date
+  let earliestDateFrom: Date | null = null;
+  let latestDateTo: Date | null = null;
+
+  // Iterate through each tent
+  tents.forEach((tent) => {
+
+    if (earliestDateFrom === null || tent.dateFrom < earliestDateFrom) {
+      earliestDateFrom = tent.dateFrom;
+    }
+    if (latestDateTo === null || tent.dateTo > latestDateTo) {
+      latestDateTo = tent.dateTo;
+    }
+  });
+
+  // Handle case where no tents are provided
+  if (earliestDateFrom === null || latestDateTo === null) {
+    return { dateFrom: ( new Date() ), dateTo: ( new Date() ) }
+  }
+
+  return { dateFrom: earliestDateFrom, dateTo: latestDateTo };
 };

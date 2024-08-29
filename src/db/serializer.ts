@@ -1,4 +1,5 @@
-import { User, Tent, Product, Experience, NotificationDto, Reserve  } from "../lib/interfaces"
+import {productsData} from "../lib/constant";
+import { User, Tent, Product, Experience, NotificationDto, Reserve, ReserveTentDto, ReserveProductDto, ReserveExperienceDto, ReservePromotionDto  } from "../lib/interfaces"
 import { convertStrToCurrentTimezoneDate } from "../lib/utils";
 
 export const serializeUser = (data:any):User|null => {
@@ -36,7 +37,7 @@ export const serializeTent = (data:any):Tent|null => {
     qtypeople: data.qtypeople || 0,
     qtykids: data.qtykids || 0,
     price: data.price || 0,
-    services: data.services ? JSON.parse(data.services) : {},
+    services: typeof data.services === 'string' ? JSON.parse(data.services) : data.services,
     custom_price: data.custom_price || 0,
     status : data.status,
     aditional_people_price: data.aditional_people_price || 0,
@@ -80,10 +81,84 @@ export const serializeExperience = (data:any):Experience|null => {
     duration:data.duration || 0,
     qtypeople:data.qtypeople || 0,
     limit_age:data.limit_age || 0,
-    suggestions: data.suggestions ? JSON.parse(data.suggestions) : [],
+    suggestions: typeof data.suggestions === 'string' ? JSON.parse(data.suggestions) : data.suggestions || [],
     custom_price: data.custom_price
   };
   return experience;
+}
+
+const serializeReserveTent = (data:any):ReserveTentDto => {
+
+  let reserveTent:ReserveTentDto|null = null;
+
+  const tent_db_parsed = serializeTent(data.tentDB);
+
+  reserveTent = {
+    id:data.id,
+    idTent:data.idTent,
+    name:data.name,
+    price:data.price || 0,
+    nights:data.nights || 0,
+    dateFrom:new Date(data.dateFrom),
+    dateTo:new Date(data.dateTo),
+    aditionalPeople:data.aditionalPeople || 0,
+    tentDB: tent_db_parsed != null ?  tent_db_parsed : undefined
+  }
+  return reserveTent;
+}
+
+const serializeReserveProduct = (data:any):ReserveProductDto => {
+
+  let reserveProduct:ReserveProductDto|null = null;
+
+  const product_db_parsed = serializeProduct(data.productDB);
+
+  reserveProduct = {
+    id:data.id,
+    idProduct:data.idProduct,
+    name:data.name,
+    price:data.price || 0,
+    quantity:data.quantity || 0,
+    productDB: product_db_parsed != null ?  product_db_parsed : undefined
+  }
+  return reserveProduct;
+}
+
+const serializeReserveExperience = (data:any):ReserveExperienceDto => {
+
+  let reserveExperience:ReserveExperienceDto|null = null;
+
+  const experience_db_parsed = serializeExperience(data.experienceDB);
+
+  reserveExperience = {
+    id:data.id,
+    idExperience:data.idExperience,
+    name:data.name,
+    price:data.price || 0,
+    day: new Date( data.day ),
+    quantity:data.quantity || 0,
+    experienceDB: experience_db_parsed != null ?  experience_db_parsed : undefined
+  }
+
+  return reserveExperience;
+}
+
+const serializeReservePromotion = (data:any):ReservePromotionDto => {
+
+  let reservePromotion:ReservePromotionDto|null = null;
+
+  //const promotion_db_parsed = serializePro(data.experienceDB as Experience);
+
+  reservePromotion = {
+    id:data.id,
+    idPromotion:data.idPromotion,
+    name:data.name,
+    price:data.price || 0,
+    quantity:data.quantity || 0,
+    //promotionDB: experience_db_parsed != null ?  experience_db_parsed : undefined
+  }
+
+  return reservePromotion;
 }
 
 export const serializeReserve = (data:any):Reserve|null => {
@@ -97,10 +172,10 @@ export const serializeReserve = (data:any):Reserve|null => {
     net_import: data.net_import || 0,
     discount: data.discount || 0,
     gross_import: data.gross_import || 0,
-    tents: data.tents,
-    products: data.products,
-    experiences: data.experiences,
-    promotions:data.promotions,
+    tents: data.tents ? data.tents.map((tent: any) => serializeReserveTent(tent)) : [],
+    products: data.products ? data.products.map((product: any) => serializeReserveProduct(product)) : [],
+    experiences: data.experiences ? data.experiences.map((experience: any) => serializeReserveExperience(experience)) : [],
+    promotions: data.promotions ? data.promotions.map((promotion: any) => serializeReservePromotion(promotion)) : [],
     discount_code_id:data.discount_code_id || 0,
     discount_code_name:data.discount_code_name,
     canceled_reason:data.canceled_reason,

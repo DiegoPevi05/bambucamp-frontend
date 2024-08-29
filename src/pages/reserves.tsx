@@ -4,11 +4,11 @@ import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
 import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight  } from "lucide-react"
-import { Experience, NotificationDto, Reserve, Tent } from "../lib/interfaces";
+import {  NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
-import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate } from "../lib/utils";
+import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate, getReserveDates } from "../lib/utils";
 import ServiceItem from "../components/ServiceItem";
 import Calendar from "../components/Calendar";
 import {useAuth} from "../contexts/AuthContext";
@@ -69,24 +69,20 @@ const ReserveCard = (props:ReserveCardProps) => {
   const [openReserve,setOpenReserve] = useState<boolean>(false);
   const [openDetails,setOpenDetails] = useState<string>("tents");
   const [selectedOption,setSelectedOption] = useState<number>(0);
-  const [selectedTent,setSelectedTent] = useState<Tent|undefined>(undefined);
-  const [selectedExperience,setSelectedExperience] = useState<Experience|undefined>(undefined);
+  const [selectedTent,setSelectedTent] = useState<ReserveTentDto|undefined>(undefined);
+  const [selectedExperience,setSelectedExperience] = useState<ReserveExperienceDto|undefined>(undefined);
 
   useEffect(() => {
     if(openDetails == "tents"){
       const tent = reserve.tents.find((_,index) => index === selectedOption);
-      if(tent?.tentDB){
-        setSelectedTent(tent.tentDB);
-      }
+        setSelectedTent(tent);
     }else{
       setSelectedTent(undefined);
     }
 
     if(openDetails == "experiences"){
       const experience = reserve.experiences.find((_,index) => index === selectedOption);
-      if(experience?.experienceDB){
-        setSelectedExperience(experience.experienceDB);
-      }
+      setSelectedExperience(experience);
     }else{
       setSelectedExperience(undefined);
     }
@@ -109,19 +105,19 @@ const ReserveCard = (props:ReserveCardProps) => {
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.paymentStatus}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.payment_status}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Check In")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(reserve.dateFrom)}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(getReserveDates(reserve.tents).dateFrom)}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Check Out")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(reserve.dateTo)}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(getReserveDates(reserve.tents).dateTo)}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.grossImport}{".00"}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
           </div>
         </div>
       <div className="col-span-2 2xl:col-span-3 row-span-6 p-4 flex flex flex-row flex-wrap border-l-2 border-slate-200">
@@ -335,16 +331,20 @@ const ReserveCard = (props:ReserveCardProps) => {
                 className="flex flex-col w-full h-[400px] mt-4">
                 <div className="h-[70%] w-full flex flex-row">
                   <div className="h-full w-[75%] flex flex-col p-4">
-                    <h2 className="text-secondary">{selectedTent.header}</h2>
-                    <h1 className="text-tertiary">{selectedTent.title}</h1>
-                    <p className="text-primary text-sm">{selectedTent.description}</p>
+                    <h2 className="text-secondary">{selectedTent.tentDB?.header}</h2>
+                    <h1 className="text-tertiary">{selectedTent.tentDB?.title}</h1>
+                    <p className="text-primary text-sm">{selectedTent.tentDB?.description}</p>
                     <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                       <p className="text-primary text-sm">Desde</p>
-                      <p className="text-gray-400 text-sm">{formatDate(reserve.dateFrom)}</p>
+                      <p className="text-gray-400 text-sm">
+                      {formatDate(selectedTent.dateFrom)}
+                      </p>
                     </div>
                     <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                       <p className="text-primary text-sm">Hasta</p>
-                      <p className="text-gray-400 text-sm">{formatDate(reserve.dateTo)}</p>
+                      <p className="text-gray-400 text-sm">
+                      {formatDate(selectedTent.dateTo)}
+                      </p>
                     </div>
                     <div className="w-full h-auto flex flex-row gap-x-6 mt-auto">
                       <p className="text-primary text-sm">Importe Total</p>
@@ -352,13 +352,13 @@ const ReserveCard = (props:ReserveCardProps) => {
                     </div>
                   </div>
                   <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
-                    <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedTent.images[0]}`} alt={selectedTent.title} className="w-full h-auto object-cover"/>
+                    <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedTent.tentDB?.images[0]}`} alt={selectedTent.name} className="w-full h-auto object-cover"/>
                   </div>
                 </div>
                 <div className="h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
                   <h3 className="text-white mb-4">Servicios</h3>
                   <div className="w-full h-auto flex flex-row flex-wrap gap-4">
-                  {Object.entries(selectedTent.services).map(([service, value]) => {
+                  {selectedTent.tentDB?.services && Object.entries(selectedTent.tentDB.services).map(([service, value]) => {
                       if (value) {
 
                         return <ServiceItem size="sm" key={service} icon={service} />;
@@ -379,25 +379,20 @@ const ReserveCard = (props:ReserveCardProps) => {
               className="flex flex-col w-full h-[400px] mt-4">
               <div className="h-[80%] w-full flex flex-row">
                 <div className="h-full w-[75%] flex flex-col p-4">
-                  <h1 className="text-tertiary">{selectedExperience.name}</h1>
-                  <p className="text-primary text-sm">{selectedExperience.description}</p>
+                  <h1 className="text-tertiary">{selectedExperience.experienceDB?.name}</h1>
+                  <p className="text-primary text-sm">{selectedExperience.experienceDB?.description}</p>
                   <div className="w-full h-auto flex flex-row">
                     <div className="w-[50%] h-full flex flex-col">
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">Dia y Hora:</p>
                         <p className="text-gray-400 text-sm">
-                          {(() => {
-                            const selectedExperienceItem = reserve?.experiences.find(i => i.idExperience === selectedExperience.id);
-                            return selectedExperienceItem?.day
-                              ? selectedExperienceItem.day.toString()
-                              : "No hay dia definido";
-                          })()}
+                          {formatDate(selectedExperience.day)}
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">Duracion:</p>
                         <p className="text-gray-400 text-sm">
-                          { `${selectedExperience.duration} min.`  }
+                          { `${selectedExperience.experienceDB?.duration} min.`  }
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
@@ -405,12 +400,12 @@ const ReserveCard = (props:ReserveCardProps) => {
 
                         <div className="w-auto h-auto flex flex-row items-start gap-x-2">
                           <User className="text-primary h-4 w-4"/>
-                          <p className="text-gray-400 text-sm">{selectedExperience.qtypeople}</p>
+                          <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.qtypeople}</p>
                         </div>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">Limite de Edad</p>
-                        <p className="text-gray-400 text-sm">{selectedExperience.limit_age} Años</p>
+                        <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age} Años</p>
                       </div>
                     </div>
                     <div className="w-[50%] h-full flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
@@ -420,27 +415,25 @@ const ReserveCard = (props:ReserveCardProps) => {
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">Cantidad</p>
-                        <p className="text-gray-400 text-sm">{ reserve.experiences.find(i => i.idExperience === selectedExperience.id)?.quantity }</p>
+                        <p className="text-gray-400 text-sm">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-auto border-t-2 border-secondary p-2">
                         <p className="text-primary text-sm">Importe Total:</p>
                           <p className="text-gray-400 text-sm">
-                            {formatPrice(
-                              (reserve?.experiences.find(i => i.idExperience === selectedExperience.id)?.quantity ?? 0) * selectedExperience.price
-                            )}
+                            {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="h-full w-[25%] flex justify-center items-center overflow-hidden p-2">
-                  <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedExperience.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
+                  <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedExperience.experienceDB?.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
                 </div>
               </div>
               <div className="h-[20%] w-full px-4 py-2 flex flex-col bg-secondary">
                 <h3 className="text-white mb-1 text-md">Recomendaciones</h3>
                 <div className="w-full h-full flex flex-row flex-wrap gap-y-2 gap-x-4">
-                  {selectedExperience.suggestions.map((suggestion, index) => (
+                  {selectedExperience.experienceDB?.suggestions.map((suggestion, index) => (
                     <p key={index} className="text-white text-xs"> * {suggestion}</p>
                   ))}
                 </div>

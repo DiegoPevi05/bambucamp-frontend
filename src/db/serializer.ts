@@ -42,6 +42,8 @@ export const serializeTent = (data:any):Tent|null => {
     services: data.services ? JSON.parse(data.services) : {},
     custom_price: transformedCustomPrice,
     status : data.status,
+    aditional_people_price: data.aditional_people_price || 0,
+    max_aditional_people:data.max_aditional_people || 0,
     createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
     updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
   };
@@ -91,25 +93,22 @@ export const serializeReserve = (data:any):Reserve|null => {
 
   reserve = {
     id: data.id,
-    qtypeople:data.title,
-    qtykids:data.qtykids,
     userId:data.userId,
-    dateFrom: data.dateFrom ? convertStrToCurrentTimezoneDate(data.dateFrom) : data.dateFrom,
-    dateTo: data.dateTo ? convertStrToCurrentTimezoneDate(data.dateTo) : data.dateTo,
     dateSale: data.dateSale ? convertStrToCurrentTimezoneDate(data.dateSale) : data.dateSale,
-    promotionId: data.promotionId || 0,
     price_is_calculated : data.price_is_calculated,
-    discountCodeId:data.discountCodeId || 0,
-    netImport: data.netImport || 0,
+    net_import: data.net_import || 0,
     discount: data.discount || 0,
-    grossImport: data.grossImport || 0,
+    gross_import: data.gross_import || 0,
     tents: data.tents,
     products: data.products,
     experiences: data.experiences,
+    promotions:data.promotions,
+    discount_code_id:data.discount_code_id || 0,
+    discount_code_name:data.discount_code_name,
     canceled_reason:data.canceled_reason,
     canceled_status:data.canceled_status,
-    paymentStatus:data.paymentStatus,
-    aditionalPeople: data.aditionalPeople || 0,
+    payment_status:data.payment_status,
+    reserve_status:data.reserve_status,
     createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
     updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
   };

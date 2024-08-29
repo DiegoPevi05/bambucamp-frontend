@@ -5,7 +5,7 @@ import { a } from '@react-spring/three';
 import { BG_BOOKING, NOTICE_BOARD } from '../assets/images';
 import { motion } from 'framer-motion';
 import { fadeIn, fadeOnly } from '../lib/motions';
-import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, UserIcon} from 'lucide-react';
+import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, User, UserIcon} from 'lucide-react';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
 import {calculatePrice, formatPrice, getDiscount} from '../lib/utils';
@@ -67,6 +67,7 @@ const Booking: React.FC = () => {
   const [tents,setTents] = useState<Tent[]>([]);
   const [selectedTent,setSelectedTent] = useState(0);
   const [loadingTent,setLoadingTents] = useState(true);
+  const [aditionalPeople,setAditionalPeople] = useState(0);
 
   const {dates, addTent, removeTent, isTentInCart, totalItems, getTotalNights } = useCart();
 
@@ -78,18 +79,29 @@ const Booking: React.FC = () => {
     setSelectedTent((prevIndex) => (prevIndex - 1 + tents.length) % tents.length);
   };
 
-  const handleToggleTent = (e:any) => {
-    const idTent = Number(e.target.value);
+  const handleToggleTent = (idTent:number, index:number) => {
     if(isTentInCart(idTent)){
-      removeTent(idTent);
+      removeTent(index);
     }else{
       const tent = tents.find(tent => tent.id === Number(idTent))
       if(tent){
 
-        addTent({idTent,  name: tent.title , price: tent.price , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:0 })
+        if(tent.max_aditional_people < aditionalPeople){
+          toast.success(t("Maximum number of aditional people for this glamping:")+tent.max_aditional_people);
+          return;
+        }
+
+        const tentPrice = calculatePrice(tent.price,tent.custom_price) * getTotalNights() + aditionalPeople * tent.aditional_people_price;
+
+        addTent({idTent,  name: tent.title , price: tentPrice , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:aditionalPeople })
+        setAditionalPeople(1);
       }
     }
   }
+
+  useEffect(()=>{
+    setAditionalPeople(0);
+  },[selectedTent])
 
   useEffect(()=>{
 
@@ -184,7 +196,7 @@ const Booking: React.FC = () => {
                           })}
                       </div>
                     </div>
-                    <div className="flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
+                    <div className="relative flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
                       {calculatePrice(tent.price,tent.custom_price) != tent.price ?
                         <>
                           <h2 className="font-primary text-white text-sm uppercase line-through">{formatPrice(calculatePrice(tent.price,tent.custom_price))}</h2>
@@ -194,12 +206,21 @@ const Booking: React.FC = () => {
                       :
                         <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
                       }
+                      <label className='absolute bottom-2 left-[10%] text-white text-[10px]'>{t("Aditional cost per person")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
                     </div>
 
                   </div>
-                  <div className='w-full h-auto items-start justify-start z-[12]'>
-                    <div className='flex flex-row justify-around mx-auto mb-12'>
-                      <InputRadio onClick={(e)=>handleToggleTent(e)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserved') : t('Add to reserve')} checked={isTentInCart(tent.id)} readOnly/>
+                  <div className='w-full h-auto flex flex-col  items-start justify-center gap-y-2 z-[12]'>
+                    <div className='w-auto h-auto flex flex-col justify-start mx-auto'>
+                      <label className='flex flex-row gap-x-2 mx-auto mb-2 text-white'><User/>{t("Aditional People")}</label>
+                      <div className='w-auto mx-auto flex flex-row items-center gap-x-4'>
+                        <input value={aditionalPeople}  className="h-12 w-12 border-2 border-secondary rounded-lg text-center disabled:bg-white" disabled/>
+                        <button onClick={()=>setAditionalPeople(prevAditionalPeople => (prevAditionalPeople - 1  >= 0 ? prevAditionalPeople - 1 : 0 ))}  className="active:scale-95 hover:bg-white hover:text-secondary duration-300 transition-all h-10 w-10 bg-secondary border-white border-2 rounded-lg text-white">-</button>
+                        <button onClick={()=>setAditionalPeople(prevAditionalPeople => prevAditionalPeople + 1)} className="active:scale-95 hover:bg-white hover:text-secondary duration-300 transition-all h-10 w-10 bg-secondary border-white border-2 rounded-lg text-white">+</button>
+                      </div>
+                    </div>
+                    <div className='flex flex-row justify-around mx-auto'>
+                      <InputRadio onClick={()=>handleToggleTent(tent.id,index)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserved') : t('Add to reserve')} checked={isTentInCart(tent.id)} readOnly/>
                     </div>
 
                     <div className="flex flex-row justify-around w-[400px] mx-auto">
@@ -210,7 +231,7 @@ const Booking: React.FC = () => {
                         <ChevronRightIcon className="h-10 w-10 group-hover:text-white"/>
                       </button>
                     </div>
-                    <div className="flex flex-row justify-center items-center w-full h-auto">
+                    <div className="flex flex-row justify-center items-center w-full h-auto gap-x-2">
                       {tents.map((_,index)=>{
                           return(
                             <span 

@@ -158,26 +158,22 @@ export function CartProvider({ children }: CartProviderProps) {
 
     // Iterate over the filtered tents and compare dateFrom and dateTo
     return filteredTents.some(tent => {
-      const tentDateFrom = tent.dateFrom;
-      const tentDateTo = tent.dateTo;
 
       // Extract day, month, and year
-      const sameDateFrom = (
-        tentDateFrom.getDate() === dates.dateFrom.getDate() &&
-        tentDateFrom.getMonth() === dates.dateFrom.getMonth() &&
-        tentDateFrom.getFullYear() === dates.dateFrom.getFullYear()
-      );
+      const greaterThanDateFrom = convertDateToMidDay(tent.dateFrom) < convertDateToMidDay(dates.dateTo);
 
-      const sameDateTo = (
-        tentDateTo.getDate() === dates.dateTo.getDate() &&
-        tentDateTo.getMonth() === dates.dateTo.getMonth() &&
-        tentDateTo.getFullYear() === dates.dateTo.getFullYear()
-      );
+      const lowerThanDateTo = convertDateToMidDay(tent.dateTo) > convertDateToMidDay(dates.dateFrom);
 
       // Return true if either dateFrom or dateTo matches
-      return sameDateFrom || sameDateTo;
+      return (greaterThanDateFrom && lowerThanDateTo);
     });
   };
+
+  const convertDateToMidDay = (date: Date): Date => {
+    const newDate = new Date(date); // Create a copy of the date
+    newDate.setUTCHours(17, 0, 0, 0); // Set the hours to 17:00:00.000 UTC
+    return newDate; // Return the updated Date object
+  }
 
   const getTotalNights = useCallback((): number => {
     const start = new Date(dates.dateFrom);
@@ -204,22 +200,38 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const getRangeDates = useCallback(() => {
-    // Initialize an array to store the date range
-    const dateRange = [];
-    // Loop through the dates from dateFrom to dateTo
-    let currentDate = new Date(dates.dateFrom);
-    while (currentDate <= dates.dateTo) {
+    // Initialize an array to store the ranges of dates
+    let dateRanges: { date: Date; label: string }[] = [];
+
+    // Loop through each tent in the cart
+    cart.tents.forEach((tent) => {
+      // Initialize the current date to tent's dateFrom
+      let currentDate = new Date(tent.dateFrom);
+
+      // Loop through the dates from dateFrom to dateTo for each tent
+      while (currentDate <= tent.dateTo) {
         const formattedDate = currentDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-        dateRange.push({
+
+        // Check if the date is already in the dateRanges array to avoid overlap
+        const dateExists = dateRanges.some((range) => range.label === formattedDate);
+
+        if (!dateExists) {
+          dateRanges.push({
             date: new Date(currentDate),
-            label: formattedDate
-        });
+            label: formattedDate,
+          });
+        }
+
         // Move to the next day
         currentDate.setDate(currentDate.getDate() + 1);
-    }
+      }
+    });
 
-    return dateRange;
-  },[dates])
+    // Sort the dateRanges array by date to ensure the dates are in chronological order
+    dateRanges = dateRanges.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    return dateRanges;
+  }, [cart.tents]);
 
   const totalItems = cart.tents.length + cart.products.length + cart.experiences.length;
 

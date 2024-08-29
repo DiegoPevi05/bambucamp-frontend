@@ -63,7 +63,7 @@ export interface Tent {
     airconditioning: boolean;
     grill: boolean;
   }
-  custom_price:CustomPrice[];
+  custom_price:number;
   aditional_people_price:number; 
   max_aditional_people:number;
   status:string;

@@ -27,9 +27,6 @@ const formatImagePaths = (images: string[]): string[] => {
 export const serializeTent = (data:any):Tent|null => {
   let tent:Tent|null = null;
 
-  const transformedCustomPrice = data.custom_price ? JSON.parse(data.custom_price).map((item:any) => ({  ...item, dateFrom: convertStrToCurrentTimezoneDate(item.dateFrom), dateTo: convertStrToCurrentTimezoneDate(item.dateTo) 
-})) : [];
-
   tent = {
     id: data.id,
     header: data.header,
@@ -40,13 +37,14 @@ export const serializeTent = (data:any):Tent|null => {
     qtykids: data.qtykids || 0,
     price: data.price || 0,
     services: data.services ? JSON.parse(data.services) : {},
-    custom_price: transformedCustomPrice,
+    custom_price: data.custom_price || 0,
     status : data.status,
     aditional_people_price: data.aditional_people_price || 0,
     max_aditional_people:data.max_aditional_people || 0,
     createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
     updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
   };
+
 
   return tent;
 }

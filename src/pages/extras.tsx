@@ -163,14 +163,14 @@ const Extras:React.FC = () => {
   const handleAddProductToCart = (idProduct:number, quantity:number) => {
     const product = products.find(product => product.id === Number(idProduct))
     if(product){
-      addProduct({idProduct,  name: product.name , price: product.price , quantity: quantity  })
+      addProduct({idProduct,  name: product.name , price: (product.price == product.custom_price ? product.price : product.custom_price ) , quantity: quantity  })
     }
   }
 
   const handleAddExperienceToCart = (idExperience:number, quantity:number, day:Date) => {
     const experience = experiences.find(experience => experience.id === Number(idExperience))
     if(experience){
-      addExperience({idExperience,  name: experience.name , price: experience.price , quantity: quantity, day: day  })
+      addExperience({idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  })
     }
   }
   

@@ -38,7 +38,8 @@ export const formatDateCorrectly = (date:Date) => {
 }
 
 export const getDiscount = (basePrice:number, discountedPrice:number) => {
-  return 100 - 100* (discountedPrice/basePrice);
+  const priceDiscounted =  100 - 100* (discountedPrice/basePrice);
+  return priceDiscounted.toFixed(2);
 }
 
 export const calculatePrice = (basePrice: number , customPrices: CustomPrice[], noCustomPrice?:boolean): number => {

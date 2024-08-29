@@ -8,7 +8,7 @@ import { fadeIn, fadeOnly } from '../lib/motions';
 import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, User, UserIcon} from 'lucide-react';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
-import {calculatePrice, formatPrice, getDiscount} from '../lib/utils';
+import { formatPrice, getDiscount} from '../lib/utils';
 import ShopNavbar from '../components/ShopNavbar';
 import {useCart} from '../contexts/CartContext';
 import Button from '../components/ui/Button';
@@ -91,13 +91,14 @@ const Booking: React.FC = () => {
           return;
         }
 
-        const tentPrice = calculatePrice(tent.price,tent.custom_price) * getTotalNights() + aditionalPeople * tent.aditional_people_price;
+        const tentPrice = ( tent.price != tent.custom_price ? tent.custom_price : tent.price ) * getTotalNights() + aditionalPeople * tent.aditional_people_price;
 
         addTent({idTent,  name: tent.title , price: tentPrice , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:aditionalPeople })
         setAditionalPeople(1);
       }
     }
   }
+
 
   useEffect(()=>{
     setAditionalPeople(0);
@@ -197,16 +198,16 @@ const Booking: React.FC = () => {
                       </div>
                     </div>
                     <div className="relative flex items-center justify-center flex-col w-[450px] h-[100px] py-4 px-12 mt-4 ">
-                      {calculatePrice(tent.price,tent.custom_price) != tent.price ?
+                      {tent.custom_price != tent.price ?
                         <>
-                          <h2 className="font-primary text-white text-sm uppercase line-through">{formatPrice(calculatePrice(tent.price,tent.custom_price))}</h2>
-                          <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
-                          <span className="text-white">{getDiscount(tent.price,calculatePrice(tent.price,tent.custom_price))}%{"off of discount only for today"}</span>
+                          <h2 className="font-primary text-white text-sm uppercase line-through">{formatPrice(tent.price)}</h2>
+                          <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.custom_price)}</h1>
+                          <span className="text-white text-xs">{getDiscount(tent.price,tent.custom_price)}%{" "}{"off of discount only for today"}</span>
                         </>
                       :
                         <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
                       }
-                      <label className='absolute bottom-2 left-[10%] text-white text-[10px]'>{t("Aditional cost per person")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
+                      <label className='absolute bottom-0 left-[10%] text-white text-[10px]'>{t("Aditional cost per person")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
                     </div>
 
                   </div>

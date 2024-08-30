@@ -8,7 +8,7 @@ import {  NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto } from 
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
-import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate, getReserveDates } from "../lib/utils";
+import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate, getReserveDates, formatDateToYYYYMMDD } from "../lib/utils";
 import ServiceItem from "../components/ServiceItem";
 import Calendar from "../components/Calendar";
 import {useAuth} from "../contexts/AuthContext";
@@ -237,8 +237,18 @@ const ReserveCard = (props:ReserveCardProps) => {
                   exit="hidden"
                   variants={fadeIn("left","",0.5,0.5)}
                   className="w-full flex flex-col gap-y-6 py-4">
+                  <div className="w-full h-auto flex flex-row justify-end items-center">
+                    <Button 
+                      className="w-auto"
+                      effect="default"
+                      size="sm" 
+                      variant="ghostLight" 
+                      rightIcon={<Plus/>}
+                    >{t("Add Product")}</Button>
+                  </div>
                   {reserve.products.length > 0 ? (
                     <>
+
                       {reserve.products.map((product, index) => (
                         <div key={"product"+index} className="flex flex-row w-full border border-2 border-gray-200 p-2 rounded-lg">
                           <div className="w-48 h-24 bg-gray-200 rounded-lg">
@@ -250,14 +260,14 @@ const ReserveCard = (props:ReserveCardProps) => {
                             <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
                           </div>
                           <div className="w-24 h-auto flex flex-col justify-center items-center">
-                            <p className="text-primary text-sm">Cantidad</p>
+                            <p className="text-primary text-sm">{t("Quantity")}</p>
                             <p className="text-primary text-sm">{product.quantity}</p>
                             <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
                           </div>
                         </div>
                       ))}
                       <div className="w-full h-auto flex flex-row justify-between  border-t-2 border-secondary mt-auto p-4">
-                        <p className="text-primary text-sm">Importe Total</p>
+                        <p className="text-primary text-sm">{t("Gross Amount")}</p>
                         <p className="text-primary text-sm">{formatPrice(reserve.products.reduce((acc,product) => acc + product.price*product?.quantity,0))}</p>
                       </div>
                     </>
@@ -265,7 +275,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   : 
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <Pizza className="h-12 w-12"/>
-                      <p className="text-secondary text-sm">No hay productos disponibles</p>
+                      <p className="text-secondary text-sm">{t("There are no products available")}</p>
                       <Button 
                         className="w-auto mt-4"
                         effect="default"
@@ -315,7 +325,14 @@ const ReserveCard = (props:ReserveCardProps) => {
                   :
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <FlameKindling className="h-12 w-12"/>
-                      <p className="text-secondary text-sm">No hay experiencias disponibles</p>
+                      <p className="text-secondary text-sm">{t("There are no experiences available")}</p>
+                      <Button 
+                        className="w-auto ml-auto"
+                        effect="default"
+                        size="sm" 
+                        variant="ghostLight" 
+                        rightIcon={<Plus/>}
+                      >{t("Add Experience")}</Button>
                     </div>
                   }
                 </motion.div>
@@ -335,19 +352,19 @@ const ReserveCard = (props:ReserveCardProps) => {
                     <h1 className="text-tertiary">{selectedTent.tentDB?.title}</h1>
                     <p className="text-primary text-xs">{selectedTent.tentDB?.description}</p>
                     <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                      <p className="text-primary text-sm">Desde</p>
+                      <p className="text-primary text-sm">{t("Check In")}</p>
                       <p className="text-gray-400 text-sm">
                       {formatDate(selectedTent.dateFrom)}
                       </p>
                     </div>
                     <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                      <p className="text-primary text-sm">Hasta</p>
+                      <p className="text-primary text-sm">{t("Check Out")}</p>
                       <p className="text-gray-400 text-sm">
                       {formatDate(selectedTent.dateTo)}
                       </p>
                     </div>
                     <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-auto">
-                      <p className="text-primary text-sm">Importe Total</p>
+                      <p className="text-primary text-sm">{t("Gross Amount")}</p>
                       <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
                     </div>
                   </div>
@@ -356,7 +373,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   </div>
                 </div>
                 <div className="h-auto lg:h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
-                  <h3 className="text-white mb-4">Servicios</h3>
+                  <h3 className="text-white mb-4">{t("Services")}</h3>
                   <div className="w-full h-auto flex flex-row flex-wrap gap-4">
                   {selectedTent.tentDB?.services && Object.entries(selectedTent.tentDB.services).map(([service, value]) => {
                       if (value) {
@@ -384,41 +401,41 @@ const ReserveCard = (props:ReserveCardProps) => {
                   <div className="w-full h-auto flex flex-col lg:flex-row">
                     <div className="w-[100%] lg:w-[50%] h-full flex flex-col">
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">Dia y Hora:</p>
+                        <p className="text-primary text-xs lg:text-sm">{t("Day")}:</p>
                         <p className="text-gray-400 text-sm">
-                          {formatDate(selectedExperience.day)}
+                          {formatDateToYYYYMMDD(selectedExperience.day)}
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">Duracion:</p>
+                        <p className="text-primary text-xs lg:text-sm">{t("Duration")}:</p>
                         <p className="text-gray-400 text-sm">
                           { `${selectedExperience.experienceDB?.duration} min.`  }
                         </p>
                       </div>
-                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">Cantidad de Personas:</p>
+                      <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">{t("Quantity of people allowed by experience")}:</p>
 
                         <div className="w-auto h-auto flex flex-col lg:flex-row items-start gap-x-2">
                           <User className="text-primary h-4 w-4"/>
                           <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.qtypeople}</p>
                         </div>
                       </div>
-                      <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">Limite de Edad</p>
-                        <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age} Años</p>
+                      <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
+                        <p className="text-primary text-xs lg:text-sm">{t("Limit of age for this experience")}:</p>
+                        <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age}{" "}{t("Years")}</p>
                       </div>
                     </div>
                     <div className="hidden w-[50%] h-full lg:flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Precio</p>
+                        <p className="text-primary text-sm">{t("Price")}</p>
                         <p className="text-gray-400 text-sm">{formatPrice(selectedExperience.price)}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">Cantidad</p>
+                        <p className="text-primary text-sm">{t("Quantity")}</p>
                         <p className="text-gray-400 text-sm">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-auto border-t-2 border-secondary p-2">
-                        <p className="text-primary text-sm">Importe Total:</p>
+                        <p className="text-primary text-sm">{t("Gross Amount")}:</p>
                           <p className="text-gray-400 text-sm">
                             {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
@@ -430,15 +447,15 @@ const ReserveCard = (props:ReserveCardProps) => {
                   <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedExperience.experienceDB?.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
                     <div className="flex w-[100%] h-full lg:hidden flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
-                        <p className="text-primary text-xs">Precio</p>
+                        <p className="text-primary text-xs">{t("Price")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{formatPrice(selectedExperience.price)}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
-                        <p className="text-primary text-xs">Cantidad</p>
+                        <p className="text-primary text-xs">{t("Quantity")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-auto border-t-2 border-secondary py-4">
-                        <p className="text-primary text-xs">Importe Total:</p>
+                        <p className="text-primary text-xs">{t("Gross Amount")}:</p>
                           <p className="text-gray-400 text-sm ml-auto">
                             {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
@@ -447,7 +464,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 </div>
               </div>
               <div className="h-[20%] w-full px-4 py-2 flex flex-col bg-secondary">
-                <h3 className="text-white mb-1 text-md">Recomendaciones</h3>
+                <h3 className="text-white mb-1 text-md">{t("Suggestions")}</h3>
                 <div className="w-full h-full flex flex-col lg:flex-row lg:flex-wrap gap-y-2 gap-x-4">
                   {selectedExperience.experienceDB?.suggestions.map((suggestion, index) => (
                     <p key={index} className="text-white text-xs"> * {suggestion}</p>
@@ -565,7 +582,7 @@ const DashboardReserves = () => {
           </div>
 
         <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>Reservas</h1>
+            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
             <p className="font-secondary text-tertiary text-md">{"Mira tus reservas aqui"}</p>
 
             <div className="w-full h-[80%] flex flex-col overflow-y-scroll">
@@ -580,7 +597,7 @@ const DashboardReserves = () => {
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-1">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>Noticias</h1>
+            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
             <p className="font-secondary text-md text-tertiary">{"Aqui estan las ultimas notificaciones"}</p>
             <div className="w-full h-[60%] flex flex-col overflow-y-scroll gap-y-4 mt-4">
                 {dataNotifications.notifications.map((notification, index) => (

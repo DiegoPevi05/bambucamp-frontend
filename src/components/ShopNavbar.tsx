@@ -88,7 +88,7 @@ const ShopNavbar = (props:ShopNavbarProps) => {
                             </div>
                             <div className="w-[40%] h-full flex flex-col justify-start items-end">
                               <button onClick={()=>removeTent(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
-                              <label className="mt-auto">{formatPrice(tentItem.nights * tentItem.price)}</label>
+                              <label className="mt-auto">{formatPrice((tentItem.price * tentItem.nights) + (tentItem.aditionalPeople * (tentItem.additionalPeoplePrice || 0)))}</label>
                             </div>
                           </div>
                         )

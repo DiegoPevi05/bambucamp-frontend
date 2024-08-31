@@ -155,6 +155,7 @@ export interface ReserveTentDto {
   dateFrom:Date;
   dateTo:Date;
   aditionalPeople:number;
+  additionalPeoplePrice?:number;
   tentDB?:Tent;
 }
 

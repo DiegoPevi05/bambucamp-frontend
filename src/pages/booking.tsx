@@ -87,18 +87,20 @@ const Booking: React.FC = () => {
       if(tent){
 
         if(tent.max_aditional_people < aditionalPeople){
-          toast.success(t("Maximum number of aditional people for this glamping:")+tent.max_aditional_people);
+          toast.success(t("Maximum number of aditional people for this glamping:")+(" ")+tent.max_aditional_people);
           return;
         }
 
-        const tentPrice = ( tent.price != tent.custom_price ? tent.custom_price : tent.price ) * getTotalNights() + aditionalPeople * tent.aditional_people_price;
+        const tentPrice = ( tent.price != tent.custom_price ? tent.custom_price : tent.price );
 
-        addTent({idTent,  name: tent.title , price: tentPrice , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:aditionalPeople })
+        addTent({idTent,  name: tent.title , price: tentPrice , nights: getTotalNights(), dateFrom: dates.dateFrom, dateTo: dates.dateTo , aditionalPeople:aditionalPeople, additionalPeoplePrice:tent.aditional_people_price })
         setAditionalPeople(1);
       }
     }
   }
 
+
+  console.log(tents)
 
   useEffect(()=>{
     setAditionalPeople(0);

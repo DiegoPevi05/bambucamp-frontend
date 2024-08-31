@@ -3,16 +3,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
-import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight  } from "lucide-react"
-import {  NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto } from "../lib/interfaces";
+import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket  } from "lucide-react"
+import {  Experience, NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
-import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate, getReserveDates, formatDateToYYYYMMDD } from "../lib/utils";
+import { getTentsNames, getProductsNames, getExperiencesNames, formatPrice, formatDate, getReserveDates, formatDateToYYYYMMDD, getRangeDatesForReserve } from "../lib/utils";
 import ServiceItem from "../components/ServiceItem";
 import Calendar from "../components/Calendar";
 import {useAuth} from "../contexts/AuthContext";
 import { getAllMyReserves, getAllMyReservesCalendar, getAllNotifications } from "../db/actions/dashboard";
+import {getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
+import ExperienceCard from "../components/ExperienceCard";
 
 
 interface NotificationCardProps {
@@ -64,13 +66,13 @@ interface ReserveCardProps {
 
 const ReserveCard = (props:ReserveCardProps) => {
   const { reserve } = props;
-  const {t} = useTranslation();
-  const [openModal,setOpenModal] = useState<boolean>(false); 
+  const {t,i18n} = useTranslation();
   const [openReserve,setOpenReserve] = useState<boolean>(false);
   const [openDetails,setOpenDetails] = useState<string>("tents");
   const [selectedOption,setSelectedOption] = useState<number>(0);
   const [selectedTent,setSelectedTent] = useState<ReserveTentDto|undefined>(undefined);
   const [selectedExperience,setSelectedExperience] = useState<ReserveExperienceDto|undefined>(undefined);
+
 
   useEffect(() => {
     if(openDetails == "tents"){
@@ -88,6 +90,36 @@ const ReserveCard = (props:ReserveCardProps) => {
     }
 
   },[openDetails,selectedOption])
+
+
+
+
+  const [stateAdd,setStateAdd] = useState<string|undefined>(undefined);
+  const [experiencesDB,setExperiencesDB] = useState<Experience[]>([]);
+  const [experiences,setExperiences] = useState<ReserveExperienceDto[]>([]);
+
+  useEffect(()=> {
+    //getProductsHandler();
+    getExperiencesHandler();
+  },[])
+
+  const getExperiencesHandler = async() => {
+      const dataExperiences = await getPublicExperiences(i18n.language);
+      if(dataExperiences != null){
+        setExperiencesDB(dataExperiences);
+      }
+  };
+
+  const handleAddExperienceToCart = (idExperience:number, quantity:number, day:Date) => {
+    const experience = experiencesDB.find(experience => experience.id === Number(idExperience))
+    if(experience){
+      setExperiences(prevExperiences => ([
+      ...prevExperiences,
+      {idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  }
+      ]
+    ));
+    }
+  }
 
 
   return (
@@ -139,30 +171,12 @@ const ReserveCard = (props:ReserveCardProps) => {
             effect="default"
             className="w-auto"
             size="sm"
-            variant="light"
-            onClick={() => setOpenModal(true)}
-            isRound={true}
-          >{t("Cancel")}</Button>
-          <Button
-            effect="default"
-            className="w-auto"
-            size="sm"
             variant="ghostLight"
             onClick={() => setOpenReserve(true)}
             isRound={true}
           >{t("View Details")} <Eye /></Button>
         </div>
       </motion.div>
-      <Modal isOpen={openModal} onClose={()=>setOpenModal(false)}>
-        <div className="w-full h-auto flex flex-col items-center justify-center text-secondary p-12">
-          <FlameKindling className="h-[120px] w-[120px] text-tertiary"/>
-          <h2 className="text-primary">{t("Are you sure you want to cancel your Reservation?")}</h2>
-          <p className="text-sm mt-6 text-primary">{t("Send us and email")}</p>
-          <a href="mailto:diego10azul@hotmail.com" className="text-xs cursor-pointer hover:underline">services@bambucamp.com.pe</a>
-          <p className="text-sm mt-6 text-primary">{t("Or put in contact with us through our channels")}</p>
-          <p className="text-xs">{"+51 399 857 857 - +51 230 456 234"}</p>
-        </div>
-      </Modal>
 
       <Modal isOpen={openReserve} onClose={()=>setOpenReserve(false)}>
         <div className="w-screen lg:w-[800px] h-auto lg:h-[600px] flex flex-col items-start justify-start text-secondary py-16 px-4 sm:p-6 overflow-hidden">
@@ -237,18 +251,18 @@ const ReserveCard = (props:ReserveCardProps) => {
                   exit="hidden"
                   variants={fadeIn("left","",0.5,0.5)}
                   className="w-full flex flex-col gap-y-6 py-4">
-                  <div className="w-full h-auto flex flex-row justify-end items-center">
-                    <Button 
-                      className="w-auto"
-                      effect="default"
-                      size="sm" 
-                      variant="ghostLight" 
-                      rightIcon={<Plus/>}
-                    >{t("Add Product")}</Button>
-                  </div>
+
                   {reserve.products.length > 0 ? (
                     <>
-
+                      <div className="w-full h-auto flex flex-row justify-end items-center">
+                        <Button 
+                          className="w-auto"
+                          effect="default"
+                          size="sm" 
+                          variant="ghostLight" 
+                          rightIcon={<Plus/>}
+                        >{t("Add Product")}</Button>
+                      </div>
                       {reserve.products.map((product, index) => (
                         <div key={"product"+index} className="flex flex-row w-full border border-2 border-gray-200 p-2 rounded-lg">
                           <div className="w-48 h-24 bg-gray-200 rounded-lg">
@@ -288,7 +302,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 </motion.div>
               )}
 
-              {openDetails === "experiences" && (
+              {openDetails === "experiences" && stateAdd != "add_experience" && (
                 <motion.div 
                   initial="hidden"
                   animate="show"
@@ -313,7 +327,9 @@ const ReserveCard = (props:ReserveCardProps) => {
                             />
                         ))
                       }
+stateAdd,setStateAdd
                       <Button 
+                        onClick={()=>setStateAdd("add_experience")}
                         className="w-auto ml-auto"
                         effect="default"
                         size="sm" 
@@ -327,7 +343,8 @@ const ReserveCard = (props:ReserveCardProps) => {
                       <FlameKindling className="h-12 w-12"/>
                       <p className="text-secondary text-sm">{t("There are no experiences available")}</p>
                       <Button 
-                        className="w-auto ml-auto"
+                        onClick={()=>setStateAdd("add_experience")}
+                        className="w-auto mt-4 mx-auto"
                         effect="default"
                         size="sm" 
                         variant="ghostLight" 
@@ -338,6 +355,72 @@ const ReserveCard = (props:ReserveCardProps) => {
                 </motion.div>
               )}
             </div>
+          {stateAdd == "add_experience" && (
+            <motion.div 
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={fadeIn("up","",0.5,0.5)}
+              className="w-full h-full flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2">
+              <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll mb-2">
+                  <span className="flex flex-row items-end gap-x-2">
+                    <ShoppingBasket className="h-5 w-5"/>
+                    <h2 className="text-lg">{t("Lista")}</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3 mt-4">
+                    {experiences.length > 0 ?
+                      experiences.map((experienceCart,index)=>{
+                      return(
+                        <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                          <div className="flex flex-col h-full w-auto">
+                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                          </div>
+                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                            <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
+                          </div>
+                        </div>
+                      )
+                    })
+                    :
+                    <>
+                      <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
+                    </>
+                  }
+                  </div>
+
+                </div>
+                <Button 
+                  onClick={()=>console.log("add_experience")}
+                  className="w-auto mt-auto ml-auto"
+                  effect="default"
+                  size="sm" 
+                  variant="ghostLight" 
+                  rightIcon={<Plus/>}
+                >{t("Request Adding Experiences")}</Button>
+              </div>
+
+              <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
+                  <span className="flex flex-row items-end gap-x-2">
+                    <FlameKindling className="h-5 w-5"/>
+                    <h2 className="text-lg">{t("Experiences")}</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll">
+                    {experiencesDB.map((experienceItem,index)=>{
+                      return(
+                        <ExperienceCard  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToCart}  rangeDates={getRangeDatesForReserve(reserve)} />
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+
+            </motion.div>
+          )}
             {selectedTent !== undefined && (
               <motion.div 
                 key={"tent_"+selectedTent.id}

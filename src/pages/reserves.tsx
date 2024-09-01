@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
-import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket  } from "lucide-react"
-import {  Experience, NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto } from "../lib/interfaces";
+import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket, X  } from "lucide-react"
+import {  Experience, NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto, createReserveExperienceDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
@@ -13,8 +13,9 @@ import ServiceItem from "../components/ServiceItem";
 import Calendar from "../components/Calendar";
 import {useAuth} from "../contexts/AuthContext";
 import { getAllMyReserves, getAllMyReservesCalendar, getAllNotifications } from "../db/actions/dashboard";
-import {getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
+import {addExperienceToReserve, getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
 import ExperienceCard from "../components/ExperienceCard";
+import { toast } from "sonner";
 
 
 interface NotificationCardProps {
@@ -66,6 +67,7 @@ interface ReserveCardProps {
 
 const ReserveCard = (props:ReserveCardProps) => {
   const { reserve } = props;
+  const {user} = useAuth();
   const {t,i18n} = useTranslation();
   const [openReserve,setOpenReserve] = useState<boolean>(false);
   const [openDetails,setOpenDetails] = useState<string>("tents");
@@ -96,12 +98,15 @@ const ReserveCard = (props:ReserveCardProps) => {
 
   const [stateAdd,setStateAdd] = useState<string|undefined>(undefined);
   const [experiencesDB,setExperiencesDB] = useState<Experience[]>([]);
-  const [experiences,setExperiences] = useState<ReserveExperienceDto[]>([]);
+  const [experiences,setExperiences] = useState<createReserveExperienceDto[]>([]);
 
   useEffect(()=> {
     //getProductsHandler();
-    getExperiencesHandler();
-  },[])
+    if(stateAdd == "add_experience"){
+      setExperiences([]);
+      getExperiencesHandler();
+    }
+  },[stateAdd])
 
   const getExperiencesHandler = async() => {
       const dataExperiences = await getPublicExperiences(i18n.language);
@@ -110,16 +115,40 @@ const ReserveCard = (props:ReserveCardProps) => {
       }
   };
 
-  const handleAddExperienceToCart = (idExperience:number, quantity:number, day:Date) => {
+  const handleAddExperienceToBasket = (idExperience:number, quantity:number, day:Date) => {
     const experience = experiencesDB.find(experience => experience.id === Number(idExperience))
     if(experience){
       setExperiences(prevExperiences => ([
       ...prevExperiences,
-      {idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  }
+      { reserveId:reserve.id, idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  }
       ]
     ));
     }
   }
+  const removeExperienceFromBasket = (indexExperience:number) => {
+    setExperiences(prevExperiences => (
+      prevExperiences.filter((_,i) => i !== indexExperience)
+    ));
+  }
+
+  const [loadingCreateExperienceInReserve,setLoadingCreateExperienceInReserve] = useState<boolean>(false);
+
+  const addExperienceToReserveHandler = async() => {
+    setLoadingCreateExperienceInReserve(true);
+    if(user == null){
+      toast.error("User must be log in to create a reservation");
+      setLoadingCreateExperienceInReserve(false);
+      return;
+    }
+    const responseReserve = await addExperienceToReserve(experiences,user.token,i18n.language);
+    if(responseReserve){
+      setLoadingCreateExperienceInReserve(false);
+      setStateAdd(undefined);
+    }
+    setLoadingCreateExperienceInReserve(false);
+  }
+
+
 
 
   return (
@@ -327,7 +356,6 @@ const ReserveCard = (props:ReserveCardProps) => {
                             />
                         ))
                       }
-stateAdd,setStateAdd
                       <Button 
                         onClick={()=>setStateAdd("add_experience")}
                         className="w-auto ml-auto"
@@ -355,75 +383,90 @@ stateAdd,setStateAdd
                 </motion.div>
               )}
             </div>
-          {stateAdd == "add_experience" && (
-            <motion.div 
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-              variants={fadeIn("up","",0.5,0.5)}
-              className="w-full h-full flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2 pb-12">
-              <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
-                <div className="w-full h-[90%] overflow-hidden p-none m-none">
-                  <div className="w-full h-full flex flex-col justify-start items-start mb-2">
-                    <span className="flex flex-row items-end gap-x-2">
-                      <ShoppingBasket className="h-5 w-5"/>
-                      <h2 className="text-lg">{t("Lista")}</h2>
-                    </span>
-                    <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
-                      {experiences.length > 0 ?
-                        experiences.map((experienceCart,index)=>{
-                        return(
-                          <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
-                            <div className="flex flex-col h-full w-auto">
-                              <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
-                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
-                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
-                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+          {stateAdd == "add_experience" && openDetails === "experiences" && (
+            <>
+              <div className="w-full h-[10%] flex flex-row justify-end items-center mt-2">
+                <Button 
+                  onClick={()=>setStateAdd(undefined)}
+                  className="w-auto"
+                  effect="default"
+                  size="sm" 
+                  variant="ghostLight" 
+                  rightIcon={<FlameKindling/>}
+                >{t("My Experiences")}</Button>
+              </div>
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("up","",0.5,0.5)}
+                className="w-full h-[90%] flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2 pb-12">
+                <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                  <div className="w-full h-[90%] overflow-hidden p-none m-none">
+                    <div className="w-full h-full flex flex-col justify-start items-start mb-2">
+                      <span className="flex flex-row items-end gap-x-2">
+                        <ShoppingBasket className="h-5 w-5"/>
+                        <h2 className="text-lg">{t("Lista")}</h2>
+                      </span>
+                      <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
+                        {experiences.length > 0 ?
+                          experiences.map((experienceCart,index)=>{
+                          return(
+                            <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                              <div className="flex flex-col h-full w-auto">
+                                <span className="text-sm mt-auto text-tertiary">{experienceCart.name}</span>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                              </div>
+                              <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                                <span onClick={()=>removeExperienceFromBasket(index)} className="h-5 w-5 mb-auto active:scale-95 hover:scale-110 duration-300 transition-all cursor-pointer hover:text-tertiary"><X className="w-full h-full"/></span>
+                                <span className="mt-auto">{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
+                              </div>
                             </div>
-                            <div className="flex flex-col items-end h-full w-[20%] ml-auto">
-                              <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
-                            </div>
-                          </div>
-                        )
-                      })
-                      :
-                      <>
-                        <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
-                      </>
-                    }
+                          )
+                        })
+                        :
+                        <>
+                          <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
+                        </>
+                      }
+                      </div>
+
                     </div>
-
+                  </div>
+                  <div className="w-full h-[10%] flex justify-end">
+                    <Button 
+                      onClick={()=>addExperienceToReserveHandler()}
+                      isLoading={loadingCreateExperienceInReserve}
+                      className="w-auto mt-auto ml-auto"
+                      effect="default"
+                      size="sm" 
+                      variant="ghostLight" 
+                      rightIcon={<Plus/>}
+                    >{t("Request Adding Experiences")}</Button>
                   </div>
                 </div>
-                <div className="w-full h-[10%] flex justify-end">
-                  <Button 
-                    onClick={()=>console.log("add_experience")}
-                    className="w-auto mt-auto ml-auto"
-                    effect="default"
-                    size="sm" 
-                    variant="ghostLight" 
-                    rightIcon={<Plus/>}
-                  >{t("Request Adding Experiences")}</Button>
-                </div>
-              </div>
 
-              <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
-                <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
-                  <span className="flex flex-row items-end gap-x-2 mb-4">
-                    <FlameKindling className="h-5 w-5"/>
-                    <h2 className="text-lg">{t("Experiences")}</h2>
-                  </span>
-                  <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll">
-                    {experiencesDB.map((experienceItem,index)=>{
-                      return(
-                        <ExperienceCard variant="line"  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToCart}  rangeDates={getRangeDatesForReserve(reserve)} />
-                      )
-                    })}
+                <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                  <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
+                    <span className="flex flex-row items-end gap-x-2 mb-4">
+                      <FlameKindling className="h-5 w-5"/>
+                      <h2 className="text-lg">{t("Experiences")}</h2>
+                    </span>
+                    <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll pr-2">
+                      {experiencesDB.map((experienceItem,index)=>{
+                        return(
+                          <ExperienceCard variant="line"  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToBasket}  rangeDates={getRangeDatesForReserve(reserve)} />
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-            </motion.div>
+              </motion.div>
+            </>
+
           )}
             {selectedTent !== undefined && (
               <motion.div 

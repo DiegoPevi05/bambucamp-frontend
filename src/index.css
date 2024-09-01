@@ -42,6 +42,28 @@
   display: none;
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+  /* Width of the scrollbar */
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  /* Color of the scrollbar handle */
+  border-radius: 8px;
+  /* Rounded corners */
+  border: 2px solid var(--primary-color);
+  /* Space around the handle */
+}
+
+/* Style the scrollbar on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color-dark);
+  border: 2px solid var(--primary-color-dark);
+  /* Darker color on hover */
+}
+
 @keyframes slide {
   0% {
     transform: translateX(0);
@@ -272,7 +294,7 @@
 }
 
 
-.input-primary input:checked + span {
+.input-primary input:checked+span {
   color: var(--primary-color);
   background-color: var(--white-color);
   transition: background-color 0.3s ease;
@@ -301,7 +323,7 @@
 }
 
 
-.input-dark input:checked + span {
+.input-dark input:checked+span {
   color: var(--primary-color-dark);
   background-color: var(--white-color);
   transition: background-color 0.3s ease;
@@ -330,7 +352,7 @@
 }
 
 
-.input-light input:checked + span {
+.input-light input:checked+span {
   color: var(--primary-color-light);
   background-color: var(--white-color);
   transition: background-color 0.3s ease;

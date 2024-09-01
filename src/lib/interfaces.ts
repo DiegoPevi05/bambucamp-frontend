@@ -178,6 +178,10 @@ export interface ReserveExperienceDto {
   experienceDB?:Experience;
 }
 
+export interface createReserveExperienceDto extends ReserveExperienceDto {
+  reserveId:number;
+}
+
 export interface ReservePromotionDto {
   id?:number;
   idPromotion:number;

@@ -129,8 +129,8 @@ const ReserveCard = (props:ReserveCardProps) => {
       whileInView="show"
       viewport={{once: true}}
       variants={fadeIn("up","",0,0.5)}
-      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto  gap-x-4 mt-4 grid grid-cols-6 grid-rows-7">
-      <div className="col-span-4 2xl:col-span-3 row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
+      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto  gap-x-4 mt-4 flex flex-col sm:grid sm:grid-cols-6 sm:grid-rows-7">
+      <div className="sm:col-span-4 2xl:col-span-3 sm:row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("Identificator")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.id}</p>
@@ -152,7 +152,7 @@ const ReserveCard = (props:ReserveCardProps) => {
             <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
           </div>
         </div>
-      <div className="col-span-2 2xl:col-span-3 row-span-6 p-4 flex flex flex-row flex-wrap border-l-2 border-slate-200">
+      <div className="sm:col-span-2 2xl:col-span-3 sm:row-span-6 p-4 flex flex flex-row flex-wrap sm:border-l-2 sm:border-slate-200">
           <div className="w-full h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><TentIcon className="h-5 w-5"/>{t("Tents")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{getTentsNames(reserve)}</p>
@@ -361,58 +361,62 @@ stateAdd,setStateAdd
               animate="show"
               exit="hidden"
               variants={fadeIn("up","",0.5,0.5)}
-              className="w-full h-full flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2">
+              className="w-full h-full flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2 pb-12">
               <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
-                <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll mb-2">
-                  <span className="flex flex-row items-end gap-x-2">
-                    <ShoppingBasket className="h-5 w-5"/>
-                    <h2 className="text-lg">{t("Lista")}</h2>
-                  </span>
-                  <div className="w-full h-auto flex flex-col gap-y-3 mt-4">
-                    {experiences.length > 0 ?
-                      experiences.map((experienceCart,index)=>{
-                      return(
-                        <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
-                          <div className="flex flex-col h-full w-auto">
-                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
-                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
-                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
-                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                <div className="w-full h-[90%] overflow-hidden p-none m-none">
+                  <div className="w-full h-full flex flex-col justify-start items-start mb-2">
+                    <span className="flex flex-row items-end gap-x-2">
+                      <ShoppingBasket className="h-5 w-5"/>
+                      <h2 className="text-lg">{t("Lista")}</h2>
+                    </span>
+                    <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
+                      {experiences.length > 0 ?
+                        experiences.map((experienceCart,index)=>{
+                        return(
+                          <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                            <div className="flex flex-col h-full w-auto">
+                              <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{experienceCart.name}</span>
+                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                              <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                            </div>
+                            <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                              <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
+                            </div>
                           </div>
-                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
-                            <span>{formatPrice(experienceCart.quantity*experienceCart.price)}</span>
-                          </div>
-                        </div>
-                      )
-                    })
-                    :
-                    <>
-                      <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
-                    </>
-                  }
-                  </div>
+                        )
+                      })
+                      :
+                      <>
+                        <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
+                      </>
+                    }
+                    </div>
 
+                  </div>
                 </div>
-                <Button 
-                  onClick={()=>console.log("add_experience")}
-                  className="w-auto mt-auto ml-auto"
-                  effect="default"
-                  size="sm" 
-                  variant="ghostLight" 
-                  rightIcon={<Plus/>}
-                >{t("Request Adding Experiences")}</Button>
+                <div className="w-full h-[10%] flex justify-end">
+                  <Button 
+                    onClick={()=>console.log("add_experience")}
+                    className="w-auto mt-auto ml-auto"
+                    effect="default"
+                    size="sm" 
+                    variant="ghostLight" 
+                    rightIcon={<Plus/>}
+                  >{t("Request Adding Experiences")}</Button>
+                </div>
               </div>
 
               <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
                 <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
-                  <span className="flex flex-row items-end gap-x-2">
+                  <span className="flex flex-row items-end gap-x-2 mb-4">
                     <FlameKindling className="h-5 w-5"/>
                     <h2 className="text-lg">{t("Experiences")}</h2>
                   </span>
                   <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll">
                     {experiencesDB.map((experienceItem,index)=>{
                       return(
-                        <ExperienceCard  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToCart}  rangeDates={getRangeDatesForReserve(reserve)} />
+                        <ExperienceCard variant="line"  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToCart}  rangeDates={getRangeDatesForReserve(reserve)} />
                       )
                     })}
                   </div>
@@ -635,14 +639,14 @@ const DashboardReserves = () => {
         animate="show"
         exit="hidden"
         variants={fadeIn("up","",0,0.5)}
-        className="bg-white row-span-7 grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 gap-4">
-          <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-2">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
-            <p className="font-secondary text-md text-tertiary">{t("View your reserves through months")}</p>
-            <div className="w-full h-auto flex flex-row gap-x-2 my-2">
-              <span className="h-6 w-6 bg-tertiary rounded-md"></span>
+        className="bg-white flex flex-col justify-start items-start sm:row-span-7 sm:grid sm:grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 gap-4">
+        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto flex flex-col sm:col-span-1 sm:row-span-2">
+            <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
+            <p className="font-secondary text-sm sm:text-md text-tertiary">{t("View your reserves through months")}</p>
+            <div className="w-full h-auto flex flex-row gap-x-2 my-4 sm:my-2">
+              <span className="h-4 sm:h-6 w-4 sm:w-6 bg-tertiary rounded-md"></span>
               <p className="font-primary text-tertiary text-sm">{t("Reserves")}</p>
-              <span className="h-6 w-6 bg-white rounded-md border-2 border-slate-400"></span>
+              <span className="h-4 sm:h-6 w-4 sm:w-6 bg-white rounded-md border-2 border-slate-400"></span>
               <p className="font-primary text-slate-400 text-sm">{t("Today")}</p>
             </div>
             <AnimatePresence>
@@ -653,9 +657,9 @@ const DashboardReserves = () => {
                 variants={fadeOnly("",0,0.5)}
                 className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
                   <div className="flex flex-row justify-between items-center mb-4 px-4">
-                    <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
-                    <h1 className="text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-                    <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
+                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
+                    <h1 className="text-sm sm:text-md text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
+                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
                   </div>
                   <div className="grid grid-cols-7 gap-2 p-2">
                     {calendarDays}
@@ -664,9 +668,9 @@ const DashboardReserves = () => {
             </AnimatePresence>
           </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
-            <p className="font-secondary text-tertiary text-md">{"Mira tus reservas aqui"}</p>
+        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] sm:min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
+          <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
+          <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
 
             <div className="w-full h-[80%] flex flex-col overflow-y-scroll">
               {datasetReserves.reserves.map((reserve, index) => (
@@ -679,10 +683,10 @@ const DashboardReserves = () => {
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-1 row-span-1">
+        <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 max-sm:min-h-[400px] sm:col-span-1 sm:row-span-1 overflow-hidden">
             <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
             <p className="font-secondary text-md text-tertiary">{"Aqui estan las ultimas notificaciones"}</p>
-            <div className="w-full h-[60%] flex flex-col overflow-y-scroll gap-y-4 mt-4">
+            <div className="w-full h-full sm:h-[60%] flex flex-col overflow-y-scroll gap-y-4 mt-4">
                 {dataNotifications.notifications.map((notification, index) => (
                   <NotificationCard key={index} notification={notification}/>
                 ))}

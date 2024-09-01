@@ -100,7 +100,6 @@ const Booking: React.FC = () => {
   }
 
 
-  console.log(tents)
 
   useEffect(()=>{
     setAditionalPeople(0);

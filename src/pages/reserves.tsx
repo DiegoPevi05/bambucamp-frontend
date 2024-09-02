@@ -120,7 +120,7 @@ const ReserveCard = (props:ReserveCardProps) => {
     if(experience){
       setExperiences(prevExperiences => ([
       ...prevExperiences,
-      { reserveId:reserve.id, idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  }
+      { reserveId:reserve.id, idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day, confirmed:false  }
       ]
     ));
     }
@@ -148,9 +148,6 @@ const ReserveCard = (props:ReserveCardProps) => {
     setLoadingCreateExperienceInReserve(false);
   }
 
-
-
-
   return (
     <>
     <motion.div 
@@ -162,7 +159,15 @@ const ReserveCard = (props:ReserveCardProps) => {
       <div className="sm:col-span-4 2xl:col-span-3 sm:row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("Identificator")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.id}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.external_id}</p>
+          </div>
+          <div className="w-[50%] h-auto flex flex-col">
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status}</p>
+          </div>
+          <div className="w-[50%] h-auto flex flex-col">
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
+            <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
@@ -175,10 +180,6 @@ const ReserveCard = (props:ReserveCardProps) => {
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Check Out")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(getReserveDates(reserve.tents).dateTo)}</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
           </div>
         </div>
       <div className="sm:col-span-2 2xl:col-span-3 sm:row-span-6 p-4 flex flex flex-row flex-wrap sm:border-l-2 sm:border-slate-200">
@@ -337,33 +338,40 @@ const ReserveCard = (props:ReserveCardProps) => {
                   animate="show"
                   exit="hidden"
                   variants={fadeIn("left","",0.5,0.5)}
-                  className="w-full flex flex-row gap-x-6 py-4 items-center justify-start">
+                  className="w-full flex flex-col-reverse sm:flex-row py-4 items-start max-sm:gap-y-4 sm:items-center justify-start">
                   {
                   reserve.experiences.length > 0 ? (
                     <>
-                      {
-                        reserve.experiences.map((experience, index) => (
-                            <InputRadio 
-                              key={"tent_option"+index} 
-                              variant="light" 
-                              value={experience?.experienceDB?.id} 
-                              name="experience" 
-                              placeholder={experience?.experienceDB?.name} 
-                              rightIcon={<FlameKindling/>} 
-                              onClick={()=>setSelectedOption(index)}
-                              checked={selectedOption === index}
-                              readOnly
-                            />
-                        ))
-                      }
-                      <Button 
-                        onClick={()=>setStateAdd("add_experience")}
-                        className="w-auto ml-auto"
-                        effect="default"
-                        size="sm" 
-                        variant="ghostLight" 
-                        rightIcon={<Plus/>}
-                      >{t("Add Experience")}</Button>
+                      <div className="w-full sm:w-[60%] flex flex-row justify-start items-start overflow-hidden">
+                        <div className="h-auto flex flex-row justify-start items-start gap-x-4 overflow-x-scroll w-full pb-2">
+                          {
+                            reserve.experiences.map((experience, index) => (
+                                <InputRadio 
+                                  key={"tent_option"+index} 
+                                  variant="light" 
+                                  value={experience?.experienceDB?.id} 
+                                  name="experience" 
+                                  placeholder={experience?.experienceDB?.name} 
+                                  rightIcon={<FlameKindling/>} 
+                                  onClick={()=>setSelectedOption(index)}
+                                  checked={selectedOption === index}
+                                  readOnly
+                                  className="flex-shrink-0"
+                                />
+                            ))
+                          }
+                        </div>
+                      </div>
+                      <div className="w-full sm:w-[40%] flex flex-row justify-end h-auto">
+                        <Button 
+                          onClick={()=>setStateAdd("add_experience")}
+                          className="w-auto"
+                          effect="default"
+                          size="sm" 
+                          variant="ghostLight" 
+                          rightIcon={<Plus/>}
+                        >{t("Add Experience")}</Button>
+                      </div>
                     </>
                   )
                   :
@@ -525,25 +533,34 @@ const ReserveCard = (props:ReserveCardProps) => {
               variants={fadeIn("","up",0.5,1)}
               className="flex flex-col w-full h-auto lg:h-[400px] mt-4">
               <div className="h-[80%] w-full flex flex-row">
-                <div className="h-full w-[50%] lg:w-[75%] flex flex-col p-4">
+                <div className="h-full w-[50%] lg:w-[75%] flex flex-col pb-4 px-4">
+                  {!selectedExperience.confirmed && (
+                    <span className="text-[10px] bg-red-100 text-red-400 w-full sm:w-[50%] rounded-lg px-4 py-1 mb-2 flex flex-row gap-x-2">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-300"></span>
+                      </span>
+                      {t("Experience pending confirmation")}
+                    </span>
+                  )}
                   <h1 className="text-tertiary">{selectedExperience.experienceDB?.name}</h1>
-                  <p className="text-primary text-xs">{selectedExperience.experienceDB?.description}</p>
-                  <div className="w-full h-auto flex flex-col lg:flex-row">
+                  <p className="hidden sm:block text-primary text-xs">{selectedExperience.experienceDB?.description}</p>
+                  <div className="w-full h-auto flex flex-col lg:flex-row mt-2">
                     <div className="w-[100%] lg:w-[50%] h-full flex flex-col">
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">{t("Day")}:</p>
+                        <p className="text-primary text-xs">{t("Day")}:</p>
                         <p className="text-gray-400 text-sm">
                           {formatDateToYYYYMMDD(selectedExperience.day)}
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">{t("Duration")}:</p>
+                        <p className="text-primary text-xs">{t("Duration")}:</p>
                         <p className="text-gray-400 text-sm">
                           { `${selectedExperience.experienceDB?.duration} min.`  }
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">{t("Quantity of people allowed by experience")}:</p>
+                        <p className="text-primary text-xs">{t("Quantity of people allowed by experience")}:</p>
 
                         <div className="w-auto h-auto flex flex-col lg:flex-row items-start gap-x-2">
                           <User className="text-primary h-4 w-4"/>
@@ -551,22 +568,22 @@ const ReserveCard = (props:ReserveCardProps) => {
                         </div>
                       </div>
                       <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
-                        <p className="text-primary text-xs lg:text-sm">{t("Limit of age for this experience")}:</p>
+                        <p className="text-primary text-xs">{t("Limit of age for this experience")}:</p>
                         <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age}{" "}{t("Years")}</p>
                       </div>
                     </div>
-                    <div className="hidden w-[50%] h-full lg:flex flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
+                    <div className="hidden w-[50%] h-full lg:flex flex-col border border-2 border-gray-200 rounded-lg px-4 m-2">
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">{t("Price")}</p>
-                        <p className="text-gray-400 text-sm">{formatPrice(selectedExperience.price)}</p>
+                        <p className="text-gray-400 text-sm ml-auto">{formatPrice(selectedExperience.price)}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
                         <p className="text-primary text-sm">{t("Quantity")}</p>
-                        <p className="text-gray-400 text-sm">{ selectedExperience.quantity }</p>
+                        <p className="text-gray-400 text-sm ml-auto">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-auto border-t-2 border-secondary p-2">
                         <p className="text-primary text-sm">{t("Gross Amount")}:</p>
-                          <p className="text-gray-400 text-sm">
+                          <p className="text-gray-400 text-sm ml-auto">
                             {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
                       </div>
@@ -711,11 +728,11 @@ const DashboardReserves = () => {
             </AnimatePresence>
           </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] sm:min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
+        <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] sm:min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
           <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
           <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
 
-            <div className="w-full h-[80%] flex flex-col overflow-y-scroll">
+          <div className="w-full h-[80%] flex flex-col overflow-y-scroll pr-2 sm:pr-4">
               {datasetReserves.reserves.map((reserve, index) => (
                 <ReserveCard key={index} reserve={reserve}/>
               ))}

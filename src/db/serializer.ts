@@ -1,4 +1,3 @@
-import {productsData} from "../lib/constant";
 import { User, Tent, Product, Experience, NotificationDto, Reserve, ReserveTentDto, ReserveProductDto, ReserveExperienceDto, ReservePromotionDto  } from "../lib/interfaces"
 import { convertStrToCurrentTimezoneDate } from "../lib/utils";
 
@@ -101,6 +100,7 @@ const serializeReserveTent = (data:any):ReserveTentDto => {
     nights:data.nights || 0,
     dateFrom:new Date(data.dateFrom),
     dateTo:new Date(data.dateTo),
+    confirmed:data.confirmed,
     aditionalPeople:data.aditionalPeople || 0,
     tentDB: tent_db_parsed != null ?  tent_db_parsed : undefined
   }
@@ -119,6 +119,7 @@ const serializeReserveProduct = (data:any):ReserveProductDto => {
     name:data.name,
     price:data.price || 0,
     quantity:data.quantity || 0,
+    confirmed:data.confirmed,
     productDB: product_db_parsed != null ?  product_db_parsed : undefined
   }
   return reserveProduct;
@@ -137,6 +138,7 @@ const serializeReserveExperience = (data:any):ReserveExperienceDto => {
     price:data.price || 0,
     day: new Date( data.day ),
     quantity:data.quantity || 0,
+    confirmed:data.confirmed,
     experienceDB: experience_db_parsed != null ?  experience_db_parsed : undefined
   }
 
@@ -155,6 +157,7 @@ const serializeReservePromotion = (data:any):ReservePromotionDto => {
     name:data.name,
     price:data.price || 0,
     quantity:data.quantity || 0,
+    confirmed:data.confirmed,
     //promotionDB: experience_db_parsed != null ?  experience_db_parsed : undefined
   }
 
@@ -166,6 +169,7 @@ export const serializeReserve = (data:any):Reserve|null => {
 
   reserve = {
     id: data.id,
+    external_id:data.external_id,
     userId:data.userId,
     dateSale: data.dateSale ? convertStrToCurrentTimezoneDate(data.dateSale) : data.dateSale,
     price_is_calculated : data.price_is_calculated,

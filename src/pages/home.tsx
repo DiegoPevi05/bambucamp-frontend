@@ -10,7 +10,7 @@ import SearchDatesBar from "../components/SearchBar"
 import VerticalCarousel from "../components/VerticalCarousel"
 import Reviews from "../components/Reviews"
 import Footer from "../components/Footer"
-import { ZodError, z } from 'zod';
+import { ZodError } from 'zod';
 import Button from "../components/ui/Button"
 import { formHomeSchema } from "../db/schemas.ts"
 import PromotionCard from "../components/CardPromotion"

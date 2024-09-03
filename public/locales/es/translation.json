@@ -171,5 +171,14 @@
 	"Price": "Precio",
 	"Suggestions": "Sugerencias",
 	"Add Experience": "Agregar Experiencia",
-	"Add Product": "Agregar Productos"
+	"Add Product": "Agregar Productos",
+	"NOT_CONFIRMED": "No confirmado",
+	"CONFIRMED": "Confirmado",
+	"COMPLETE": "Completado",
+	"PAID": "Pagado",
+	"UNPAID": "Sin pagar",
+	"Experience pending confirmation": "Experiencia pendiente confirmacion",
+	"My Experiences": "Mis experiencias",
+	"List": "Lista",
+	"Request Adding Experiences": "Solicitar agregar experiencias "
 }

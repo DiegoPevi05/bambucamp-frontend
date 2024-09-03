@@ -170,6 +170,10 @@ export interface ReserveProductDto {
   productDB?:Product;
 }
 
+export interface createReserveProductDto extends ReserveProductDto {
+  reserveId:number;
+}
+
 export interface ReserveExperienceDto {
   id?:number;
   idExperience:number;

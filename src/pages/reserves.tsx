@@ -4,7 +4,7 @@ import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
 import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket, X  } from "lucide-react"
-import {  Experience, NotificationDto, Reserve, ReserveExperienceDto, ReserveTentDto, createReserveExperienceDto } from "../lib/interfaces";
+import {  Experience, NotificationDto, Product, Reserve, ReserveExperienceDto, ReserveTentDto, createReserveExperienceDto, createReserveProductDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
 import { InputRadio } from "../components/ui/Input";
@@ -13,9 +13,10 @@ import ServiceItem from "../components/ServiceItem";
 import Calendar from "../components/Calendar";
 import {useAuth} from "../contexts/AuthContext";
 import { getAllMyReserves, getAllMyReservesCalendar, getAllNotifications } from "../db/actions/dashboard";
-import {addExperienceToReserve, getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
+import {addExperienceToReserve, addProductToReserve, getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
 import ExperienceCard from "../components/ExperienceCard";
 import { toast } from "sonner";
+import ProductCard from "../components/ProductCard";
 
 
 interface NotificationCardProps {
@@ -74,6 +75,7 @@ const ReserveCard = (props:ReserveCardProps) => {
   const [selectedOption,setSelectedOption] = useState<number>(0);
   const [selectedTent,setSelectedTent] = useState<ReserveTentDto|undefined>(undefined);
   const [selectedExperience,setSelectedExperience] = useState<ReserveExperienceDto|undefined>(undefined);
+  const [stateAdd,setStateAdd] = useState<string|undefined>(undefined);
 
 
   useEffect(() => {
@@ -94,17 +96,21 @@ const ReserveCard = (props:ReserveCardProps) => {
   },[openDetails,selectedOption])
 
 
-
-
-  const [stateAdd,setStateAdd] = useState<string|undefined>(undefined);
   const [experiencesDB,setExperiencesDB] = useState<Experience[]>([]);
   const [experiences,setExperiences] = useState<createReserveExperienceDto[]>([]);
 
+  const [productsDB,setProductsDB] = useState<Product[]>([]);
+  const [products,setProducts] = useState<createReserveProductDto[]>([]);
+
   useEffect(()=> {
-    //getProductsHandler();
     if(stateAdd == "add_experience"){
       setExperiences([]);
       getExperiencesHandler();
+    }
+
+    if(stateAdd == "add_product"){
+      setProducts([]);
+      getProductsHandler();
     }
   },[stateAdd])
 
@@ -112,6 +118,13 @@ const ReserveCard = (props:ReserveCardProps) => {
       const dataExperiences = await getPublicExperiences(i18n.language);
       if(dataExperiences != null){
         setExperiencesDB(dataExperiences);
+      }
+  };
+
+  const getProductsHandler = async() => {
+      const dataProducts = await getPublicProducts(i18n.language);
+      if(dataProducts != null){
+        setProductsDB(dataProducts);
       }
   };
 
@@ -131,7 +144,24 @@ const ReserveCard = (props:ReserveCardProps) => {
     ));
   }
 
+  const handleAddProductToBasket = (idProduct:number, quantity:number) => {
+    const product = productsDB.find(product => product.id === Number(idProduct))
+    if(product){
+      setProducts(prevProduct => ([
+      ...prevProduct,
+      { reserveId:reserve.id, idProduct,  name: product.name , price: (product.price == product.custom_price ? product.price : product.custom_price ) , quantity: quantity, confirmed:false  }
+      ]
+    ));
+    }
+  }
+  const removeProductFromBasket = (indexProduct:number) => {
+    setProducts(prevProducts => (
+      prevProducts.filter((_,i) => i !== indexProduct)
+    ));
+  }
+
   const [loadingCreateExperienceInReserve,setLoadingCreateExperienceInReserve] = useState<boolean>(false);
+
 
   const addExperienceToReserveHandler = async() => {
     setLoadingCreateExperienceInReserve(true);
@@ -146,6 +176,23 @@ const ReserveCard = (props:ReserveCardProps) => {
       setStateAdd(undefined);
     }
     setLoadingCreateExperienceInReserve(false);
+  }
+
+  const [loadingCreateProductInReserve,setLoadingCreateProductInReserve] = useState<boolean>(false);
+
+  const addProductToReserveHandler = async() => {
+    setLoadingCreateProductInReserve(true);
+    if(user == null){
+      toast.error("User must be log in to create a reservation");
+      setLoadingCreateProductInReserve(false);
+      return;
+    }
+    const responseReserve = await addProductToReserve(products,user.token,i18n.language);
+    if(responseReserve){
+      setLoadingCreateProductInReserve(false);
+      setStateAdd(undefined);
+    }
+    setLoadingCreateProductInReserve(false);
   }
 
   return (
@@ -163,7 +210,7 @@ const ReserveCard = (props:ReserveCardProps) => {
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status != "NOT_CONFIRMED" ? ( reserve.reserve_status == "CONFIRMED" ? (t("CONFIRMED")) : (t("COMPLETE")) ) : (t("NOT_CONFIRMED")) }</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
@@ -171,7 +218,7 @@ const ReserveCard = (props:ReserveCardProps) => {
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.payment_status}</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.payment_status == "PAID" ? (t("PAID")) : (t("UNPAID"))}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Check In")}{":"}</h2>
@@ -221,7 +268,7 @@ const ReserveCard = (props:ReserveCardProps) => {
               />
               <InputRadio  
                 className="w-auto" 
-                onClick={()=>{setOpenDetails("products"); setSelectedOption(0)}} 
+                onClick={()=>{setOpenDetails("products"); setSelectedOption(0);setStateAdd(undefined)}} 
                 name="category" 
                 placeholder={t("Products")} 
                 rightIcon={<Pizza/>}
@@ -229,7 +276,7 @@ const ReserveCard = (props:ReserveCardProps) => {
               />
               <InputRadio  
                 className="w-auto" 
-                onClick={()=>{setOpenDetails("experiences"); setSelectedOption(0)}} 
+                onClick={()=>{setOpenDetails("experiences"); setSelectedOption(0);setStateAdd(undefined)}} 
                 name="category" 
                 placeholder={t("Experiences")} 
                 rightIcon={<FlameKindling/>}
@@ -274,7 +321,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   </motion.div>
               )}
 
-              {openDetails === "products" && (
+              {openDetails === "products" && stateAdd != "add_product" && (
                 <motion.div 
                   initial="hidden"
                   animate="show"
@@ -286,6 +333,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                     <>
                       <div className="w-full h-auto flex flex-row justify-end items-center">
                         <Button 
+                          onClick={()=>setStateAdd("add_product")}
                           className="w-auto"
                           effect="default"
                           size="sm" 
@@ -321,6 +369,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                       <Pizza className="h-12 w-12"/>
                       <p className="text-secondary text-sm">{t("There are no products available")}</p>
                       <Button 
+                        onClick={()=>setStateAdd("add_product")}
                         className="w-auto mt-4"
                         effect="default"
                         size="sm" 
@@ -364,7 +413,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                       </div>
                       <div className="w-full sm:w-[40%] flex flex-row justify-end h-auto">
                         <Button 
-                          onClick={()=>setStateAdd("add_experience")}
+                          onClick={()=>(setStateAdd("add_experience"),setSelectedExperience(undefined))}
                           className="w-auto"
                           effect="default"
                           size="sm" 
@@ -379,7 +428,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                       <FlameKindling className="h-12 w-12"/>
                       <p className="text-secondary text-sm">{t("There are no experiences available")}</p>
                       <Button 
-                        onClick={()=>setStateAdd("add_experience")}
+                        onClick={()=>(setStateAdd("add_experience"),setSelectedExperience(undefined))}
                         className="w-auto mt-4 mx-auto"
                         effect="default"
                         size="sm" 
@@ -414,7 +463,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                     <div className="w-full h-full flex flex-col justify-start items-start mb-2">
                       <span className="flex flex-row items-end gap-x-2">
                         <ShoppingBasket className="h-5 w-5"/>
-                        <h2 className="text-lg">{t("Lista")}</h2>
+                        <h2 className="text-lg">{t("List")}</h2>
                       </span>
                       <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
                         {experiences.length > 0 ?
@@ -466,6 +515,91 @@ const ReserveCard = (props:ReserveCardProps) => {
                       {experiencesDB.map((experienceItem,index)=>{
                         return(
                           <ExperienceCard variant="line"  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToBasket}  rangeDates={getRangeDatesForReserve(reserve)} />
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+              </motion.div>
+            </>
+
+          )}
+
+          {stateAdd == "add_product" && openDetails === "products" && (
+            <>
+              <div className="w-full h-[10%] flex flex-row justify-end items-center mt-2">
+                <Button 
+                  onClick={()=>setStateAdd(undefined)}
+                  className="w-auto"
+                  effect="default"
+                  size="sm" 
+                  variant="ghostLight" 
+                  rightIcon={<Pizza/>}
+                >{t("My Products")}</Button>
+              </div>
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={fadeIn("up","",0.5,0.5)}
+                className="w-full h-[90%] flex flex-col lg:flex-row py-4 gap-y-4 lg:gap-x-2 pb-12">
+                <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                  <div className="w-full h-[90%] overflow-hidden p-none m-none">
+                    <div className="w-full h-full flex flex-col justify-start items-start mb-2">
+                      <span className="flex flex-row items-end gap-x-2">
+                        <ShoppingBasket className="h-5 w-5"/>
+                        <h2 className="text-lg">{t("List")}</h2>
+                      </span>
+                      <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
+                        {products.length > 0 ?
+                          products.map((productCart,index)=>{
+                          return(
+                            <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                              <div className="flex flex-col h-full w-auto">
+                                <span className="text-sm mt-auto text-tertiary">{productCart.name}</span>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
+                              </div>
+                              <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                                <span onClick={()=>removeProductFromBasket(index)} className="h-5 w-5 mb-auto active:scale-95 hover:scale-110 duration-300 transition-all cursor-pointer hover:text-tertiary"><X className="w-full h-full"/></span>
+                                <span className="mt-auto">{formatPrice(productCart.quantity*productCart.price)}</span>
+                              </div>
+                            </div>
+                          )
+                        })
+                        :
+                        <>
+                          <p className="text-xs mt-2">No hay experiencas nuevas para agregar</p>
+                        </>
+                      }
+                      </div>
+
+                    </div>
+                  </div>
+                  <div className="w-full h-[10%] flex justify-end">
+                    <Button 
+                      onClick={()=>addProductToReserveHandler()}
+                      isLoading={loadingCreateProductInReserve}
+                      className="w-auto mt-auto ml-auto"
+                      effect="default"
+                      size="sm" 
+                      variant="ghostLight" 
+                      rightIcon={<Plus/>}
+                    >{t("Request Adding Products")}</Button>
+                  </div>
+                </div>
+
+                <div className="w-full lg:w-[50%] h-full flex flex-col justify-start items-start overlfow-hidden border-2 border-slate-200 rounded-md p-2">
+                  <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
+                    <span className="flex flex-row items-end gap-x-2 mb-4">
+                      <FlameKindling className="h-5 w-5"/>
+                      <h2 className="text-lg">{t("Products")}</h2>
+                    </span>
+                    <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll pr-2">
+                      {productsDB.map((productItem,index)=>{
+                        return(
+                          <ProductCard variant="line"  key={`product__extra_${index}`} index={index} product={productItem} handleAddProduct={handleAddProductToBasket} />
                         )
                       })}
                     </div>

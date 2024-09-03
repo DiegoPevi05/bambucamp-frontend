@@ -73,6 +73,7 @@ export const getAllMyReserves = async(token:string, page:Number,language:string)
       }
     });
 
+
     data = {
       reserves: fetchReserves.data.reserves.map((reserve: any) => serializeMyReserves(reserve)),
       currentPage: parseInt(fetchReserves.data.currentPage as string, 10),

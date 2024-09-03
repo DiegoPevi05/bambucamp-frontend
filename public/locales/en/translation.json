@@ -171,5 +171,14 @@
 	"Price": "Price",
 	"Suggestions": "Suggestions",
 	"Add Experience": "Add Experience",
-	"Add Product": "Add Product"
+	"Add Product": "Add Product",
+	"NOT_CONFIRMED": "No confirmed",
+	"CONFIRMED": "Confirmed",
+	"COMPLETE": "Completed",
+	"PAID": "Paid",
+	"UNPAID": "Unpaid",
+	"Experience pending confirmation": "Experience pending confirmation",
+	"My Experiences": "My Experiences",
+	"List": "List",
+	"Request Adding Experiences": "Request Add Experiences"
 }

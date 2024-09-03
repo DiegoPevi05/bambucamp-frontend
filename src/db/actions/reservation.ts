@@ -1,4 +1,4 @@
-import { Tent, Product, Experience, ReserveFormData, DiscountCode, ReserveExperienceDto } from "../../lib/interfaces";
+import { Tent, Product, Experience, ReserveFormData, DiscountCode, ReserveExperienceDto, ReserveProductDto } from "../../lib/interfaces";
 import axios from "axios";
 import { toast } from "sonner";
 import {serializeExperience, serializeProduct, serializeTent} from "../serializer";
@@ -229,6 +229,43 @@ export const createReserve = async (reserve: ReserveFormData, token: string, lan
         // Handle other types of errors
         if (statusCode) {
           toast.error(`${errorData?.error || "Error creating the reserve."} (Code: ${statusCode})`);
+        } else {
+          toast.error(errorData?.error || "An error occurred.");
+        }
+      }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+    console.error(error);
+    return false;
+  }
+};
+
+export const addProductToReserve = async (products: ReserveProductDto[], token: string, language:string): Promise<boolean> => {
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/reserves/reserve/product`, {products:products }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept-Language':language
+      }
+    });
+    toast.success(response.data.message);
+    return true;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const statusCode = error.response?.status;
+      const errorData = error.response?.data;
+      const errorMessage = errorData?.error;
+
+      if (Array.isArray(errorMessage)) {
+        // Handle validation errors (array of errors)
+        errorMessage.forEach((err) => {
+          toast.error(err.msg || 'Validation error occurred');
+        });
+      } else {
+        // Handle other types of errors
+        if (statusCode) {
+          toast.error(`${errorData?.error || "Error adding the product to the reserve."} (Code: ${statusCode})`);
         } else {
           toast.error(errorData?.error || "An error occurred.");
         }

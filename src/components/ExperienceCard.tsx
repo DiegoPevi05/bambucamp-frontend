@@ -7,7 +7,7 @@ import {formatPrice, parseSuggestions} from "../lib/utils";
 import {useTranslation} from "react-i18next";
 
 interface propsItemExperience {
-  variant:string;
+  variant?:string;
   index:number;
   experience:Experience;
   handleAddExperience:(idExperience:number,quantity:number, day:Date) => void;
@@ -43,7 +43,7 @@ const ExperienceCard:React.FC<propsItemExperience> = (props:propsItemExperience)
       animate="show"
       exit="hidden"
       variants={fadeIn(` ${variant == "line" ? "up" : "left"}`,"",0.5*index, 0.5)}
-      className={`bg-white ${variant == "line" ? "w-full" : "w-[250px]"} h-auto flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
+      className={`shrink-0 bg-white ${variant == "line" ? "w-full" : "w-[250px]"} h-auto flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
       <div className={`w-full ${variant == "line" ? "h-[0px]" : "h-[150px]"}  bg-center bg-cover rounded-t-lg`} style={{ backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${experience.images[0]})`}}></div>
       <div className="w-full h-auto flex flex-col justify-start items-start py-2 px-4">
         <div className={`w-full h-auto p-none m-none flex ${variant == "line" ? "flex-row" : "flex-col"}`}>

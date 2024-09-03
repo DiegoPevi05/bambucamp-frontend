@@ -1,6 +1,6 @@
 import {ClassValue,clsx} from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice, Tent} from './interfaces'
+import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice, Tent, Experience} from './interfaces'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,8 +21,8 @@ export const getExperiencesNames = (reserve:Reserve) => {
   return reserve.experiences.map((experience:ReserveExperienceDto) => experience.name).join(", ");
 }
 
-export const formatPrice = (price:number) => {
-  return price.toLocaleString("en-US", {style: "currency", currency: "USD"});
+export const formatPrice = (price: number) => {
+  return price.toLocaleString("es-PE", { style: "currency", currency: "PEN" });
 };
 
 export const formatDate = (date:Date) => {
@@ -162,4 +162,24 @@ export const getRangeDatesForReserve = (reserve:Reserve) => {
     dateRanges = dateRanges.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     return dateRanges;
+};
+
+interface HasCategory {
+  category: {
+    id: number;
+    name: string;
+  };
+}
+
+export const getCategoriesFromItems = <T extends HasCategory>(items: T[]): { id: number, name: string }[] => {
+  const categoriesMap = new Map<number, { id: number, name: string }>();
+
+  items.forEach(item => {
+    const category = item.category;
+    if (!categoriesMap.has(category.id)) {
+      categoriesMap.set(category.id, { id: category.id, name: category.name });
+    }
+  });
+
+  return Array.from(categoriesMap.values());
 };

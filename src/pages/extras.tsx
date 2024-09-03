@@ -2,57 +2,117 @@ import { useEffect, useState } from "react";
 import { Tooltip } from 'react-tooltip'
 import {  ChevronLeftIcon, ChevronRightIcon, FlameKindlingIcon, Pizza} from "lucide-react";
 import { styles } from "../lib/styles";
-import {Experience, Product} from "../lib/interfaces";
+import {Experience, ExperienceCategory, Product, ProductCategory} from "../lib/interfaces";
 import ShopNavbar from "../components/ShopNavbar";
 import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";
 import Button from "../components/ui/Button";
 import SectionHeader from "../components/SectionHeader";
 import {useTranslation} from "react-i18next";
-import {getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
+import {getPublicCategoryExperiences, getPublicCategoryProducts, getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
 import ExperienceCard from "../components/ExperienceCard";
 import ProductCard from "../components/ProductCard";
+import {getCategoriesFromItems} from "../lib/utils";
 
 
 const Extras:React.FC = () => {
   const {t, i18n} = useTranslation();
   const { addProduct, addExperience, getRangeDates } = useCart();
   const navigate = useNavigate();
+
+  const [experiencesCategories,setExperiencesCategories] = useState<ExperienceCategory[]>([]);
+  const [productsCategories,setProductsCategories] = useState<ProductCategory[]>([]);
+
   const [products,setProducts] = useState<Product[]>([]);
   const [experiences,setExperiences] = useState<Experience[]>([]);
 
   const handleAddProductToCart = (idProduct:number, quantity:number) => {
     const product = products.find(product => product.id === Number(idProduct))
     if(product){
-      addProduct({idProduct,  name: product.name , price: (product.price == product.custom_price ? product.price : product.custom_price ) , quantity: quantity  })
+      addProduct({idProduct,  name: product.name , price: (product.price == product.custom_price ? product.price : product.custom_price ) , quantity: quantity, confirmed: false  })
     }
   }
 
   const handleAddExperienceToCart = (idExperience:number, quantity:number, day:Date) => {
     const experience = experiences.find(experience => experience.id === Number(idExperience))
     if(experience){
-      addExperience({idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day  })
+      addExperience({idExperience,  name: experience.name , price: (experience.price == experience.custom_price ? experience.price : experience.custom_price ) , quantity: quantity, day: day, confirmed:false  })
     }
   }
   
   useEffect(()=> {
+    getCategoryProductsHandler();
+    getCategoryExperiencesHandler();
     getProductsHandler();
     getExperiencesHandler();
   },[])
 
-  const getProductsHandler = async() => {
-      const productsDB = await getPublicProducts(i18n.language);
+  const getCategoryProductsHandler = async() => {
+      const categoriesDB = await getPublicCategoryProducts(i18n.language);
+      if(categoriesDB != null){
+        setProductsCategories(categoriesDB);
+      }
+  };
+
+  const getCategoryExperiencesHandler = async() => {
+      const experiencesDB = await getPublicCategoryExperiences(i18n.language);
+      if(experiencesDB != null){
+        setExperiencesCategories(experiencesDB);
+      }
+  };
+
+  const getProductsHandler = async(categories?:string[]) => {
+      const productsDB = await getPublicProducts(i18n.language,categories);
       if(productsDB != null){
         setProducts(productsDB);
       }
   };
 
-  const getExperiencesHandler = async() => {
-      const experiencesDB = await getPublicExperiences(i18n.language);
+  const getExperiencesHandler = async(categories?:string[]) => {
+      const experiencesDB = await getPublicExperiences(i18n.language,categories);
       if(experiencesDB != null){
         setExperiences(experiencesDB);
       }
   };
+
+
+  const [selectedCategories, setSelectedCategories] = useState<{ products: string[], experiences: string[] }>({
+    products: [],
+    experiences: []
+  });
+
+  const onChangeSelectedCategorie = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked, value } = e.target;
+    const prefix = name.split("_")[0];
+
+    setSelectedCategories(prevSelectedCategories => {
+      if (prefix === "experience") {
+        return {
+          ...prevSelectedCategories,
+          experiences: checked
+            ? [...prevSelectedCategories.experiences, value] // Add category if checked
+            : prevSelectedCategories.experiences.filter((cat) => cat !== value) // Remove category if unchecked
+        };
+      } else if (prefix === "product") {
+        return {
+          ...prevSelectedCategories,
+          products: checked
+            ? [...prevSelectedCategories.products, value] // Add category if checked
+            : prevSelectedCategories.products.filter((cat) => cat !== value) // Remove category if unchecked
+        };
+      } else {
+        return prevSelectedCategories; // No change for unhandled prefixes
+      }
+    });
+  };
+
+  useEffect(()=>{
+    getProductsHandler(selectedCategories.products);
+  },[selectedCategories.products])
+
+  useEffect(()=>{
+    getExperiencesHandler(selectedCategories.experiences);
+  },[selectedCategories.experiences])
 
   const goToRoute = (route:string) => {
     navigate(route);
@@ -63,21 +123,32 @@ const Extras:React.FC = () => {
       <div className="w-full min-h-screen relative flex flex-row overflow-x-hidden">
         <SectionHeader identifier="extras"/>
         <ShopNavbar variant="dark"/>
-        <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
+        <div className={`relative w-full h-full flex flex-col  ${styles.padding} mb-12 mt-36 sm:mt-20 lg:mt-0`}>
           <div className="flex flex-row w-auto h-auto gap-x-4">
-            <button onClick={()=>goToRoute("/booking")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
+            <button onClick={()=>goToRoute("/booking")} className="rounded-full h-8 sm:h-12 w-8 sm:w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
               <ChevronLeftIcon className="h-full w-full group-hover:text-white"/>
             </button>
-            <h1 className="font-primary text-secondary  text-6xl">Extras</h1>
+            <h1 className="font-primary text-secondary  text-2xl sm:text-6xl">Extras</h1>
           </div>
           <div className={`w-full flex flex-col gap-y-4 mt-2`}>
             <span className="flex flex-row items-end gap-x-2">
-              <FlameKindlingIcon className="h-10 w-10"/>
-              <h2 className="text-lg">{t("Experiences")}</h2>
+              <FlameKindlingIcon className="h-8 sm:h-10 w-8 sm:w-10"/>
+              <h2 className="text-md sm:text-lg">{t("Experiences")}</h2>
             </span>
-            <p>{t("Reserve one of our more requested experience")}</p>
-            <div className="w-full h-auto py-4">
-              <div className="w-full h-full flex flex-row overflow-x-scroll gap-x-6 no-scroll-bar">
+            <p className="text-sm sm:text-md">{t("Reserve one of our more requested experience")}</p>
+            <div className="w-full h-auto pb-4">
+              <h2 className="text-secondary">{t("Categories")}</h2>
+              <div className="w-full h-auto flex flex-col sm:flex-row py-2 m-none gap-x-2">
+                {experiencesCategories.map((item,index)=>{
+                  return(
+                    <div key={"checkbox_experience_"+index} className="checkbox-wrapper-13">
+                      <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)}/>
+                      <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="w-full h-full flex flex-row overflow-x-scroll gap-x-6 pb-4">
                 {experiences.map((experienceItem,index)=>{
                   return(
                     <ExperienceCard  key={`experience__extra_${index}`} index={index} experience={experienceItem} handleAddExperience={handleAddExperienceToCart}  rangeDates={getRangeDates()} />
@@ -88,12 +159,23 @@ const Extras:React.FC = () => {
           </div>
           <div className={`w-full flex flex-col gap-y-4 mt-2`}>
             <span className="flex flex-row items-end gap-x-2">
-              <Pizza className="h-10 w-10"/>
-              <h2 className="text-lg">{t("Products")}</h2>
+              <Pizza className="h-8 sm:h-10 w-8 sm:w-10"/>
+              <h2 className="text-md sm:text-lg">{t("Products")}</h2>
             </span>
-            <p>{t("Here you can add the products you most whish")}</p>
-            <div className="w-full h-[350px] py-4">
-              <div className="w-full h-full flex flex-row overflow-x-scroll gap-x-6 no-scroll-bar">
+            <p className="text-sm sm:text-md">{t("Here you can add the products you most whish")}</p>
+            <h2 className="text-secondary">{t("Categories")}</h2>
+            <div className="w-full h-auto flex flex-row py-2 m-none gap-x-2">
+              {productsCategories.map((item,index)=>{
+                return(
+                  <div key={"checkbox_product_"+index} className="checkbox-wrapper-13">
+                    <input name={"product_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)}/>
+                    <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="w-full h-[350px] pb-4">
+              <div className="w-full h-full flex flex-row overflow-x-scroll gap-x-6">
                 {products.map((productItem,index)=>{
                   return(
                     <ProductCard  key={`product__extra_${index}`} index={index} product={productItem} handleAddProduct={handleAddProductToCart}  />

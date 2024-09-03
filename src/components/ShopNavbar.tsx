@@ -34,8 +34,8 @@ const ShopNavbar = (props:ShopNavbarProps) => {
   };
 
   return (
-    <nav className={`${styles.paddingX} z-50 absolute w-full flex flex-row ${variant == "dark" ?  "justify-end" : "justify-start" } items-start absolute top-0 left-0 z-[100] h-[80px]`}>
-      <div className="w-auto flex justify-start lg:justify-center items-center">
+    <nav className={`${styles.paddingX} px-6 sm:px-10 z-50 absolute w-full flex flex-row ${variant == "dark" ?  "justify-end" : "justify-start" } items-start absolute top-0 left-0 z-[100] h-[80px]`}>
+      <div className="hidden w-auto lg:flex justify-start lg:justify-center items-center">
         <a href="/" className="relative hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 rounded-full bg-white top-8 w-[80px] sm:w-[100px] h-[80px] sm:h-[100px] flex items-center justify-center p-4 border-2 border-secondary">
           <img src={LOGO_PRIMARY} alt="logo" className="w-full h-full"/>
         </a>

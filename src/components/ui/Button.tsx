@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react'
 import { ButtonHTMLAttributes, FC } from 'react'
 
 export const buttonVariants = cva(
-  'active:scale-95 disabled:before:bg-gray-500 disabled:border-gray-500 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500 border border-[3px]',
+  'active:scale-95 disabled:before:bg-gray-500 disabled:border-gray-500 disabled:opacity-50 disabled:pointer-events-none disabled:bg-gray-200 disabled:text-gray-500 border border-[3px] flex items-center justify-center',
   {
     variants: {
       effect:{

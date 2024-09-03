@@ -9,7 +9,7 @@ import {CalendarPlus} from "lucide-react";
 
 
 interface propsItemExtra {
-  variant:string;
+  variant?:string;
   index:number;
   product:Product;
   handleAddProduct:(idProduct:number,quantity:number) => void;
@@ -35,7 +35,7 @@ const ProductCard:React.FC<propsItemExtra> = (props:propsItemExtra) => {
       animate="show"
       exit="hidden"
       variants={fadeIn(` ${variant == "line" ? "up" : "left"}`,"",0.5*index, 0.5)}
-      className={`bg-white  ${variant == "line" ? "w-full h-auto" : "w-[250px] h-[300px]"}  flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
+      className={`shrink-0 bg-white  ${variant == "line" ? "w-full h-auto" : "w-[250px] h-[300px]"}  flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
       <div className={`${variant == "line" ? "h-[0px]" : "h-[30%]"} w-full bg-center bg-cover rounded-t-lg`} style={{ backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${product.images[0]})`}}></div>
       <div className="w-full h-[25%] flex flex-col justify-start items-start py-2 px-4">
 

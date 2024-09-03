@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Tooltip } from 'react-tooltip'
-import {  ChevronLeftIcon, ChevronRightIcon, FlameKindlingIcon, Pizza} from "lucide-react";
+import {  ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon, FlameKindlingIcon, Pizza} from "lucide-react";
 import { styles } from "../lib/styles";
 import {Experience, ExperienceCategory, Product, ProductCategory} from "../lib/interfaces";
 import ShopNavbar from "../components/ShopNavbar";
@@ -12,7 +12,8 @@ import {useTranslation} from "react-i18next";
 import {getPublicCategoryExperiences, getPublicCategoryProducts, getPublicExperiences, getPublicProducts} from "../db/actions/reservation";
 import ExperienceCard from "../components/ExperienceCard";
 import ProductCard from "../components/ProductCard";
-import {getCategoriesFromItems} from "../lib/utils";
+import {fadeIn} from "../lib/motions";
+import { AnimatePresence, motion } from "framer-motion";
 
 
 const Extras:React.FC = () => {
@@ -114,6 +115,8 @@ const Extras:React.FC = () => {
     getExperiencesHandler(selectedCategories.experiences);
   },[selectedCategories.experiences])
 
+  const [openCategory,setOpenCategory] = useState<string|undefined>(undefined);
+
   const goToRoute = (route:string) => {
     navigate(route);
   };
@@ -136,13 +139,41 @@ const Extras:React.FC = () => {
               <h2 className="text-md sm:text-lg">{t("Experiences")}</h2>
             </span>
             <p className="text-sm sm:text-md">{t("Reserve one of our more requested experience")}</p>
+            <h2 className="text-secondary hidden sm:block">{t("Categories")}</h2>
+
             <div className="w-full h-auto pb-4">
-              <h2 className="text-secondary">{t("Categories")}</h2>
-              <div className="w-full h-auto flex flex-col sm:flex-row py-2 m-none gap-x-2">
+              <div className="relative w-full h-auto mb-2 sm:hidden" onMouseOver={()=>setOpenCategory("experiences" )} onMouseLeave={()=>setOpenCategory(undefined)} >
+                <div className="p-none m-none flex flex-row w-auto h-6">
+                  <h2 className="text-secondary  w-auto" >{t("Categories")}</h2>
+                  { openCategory == "experiences" ? <ChevronUpIcon/> : <ChevronDownIcon/> }
+                </div>
+                <AnimatePresence>
+                {openCategory == "experiences" && (
+                    <motion.div 
+                      key={`experience-catalog-categories`}
+                      initial="hidden"
+                      animate="show"
+                      exit="hidden"
+                      variants={fadeIn("left","",0.2, 0.3)}
+                      className="absolute left-0 top-[100%] flex w-[200px] h-auto flex-col py-2 m-none gap-x-2 bg-white border-2 border-secondary rounded-lg px-1 py-2">
+                      {experiencesCategories.map((item,index)=>{
+                        return(
+                          <div key={"checkbox_experience_"+index} className="checkbox-wrapper-13">
+                            <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)} checked={selectedCategories.experiences.includes(item.name)}/>
+                            <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                          </div>
+                        )
+                      })}
+                    </motion.div>
+                )}
+                </AnimatePresence>
+              </div>
+
+              <div className="hidden w-full h-auto sm:flex flex-row pb-2 m-none gap-x-2">
                 {experiencesCategories.map((item,index)=>{
                   return(
                     <div key={"checkbox_experience_"+index} className="checkbox-wrapper-13">
-                      <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)}/>
+                      <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>{onChangeSelectedCategorie(e),setOpenCategory(undefined)}}/>
                       <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
                     </div>
                   )
@@ -163,8 +194,36 @@ const Extras:React.FC = () => {
               <h2 className="text-md sm:text-lg">{t("Products")}</h2>
             </span>
             <p className="text-sm sm:text-md">{t("Here you can add the products you most whish")}</p>
-            <h2 className="text-secondary">{t("Categories")}</h2>
-            <div className="w-full h-auto flex flex-row py-2 m-none gap-x-2">
+            <h2 className="text-secondary hidden sm:block">{t("Categories")}</h2>
+
+            <div className="relative w-full h-auto mb-2 sm:hidden" onMouseOver={()=>setOpenCategory("products" )} onMouseLeave={()=>setOpenCategory(undefined)} >
+              <div className="p-none m-none flex flex-row w-auto h-6">
+                <h2 className="text-secondary  w-auto" >{t("Categories")}</h2>
+                { openCategory == "products" ? <ChevronUpIcon/> : <ChevronDownIcon/> }
+              </div>
+              <AnimatePresence>
+              {openCategory == "products" && (
+                  <motion.div 
+                    key={`experience-catalog-categories`}
+                    initial="hidden"
+                    animate="show"
+                    exit="hidden"
+                    variants={fadeIn("left","",0.2, 0.3)}
+                    className="absolute left-0 top-[100%] flex w-[200px] h-auto flex-col py-2 m-none gap-x-2 bg-white border-2 border-secondary rounded-lg px-1 py-2">
+                    {productsCategories.map((item,index)=>{
+                      return(
+                        <div key={"checkbox_product_"+index} className="checkbox-wrapper-13">
+                          <input name={"product_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)} checked={selectedCategories.products.includes(item.name)}/>
+                          <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                        </div>
+                      )
+                    })}
+                  </motion.div>
+              )}
+              </AnimatePresence>
+            </div>
+
+            <div className="w-full h-auto hidden sm:flex flex-row py-2 m-none gap-x-2">
               {productsCategories.map((item,index)=>{
                 return(
                   <div key={"checkbox_product_"+index} className="checkbox-wrapper-13">

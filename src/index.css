@@ -487,6 +487,7 @@
     vertical-align: middle;
     cursor: pointer;
     margin-left: 4px;
+    color: var(--primary-color-light);
   }
 
   .checkbox-wrapper-13 input[type=checkbox]:not(.switch) {

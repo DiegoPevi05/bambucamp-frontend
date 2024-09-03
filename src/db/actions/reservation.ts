@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import {serializeExperience, serializeProduct, serializeTent} from "../serializer";
 
+
 export const SearchAvailableTents = async (dates:{dateFrom:Date,dateTo:Date}, language:string): Promise<Tent[]|null> => {
   let data: Tent[]|null = null  
 

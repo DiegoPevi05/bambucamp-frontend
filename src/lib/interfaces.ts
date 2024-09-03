@@ -1,3 +1,9 @@
+export interface ContactForm {
+  name:string;
+  email:string;
+  message:string;
+  saveinfo:boolean;
+}
 
 export interface SignIn {
   email:string;
@@ -208,6 +214,7 @@ export interface ReviewIT {
   stars: number;
   date: string;
   images: string[];
+  google_url_review:string;
   profile_image: string;
 }
 

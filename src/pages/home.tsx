@@ -1,7 +1,8 @@
-import  {useState} from "react"
+import  {FormEvent, useState} from "react"
 import Navbar from "../components/Navbar"
-import Banner from "../assets/video/Banner.mp4"
-import {LOGO_THIRD,TENT_SECONDARY, TENT_SVG, LUNAHUANA, SERVICE_1,SERVICE_2,SERVICE_3,SERVICE_4,SERVICE_5,SERVICE_6,SERVICE_7,SERVICE_8 } from "../assets/images"
+import Banner from "../assets/video/Banner.mp4";
+import FooterBanner from "../assets/video/Footer.mp4";
+import {LOGO_THIRD, TENT_SVG, LUNAHUANA, SERVICE_1,SERVICE_2,SERVICE_3,SERVICE_4,SERVICE_5,SERVICE_6,SERVICE_7,SERVICE_8 } from "../assets/images"
 import {motion} from "framer-motion"
 import {styles} from "../lib/styles"
 import { fadeIn } from "../lib/motions"
@@ -9,19 +10,19 @@ import SearchDatesBar from "../components/SearchBar"
 import VerticalCarousel from "../components/VerticalCarousel"
 import Reviews from "../components/Reviews"
 import Footer from "../components/Footer"
-import { useForm } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { ZodError, z } from 'zod';
 import Button from "../components/ui/Button"
 import { formHomeSchema } from "../db/schemas.ts"
 import PromotionCard from "../components/CardPromotion"
 import {promotionsData} from "../lib/constant"
 import Collapsible from "../components/Collapsible"
-import { Tent, CarTaxiFront  } from "lucide-react"
+import { Tent  } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as LucideIcons from 'lucide-react';
 import ChatComponent from "../components/Chat.tsx"
+import {ContactForm} from "../lib/interfaces.ts";
+import {ContactFormSubmit} from "../db/actions/common.ts";
 
 const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:string,iconName:any}) => {
   const navigate = useNavigate();
@@ -45,19 +46,53 @@ const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:s
 }
 
 const Home = () => {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
-  type FormValues = z.infer<typeof formHomeSchema>;
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
-    resolver: zodResolver(formHomeSchema),
-  });
 
-  const onSubmit = (data: FormValues) => {
-    setLoadingForm(true);
-    setTimeout(() => {
+  const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
+
+  const validateFields = (): ContactForm |null => {
+      const form = document.getElementById("form_contact_home") as HTMLFormElement;
+      const name = (form.querySelector('input[name="name"]') as HTMLInputElement).value;
+      const email = (form.querySelector('input[name="email"]') as HTMLInputElement).value;
+      const message = (form.querySelector('textarea[name="message"]') as HTMLInputElement).value;
+      const saveinfo = (form.querySelector('input[name="saveinfo"]') as HTMLInputElement).checked;
+
+      setErrorMessages({});
+
+      try {
+
+        formHomeSchema.parse({  email, name, message, saveinfo });
+
+        return {
+            name,
+            email,
+            message,
+            saveinfo
+        };
+
+      } catch (error) {
+        if (error instanceof ZodError) {
+          const newErrorMessages: Record<string, string> = {};
+          error.errors.forEach(err => {
+            const fieldName = err.path[0] as string;
+            newErrorMessages[fieldName] = err.message;
+          });
+          setErrorMessages(newErrorMessages);
+        }
+        return null;
+      }
+  };
+
+  const onSubmitCreation = async (e:FormEvent ) => {
+      e.preventDefault();
+      setLoadingForm(true);
+      const fieldsValidated = validateFields();
+      if(fieldsValidated != null){
+        await ContactFormSubmit(fieldsValidated,i18n.language);
+      }
       setLoadingForm(false);
-    }, 2000);
   };
 
   return (
@@ -198,94 +233,85 @@ const Home = () => {
         </motion.div>
       </div>
 
-
-
-      <div id="contact"  className="relative w-full h-auto grid grid-cols-2 overflow-hidden">
-        <motion.div 
+      <div id="contact" className="relative w-full h-[100vh] flex flex-col justify-center items-center z-[20]">
+        <video src={FooterBanner} autoPlay loop  muted className="absolute top-0 left-0 w-full h-full object-cover"/>
+        <motion.form
           initial="hidden"
           whileInView='show'
           viewport={{ once: true }}
-          variants={fadeIn("right","",0,2)}
-          className="w-full h-full col-span-2 lg:col-span-1 bg-white flex flex-col justify-center items-start px-12 sm:px-24 lg:px-36 2xl:px-48 py-24 lg:pt-12 gap-y-6">
-          <h2 className="font-primary text-secondary text-3xl sm:text-5xl">{t("Contact us")}</h2>
-          <h3 className="font-primary text-secondary text-sm sm:text-sm">{t("Send us a message with a specific proposal that you might have for us or any addiontal information you could not found")}</h3>
-          <form className="w-full h-full flex flex-col justify-start items-start" onSubmit={handleSubmit(onSubmit)}>
+          variants={fadeIn("up","tween",0.8,1.5)}
+          id="form_contact_home" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-4 sm:p-6 z-[50]" style={{background: "rgba(255,255,255,0.20)"}} onSubmit={(e)=>onSubmitCreation(e)}>
+          <Tent className="h-12 w-12 text-tertiary"/>
+          <h2 className="text-tertiary text-2xl my-2">{t("Contact Us")}</h2>
 
-            <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4">
-              <label htmlFor="name" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Name")}</label>
-              <input {...register("name")} className="w-full h-8 sm:h-12 max-sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Name")} />
-              <div className="w-full h-6">
-                {errors?.name && 
-                  <motion.p 
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                    variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-xs text-tertiary font-tertiary">{t(errors.name.message ? errors.name.message : "Name is required.")}
-                  </motion.p>
-                }
-              </div>
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+            <label htmlFor="email" className="font-primary text-tertiary text-sm h-auto">{t("Email")}</label>
+            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Email")}/>
+            <div className="w-full h-6">
+              {errorMessages.email && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-white font-tertiary">{t(errorMessages.email)}
+                </motion.p>
+              }
             </div>
+          </div>
 
-            <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4">
-              <label htmlFor="email" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Email")}</label>
-              <input {...register("email")} className="w-full h-8 sm:h-12 max-sm:text-xs font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
-              <div className="w-full h-6">
-                {errors?.email && 
-                  <motion.p 
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                    variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-xs text-tertiary font-tertiary">{t(errors.email.message ? errors.email.message : "Email is required.")}
-                  </motion.p>
-                }
-              </div>
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+            <label htmlFor="name" className="font-primary text-tertiary text-sm h-auto">{t("Name")}</label>
+            <input name="name" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Name")}/>
+            <div className="w-full h-6">
+              {errorMessages.name && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-white font-tertiary">{t(errorMessages.name)}
+                </motion.p>
+              }
             </div>
+          </div>
 
-            <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4">
-              <label htmlFor="title" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Title")}</label>
-              <input {...register("title")} className="w-full h-8 sm:h-12 max-sm:text-xs font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Title")} />
-              <div className="w-full h-6">
-                {errors?.title && 
-                  <motion.p 
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                    variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-xs  text-tertiary font-tertiary">{t(errors.title.message ? errors.title.message : "Title is required.")}
-                  </motion.p>
-                }
-              </div>
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+            <label htmlFor="message" className="font-primary text-tertiary text-sm h-auto">{t("Message")}</label>
+            <textarea name="message" className="w-full h-12 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Message")}>
+            </textarea>
+            <div className="w-full h-6">
+              {errorMessages.message && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-white font-tertiary">{t(errorMessages.message)}
+                </motion.p>
+              }
             </div>
+          </div>
 
-            <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4">
-              <label htmlFor="message" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Message")}</label>
-              <textarea {...register("message")} className="w-full h-full max-sm:text-xs font-tertiary p-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Message")} />
-              <div className="w-full h-6">
-                {errors?.message && 
-                  <motion.p 
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                    variants={fadeIn("up","", 0, 1)}
-                    className="h-6 text-xs text-tertiary font-tertiary">{t(errors.message.message ? errors.message.message : "Message is required.")}
-                  </motion.p>
-                }
-              </div>
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+            <div className="w-full h-auto flex flex-row p-none m-none justify-start items-end gap-x-3">
+              <input type="checkbox" name="saveinfo" className="w-4 h-4 text-xs sm:text-md bg-transparent text-white focus:text-white px-2 border-b-2 border-secondary focus:outline-none"/>
+            <label htmlFor="message" className="font-primary text-tertiary text-xs h-auto">{t("Save info for future promotions")}</label>
             </div>
-            <div className="flex flex-row justify-start items-start w-full min-h-12 overflow-hidden gap-x-4">
-              <input {...register("saveinfo")} className="w-4 h-4 font-tertiary px-2 border-0" type="checkbox" />
-              <label htmlFor="saveinfo" className="font-primary text-secondary text-xs">{t("Save info for marketing purposes")}</label>
+            <div className="w-full h-6">
+              {errorMessages.saveinfo && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-tertiary font-tertiary">{t(errorMessages.saveinfo)}
+                </motion.p>
+              }
             </div>
-            <Button effect="default" variant="dark" className="w-full" isLoading={loadingForm} type="submit">{t("Submit")}</Button>
-          </form>
-        </motion.div>
-
-        <div className="hidden lg:block w-full h-full col-span-1">
-          <img src={TENT_SECONDARY} alt="tent" className="w-full h-full object-cover opacity-[60%]"/>
-        </div>
-
+          </div>
+          <Button variant="dark" type="submit" isLoading={loadingForm}>{t("Send")}</Button>
+        </motion.form>
       </div>
       <Footer/>
     </div>

@@ -1,4 +1,4 @@
-import  {FormEvent, useState} from "react"
+import  {FormEvent, useEffect, useState} from "react"
 import Navbar from "../components/Navbar"
 import Banner from "../assets/video/Banner.mp4";
 import FooterBanner from "../assets/video/Footer.mp4";
@@ -21,8 +21,8 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as LucideIcons from 'lucide-react';
 import ChatComponent from "../components/Chat.tsx"
-import {ContactForm} from "../lib/interfaces.ts";
-import {ContactFormSubmit} from "../db/actions/common.ts";
+import {ContactForm, webContent} from "../lib/interfaces.ts";
+import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
 
 const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:string,iconName:any}) => {
   const navigate = useNavigate();
@@ -47,6 +47,20 @@ const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:s
 
 const Home = () => {
   const { t, i18n } = useTranslation();
+  const [dataWebHome,setDataWebHome] = useState<webContent>({tents:[],promotions:[],reviews:[],faqs:[]})
+
+  useEffect(()=>{
+    getContentWebHandler();
+  },[])
+
+  const getContentWebHandler = async () => {
+      const webContent  = await getContentWeb(i18n.language);
+      if(webContent){
+          setDataWebHome(webContent);
+      }
+  }
+
+  console.log(dataWebHome);
 
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
 

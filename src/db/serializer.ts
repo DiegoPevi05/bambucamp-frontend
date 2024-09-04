@@ -1,4 +1,4 @@
-import { User, Tent, Product, Experience, NotificationDto, Reserve, ReserveTentDto, ReserveProductDto, ReserveExperienceDto, ReservePromotionDto  } from "../lib/interfaces"
+import { User, Tent, Product, Experience, NotificationDto, Reserve, ReserveTentDto, ReserveProductDto, ReserveExperienceDto, ReservePromotionDto, Review, Faq, Promotion  } from "../lib/interfaces"
 import { convertStrToCurrentTimezoneDate } from "../lib/utils";
 
 export const serializeUser = (data:any):User|null => {
@@ -254,5 +254,76 @@ export const serializeNotification = (data:any): NotificationDto | null => {
 
   return notification;
 }
+
+export const serializeReview = (data:any): Review | null => {
+
+  let review:Review|null = null;
+
+  review = {
+    id:data.id,
+    name:data.name,
+    title:data.title,
+    review:data.review,
+    stars:data.stars || 0,
+    day:data.day ? convertStrToCurrentTimezoneDate(data.day) : data.day,
+    href:data.href,
+    profile_image_url:data.profile_image_url,
+    createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
+    updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
+  }
+
+  return review;
+}
+
+export const serializeFaq = (data:any): Faq | null => {
+
+  let faq:Faq|null = null;
+
+  faq = {
+    id:data.id,
+    question:data.question,
+    answer:data.answer,
+    createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
+    updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
+  }
+
+  return faq;
+}
+
+export const serializePromotion = (data:any):Promotion|null => {
+  let promotion:Promotion|null = null;
+
+  const transformedIdtents = data.idtents ? JSON.parse(data.idtents).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
+})) : [];
+
+  const transformedIdProducts = data.idproducts ? JSON.parse(data.idproducts).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
+})) : [];
+
+  const transformedIdExperiences = data.idexperiences ? JSON.parse(data.idexperiences).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
+})) : [];
+
+  promotion = {
+    id: data.id,
+    title:data.title,
+    description: data.description,
+    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    expiredDate: data.expiredDate ? convertStrToCurrentTimezoneDate(data.expiredDate) : data.expiredDate,
+    status : data.status,
+    qtypeople: data.qtypeople || 0,
+    qtykids: data.qtykids || 0,
+    netImport: data.netImport || 0,
+    discount: data.discount || 0,
+    grossImport: data.grossImport || 0,
+    stock: data.stock || 0,
+    idtents: transformedIdtents,
+    idproducts: transformedIdProducts,
+    idexperiences: transformedIdExperiences,
+    createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
+    updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
+  };
+  return promotion;
+}
+
+
 
 

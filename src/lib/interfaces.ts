@@ -77,6 +77,7 @@ export interface Tent {
   updatedAt:Date|null;
 }
 
+
 export interface ProductCategory {
   id:number;
   name: string;
@@ -206,17 +207,27 @@ export interface ReservePromotionDto {
 }
 
 
-export interface ReviewIT {
+export interface Review {
   id: number;
-  name: string;
-  title: string;
-  review: string;
-  stars: number;
-  date: string;
-  images: string[];
-  google_url_review:string;
-  profile_image: string;
+  name:string;
+  title:string;
+  review:string;
+  stars:number;
+  day:Date;
+  href:string;
+  profile_image_url:string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
 }
+
+export interface Faq {
+  id: number;
+  question:string;
+  answer:string;
+  createdAt:Date|null;
+  updatedAt:Date|null;
+}
+
 
 
 export interface NotificationDto {
@@ -272,3 +283,10 @@ export interface DiscountCode {
   discount:number, 
 }
 
+
+export interface webContent {
+  tents:Tent[];
+  promotions:Promotion[];
+  reviews:Review[];
+  faqs:Faq[];
+}

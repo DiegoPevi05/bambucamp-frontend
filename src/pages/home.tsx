@@ -128,7 +128,7 @@ const Home = () => {
 
 
       <div id="reviews" className="relative w-[100vw] h-auto overflow-hidden">
-        <Reviews/>
+        <Reviews reviews={dataWebHome.reviews}/>
       </div>
 
       <div id="us" className="relative w-full h-auto bg-black flex flex-col justify-center items-center">
@@ -237,13 +237,11 @@ const Home = () => {
           viewport={{ once: true }}
           variants={fadeIn("left","tween",0.8,1.5)}
           className="block w-full h-full col-span-1 flex flex-col justify-start items-center lg:px-24">
-          <Collapsible title="What is the best time to visit the camp?" content="The best time to visit the camp is during the summer months, when the weather is warm and the days are long. The camp is open from May to September, and the best time to visit is during the peak season, which is from June to August. During this time, the camp is at its busiest, with lots of activities and events taking place. If you prefer a quieter experience, you may want to visit in May or September, when the camp is less crowded."/>
-
-          <Collapsible title="What is the best time to visit the camp?" content="The best time to visit the camp is during the summer months, when the weather is warm and the days are long. The camp is open from May to September, and the best time to visit is during the peak season, which is from June to August. During this time, the camp is at its busiest, with lots of activities and events taking place. If you prefer a quieter experience, you may want to visit in May or September, when the camp is less crowded."/>
-
-          <Collapsible title="What is the best time to visit the camp?" content="The best time to visit the camp is during the summer months, when the weather is warm and the days are long. The camp is open from May to September, and the best time to visit is during the peak season, which is from June to August. During this time, the camp is at its busiest, with lots of activities and events taking place. If you prefer a quieter experience, you may want to visit in May or September, when the camp is less crowded."/>
-
-          <Collapsible title="What is the best time to visit the camp?" content="The best time to visit the camp is during the summer months, when the weather is warm and the days are long. The camp is open from May to September, and the best time to visit is during the peak season, which is from June to August. During this time, the camp is at its busiest, with lots of activities and events taking place. If you prefer a quieter experience, you may want to visit in May or September, when the camp is less crowded."/>
+          {dataWebHome.faqs.map((faq,index)=>{
+            return(
+              <Collapsible key={`faqs_question_${faq.id}`} title={faq.question} content={faq.answer}/>
+            )
+          })}
         </motion.div>
       </div>
 

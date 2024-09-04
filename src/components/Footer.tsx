@@ -9,7 +9,7 @@ const FooterLink = ({children}:{children:string}) => {
 
 const Footer = () => {
   return (
-    <footer className="relative w-full h-auto bg-secondary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 px-12 sm:px-24 lg:px-48 py-12 lg:pt-12 gap-y-6 lg:gap-x-12">
+    <footer className="relative w-full h-auto bg-primary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 px-12 sm:px-24 lg:px-48 py-12 lg:pt-12 gap-y-6 lg:gap-x-12">
 
       <div className="col-span-1 flex flex-col gap-y-2">
         <a href="/" className="hover:scale-[1.05] transition-all duration-300 rounded-full bg-white top-8 w-[95px] h-[95px] flex items-center justify-center">

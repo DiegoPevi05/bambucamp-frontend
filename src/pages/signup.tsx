@@ -79,7 +79,7 @@ const SignUp = () => {
   return (
     <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: `url(${LUNAHUANA})`}}>
       <div className="w-full h-full flex justify-center items-center">
-        <form id="form_user_sign_up" className="w-[350px] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitSignUp(e)}>
+        <form id="form_user_sign_up" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitSignUp(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
           <p className="text-secondary text-sm my-2">{t("Sign up for a new account")}</p>
 

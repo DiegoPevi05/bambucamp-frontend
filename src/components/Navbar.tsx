@@ -76,18 +76,11 @@ const Navbar = () => {
           :
           <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Log In")}<User/> </Button>
         }
-        <Button onClick={toogleSidebar} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 mt-6 p-0"> <AlignJustify className=""/> </Button>
+        <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
       </div>
 
-      <AnimatePresence>
-        {openSideBar && ( 
-          <motion.div 
-            initial="hidden"
-            whileInView='show'
-            viewport={{ once: true }}
-            exit="hidden"
-            variants={slideIn("right","",0,0.3)}
-            className={`w-full h-[100vh] absolute top-0 left-0 right-0 bottom-0 z-[120] bg-secondary`}>
+          <div
+            className={`w-screen h-[100vh] absolute top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
             <div className="h-10 sm:h-16 w-10 sm:w-16 absolute top-12 right-12">
               <X onClick={toogleSidebar} className="h-full w-auto text-white cursor-pointer hover:text-primary"/>
             </div>
@@ -121,9 +114,7 @@ const Navbar = () => {
                 </a>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
     </nav>
   );
 };

@@ -110,9 +110,9 @@ const validateCode = () => {
   return (
     <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: `url(${LUNAHUANA})`}}>
       <div className="w-full h-full flex justify-center items-center">
-        <form id="form_user_validate_code" className="w-[300px] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitValidateCode(e)}>
+        <form id="form_user_validate_code" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitValidateCode(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
-          <p className="text-secondary text-xs my-2">{t("Input the code that your receive at your email account, once the time expired you can request another code")}</p>
+          <p className="text-primary text-[11px] sm:text-xs my-2">{t("Input the code that your receive at your email account, once the time expired you can request another code")}</p>
           <div className="flex flex-row justify-end w-full h-auto">
             <span>{formattedTimer}</span>
           </div>

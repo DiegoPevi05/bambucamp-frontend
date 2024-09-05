@@ -19,7 +19,7 @@ const PromotionCard = (props:PromptionCardProps) => {
       whileInView='show'
       viewport={{ once: true }}
       exit="hidden"
-      variants={fadeIn("right","",1+(0.5*index),0.5)}
+      variants={fadeIn("right","",1+(0.2*index),0.3)}
       className="bg-white max-sm:min-w-[90%] h-[400px] max-sm:ml-6 mt-12 max-sm:mb-12 sm:mt-auto shadow-xl rounded-3xl grid grid-rows-2 hover:cursor-pointer duration-300 relative">
       <div className="absolute -top-[32.5px] right-0 sm:-right-[32.5px] w-[65px] h-[65px] bg-secondary rounded-full flex justify-center items-center">
         <h1 className="text-sm text-center text-white">{t("Save")} {promotion.discount}%</h1>

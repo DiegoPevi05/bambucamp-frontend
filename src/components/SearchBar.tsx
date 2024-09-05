@@ -99,100 +99,6 @@ const DatePicker = ({ date, setDate, openBar, type, section, toggleBar }:{date:D
   );
 };
 
-
-const InputGuestBar = ({guests, type,handleCount }: {guests:{adults:number, kids:number, babys:number}, type: "adults" | "kids" | "babys", handleCount: (type: "adults" | "kids" | "babys", count: number) => void } ) => {
-
-  const [currentCount,setCurrentCount] = useState<number>(guests[type]);
-  const {t} = useTranslation();
-
-  useEffect(()=>{
-    handleCount(type,currentCount);
-  },[currentCount])
-
-  const IncrementConter = () => {
-    setCurrentCount((prevCount) => prevCount + 1);
-  }
-  const DecreaseCounter = () =>{
-    setCurrentCount((prevCount) => prevCount > 0 ? prevCount - 1 : prevCount);
-  }
-
-  return(
-    <div className="span-1 w-full h-full bg-white flex flex-row w-full h-full border-l-[1px] border-slate-200">
-      <div className="w-[80%] h-full flex flex-row justify-center items-center gap-x-4 text-secondary">
-        <User/>
-        <span>{currentCount}</span>
-        <span>{t(type)}</span>
-      </div>
-      <div className="w-[20%] h-full flex flex-col border-l-[1px] border-slate-200 divide-y">
-        <button className="w-full h-[50%] bg-white text-secondary hover:bg-secondary hover:text-white duration-300" onClick={IncrementConter}>+</button>
-        <button className="w-full h-[50%] bg-white text-secondary hover:bg-secondary hover:text-white duration-300" onClick={DecreaseCounter}>-</button>
-      </div>
-    </div>
-
-  )
-}
-
-const GuestPicker = ({openBar, containerRef, toggleBar, guests, setGuests}:
-                     {openBar:boolean, containerRef: React.RefObject<HTMLDivElement>, toggleBar: (type: "startDate" | "endDate" | "guests")=>void, guests:{adults:number, kids:number, babys:number}, setGuests: React.Dispatch<React.SetStateAction<{adults:number, kids:number, babys:number}>> }
-  ) => {
-
-  const [containerDimensions, setContainerDimensions] = useState<{height:number, width:number}>({ height:0, width:0 })
-  const [leftPosition,setLeftPosition] = useState<number>(0);
-
-  const getTotalGuest = () =>{
-    return guests.adults + guests.kids + guests.babys
-  }
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setContainerDimensions({
-        height: rect.height,
-        width: rect.width,
-      });
-      setLeftPosition( rect.width/5  * -3 );
-    }
-  }, [containerRef]);
-
-  const updateGuest = (type: "adults" | "kids" | "babys", count: number) => {
-    setGuests((prevGuests) => ({ ...prevGuests, [type]: count }));
-  };
-
-  const toggleOpenGuestPicker = () => {
-    toggleBar("guests");
-  }
-
-  return (
-    <div className="relative w-full h-full">
-      <div className={`${openBar ? "after:absolute after:top-0 after:left-0 after:content-[''] after:w-full after:h-2 after:bg-secondary":""} h-full w-full gap-x-4 flex flex-row justify-center items-center cursor-pointer`} onClick={toggleOpenGuestPicker}> 
-        <User/>
-        {getTotalGuest()}
-      </div>
-      <AnimatePresence>
-      {openBar && (
-          <motion.div 
-            initial="hidden"
-            animate="show"
-            exit="hidden"
-            variants={fadeIn("left","",0,0.5)}
-            className={`absolute z-[1000] bg-slate-50 grid grid-cols-3 `}
-              style={{
-                top: `${containerDimensions.height}px`,
-                left: `${leftPosition}px`,
-                height:`${containerDimensions.height}px`,
-                width: `${containerDimensions.width}px`,
-              }}
-          >
-            <InputGuestBar guests={guests} type="adults" handleCount={updateGuest}/>
-            <InputGuestBar guests={guests} type="kids" handleCount={updateGuest}/>
-            <InputGuestBar guests={guests} type="babys" handleCount={updateGuest}/>
-          </motion.div>
-      )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
 interface propssSearchBar {
   section?:string;
 }
@@ -201,7 +107,6 @@ const SearchDatesBar = ({section}:propssSearchBar) => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const { dates, updateDateFrom, updateDateTo } = useCart();
-  const [guests, setGuests] = useState<{adults:number, kids:number, babys:number}>({ adults:1, kids:0, babys:0 });
   const [openBar, setOpenBar] = useState<{startDate:boolean, endDate: boolean, guests: boolean }>({ startDate: false, endDate: false, guests: false });
 
   const toggleBar = (type: "startDate" | "endDate" | "guests" | null) => {
@@ -233,13 +138,12 @@ const SearchDatesBar = ({section}:propssSearchBar) => {
       animate="show"
       variants={fadeIn("up","",0.5,1)}
       ref={containerRef} 
-      className="relative  mt-24 w-[100%] sm:w-[80%] h-[120px] sm:h-[180px] lg:h-[60px] bg-white z-[50] grid grid-cols-2 lg:grid-cols-4">
-      <div className="max-lg:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary">
+      className={`relative  mt-24 w-[100%] sm:w-[80%]  ${section =="booking" ? "h-[100px] sm:h-[120px]" :"h-[120px] sm:h-[180px]" } lg:h-[60px] bg-white z-[50] grid grid-cols-2 ${section == "booking" ?  "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
+      <div className={`${section == "booking" ? "hidden" : ""} max-lg:hidden relative flex flex-col w-full justify-center items-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-2 after:bg-secondary`}>
         <span className="text-slate-700 flex flex-row gap-x-4"><MapPin /> Bambucamp</span>
       </div>
       <DatePicker openBar={ openBar['startDate']} type="startDate" section={section}  toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
       <DatePicker openBar={ openBar['endDate']} type="endDate" section={section} toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
-      {/*<GuestPicker openBar={ openBar['guests']} toggleBar={toggleBar} guests={guests} setGuests={setGuests} containerRef={containerRef}/>*/}
       <button className="bg-tertiary text-white w-full col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
     </motion.div>
 

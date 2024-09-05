@@ -76,9 +76,9 @@ const ForgotPassword = () => {
   return (
     <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: `url(${LUNAHUANA})`}}>
       <div className="w-full h-full flex justify-center items-center">
-        <form id="form_user_forget_password" className="w-[300px] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitForgotPassword(e)}>
+        <form id="form_user_forget_password" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitForgotPassword(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
-          <p className="text-secondary text-xs sm:text-sm my-2">{t("An email with a restore code will be send to your email")}</p>
+          <p className="text-primary text-[11px] sm:text-sm my-2">{t("An email with a restore code will be send to your email")}</p>
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Email")}</label>
             <input name="email"  className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>

@@ -11,7 +11,7 @@ const SectionHeader = (props:propSectionHeader) => {
 
   return(
     <div
-      className="absolute inset-x-0 top-24 sm:top-10 mx-auto w-[80%] sm:w-[400px] h-auto z-100 flex flex-row justify-around items-center">
+      className="absolute inset-x-0 top-24 sm:top-10 mx-auto w-[80%] sm:w-[400px] h-auto z-100 flex flex-row justify-around items-center z-[40]">
       <div className="absolute w-full h-1 top-[25px] -translate-y-1/2 bg-slate-200 rounded-full z-10 duration-300 transition-all">
         <div className={`${identifier == "glampings" ? "w-1/3": ( identifier == "extras" ? "w-2/3" : "w-full" ) } h-full bg-secondary duration-300 transition-all`}></div>
       </div>

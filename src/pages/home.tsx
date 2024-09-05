@@ -20,7 +20,7 @@ import { Tent  } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as LucideIcons from 'lucide-react';
-import ChatComponent from "../components/Chat.tsx"
+import ChatComponent from "../components/ChatWhatsapp.tsx"
 import {ContactForm, webContent} from "../lib/interfaces.ts";
 import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
 
@@ -306,9 +306,11 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <div className="w-full h-auto flex flex-row p-none m-none justify-start items-end gap-x-3">
-              <input type="checkbox" name="saveinfo" className="w-4 h-4 text-xs sm:text-md bg-transparent text-white focus:text-white px-2 border-b-2 border-secondary focus:outline-none"/>
-            <label htmlFor="message" className="font-primary text-tertiary text-xs h-auto">{t("Save info for future promotions")}</label>
+            <div className="w-full h-auto flex flex-row p-none m-none justify-start items-end">
+              <div key="checkbox_save_info" className="checkbox-wrapper-13">
+                <input name="saveinfo" type="checkbox" aria-hidden="true"/>
+                <label htmlFor="saveinfo" className="text-xs">{t("Save info for future promotions")} </label>
+              </div>
             </div>
             <div className="w-full h-6">
               {errorMessages.saveinfo && 

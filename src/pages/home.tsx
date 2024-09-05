@@ -14,7 +14,6 @@ import { ZodError } from 'zod';
 import Button from "../components/ui/Button"
 import { formHomeSchema } from "../db/schemas.ts"
 import PromotionCard from "../components/CardPromotion"
-import {promotionsData} from "../lib/constant"
 import Collapsible from "../components/Collapsible"
 import { Tent  } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -130,7 +129,7 @@ const Home = () => {
         <Reviews reviews={dataWebHome.reviews}/>
       </div>
 
-      <div id="us" className="relative w-full h-auto bg-black flex flex-col justify-center items-center">
+      <div id="us-section" className="relative w-full h-auto bg-black flex flex-col justify-center items-center">
         <div className="background-image absolute inset-0 w-full h-full opacity-[70%] bg-cover bg-no-repeat bg-bottom z-20" style={{backgroundImage: `url(${LUNAHUANA})`}}></div>
         <div className="flex flex-col justify-center items-center gap-y-6 w-full max-w-7xl py-12 px-6 sm:px-12 lg:px-48 z-50">
           <motion.h2 
@@ -163,7 +162,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div id="promotions" className="relative w-full h-auto lg:h-auto py-24 px-6 sm:px-12 lg:px-24 2xl:px-36 flex flex-col justify-start items-start gap-y-6">
+      <div id="promotions-section" className="relative w-full h-auto lg:h-auto py-24 px-6 sm:px-12 lg:px-24 2xl:px-36 flex flex-col justify-start items-start gap-y-6">
         <motion.h2 
           initial="hidden"
           whileInView='show'
@@ -187,8 +186,8 @@ const Home = () => {
         </div>
 
         <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 2xl:gap-24 max-lg:mt-12 max-sm:overflow-auto">
-          {promotionsData.length > 1 && (
-            promotionsData.map((promotion,index) => (
+          {dataWebHome.promotions.length > 1 && (
+            dataWebHome.promotions.map((promotion,index) => (
               <PromotionCard key={"promotion_card"+index} promotion={promotion} index={index}/>
             ))
           )}
@@ -196,11 +195,11 @@ const Home = () => {
       </div>
 
       {dataWebHome.tents.length > 1 && (
-        <div id="reservations" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
+        <div id="services-section" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
           <VerticalCarousel tents={dataWebHome.tents}/>
         </div>
       )}
-      <div id="services" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
+      <div id="services-2-section" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
         <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("Services")}</h1>
         <ServiceCard name="BambuAdventure" image={SERVICE_1} href="services" iconName="Waves" />
         <ServiceCard name="BambuFood" image={SERVICE_2} href="services" iconName="Pizza"/>
@@ -246,7 +245,7 @@ const Home = () => {
         </motion.div>
       </div>
 
-      <div id="contact" className="relative w-full h-[100vh] flex flex-col justify-center items-center z-[20]">
+      <div id="contact-section" className="relative w-full h-[100vh] flex flex-col justify-center items-center z-[20]">
         <video src={FooterBanner} autoPlay loop  muted className="absolute top-0 left-0 w-full h-full object-cover"/>
         <motion.form
           initial="hidden"
@@ -256,6 +255,23 @@ const Home = () => {
           id="form_contact_home" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-4 sm:p-6 z-[50]" style={{background: "rgba(255,255,255,0.20)"}} onSubmit={(e)=>onSubmitCreation(e)}>
           <Tent className="h-12 w-12 text-tertiary"/>
           <h2 className="text-tertiary text-2xl my-2">{t("Contact Us")}</h2>
+
+
+          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
+            <label htmlFor="name" className="font-primary text-tertiary text-sm h-auto">{t("Name")}</label>
+            <input name="name" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Name")}/>
+            <div className="w-full h-6">
+              {errorMessages.name && 
+                <motion.p 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("up","", 0, 1)}
+                  className="h-6 text-[10px] sm:text-xs text-white font-tertiary">{t(errorMessages.name)}
+                </motion.p>
+              }
+            </div>
+          </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-tertiary text-sm h-auto">{t("Email")}</label>
@@ -273,21 +289,6 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <label htmlFor="name" className="font-primary text-tertiary text-sm h-auto">{t("Name")}</label>
-            <input name="name" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Name")}/>
-            <div className="w-full h-6">
-              {errorMessages.name && 
-                <motion.p 
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  variants={fadeIn("up","", 0, 1)}
-                  className="h-6 text-[10px] sm:text-xs text-white font-tertiary">{t(errorMessages.name)}
-                </motion.p>
-              }
-            </div>
-          </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="message" className="font-primary text-tertiary text-sm h-auto">{t("Message")}</label>

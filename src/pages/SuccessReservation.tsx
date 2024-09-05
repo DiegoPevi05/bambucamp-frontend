@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
+import Confetti from 'react-confetti'
 
 const SuccessReservation:React.FC = () => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const SuccessReservation:React.FC = () => {
   return(
     <>
       <div className="w-full min-h-screen relative flex flex-row overflow-x-hidden">
+        <Confetti recycle={false} />
         <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
           <div className="flex flex-row w-full h-auto gap-x-4">

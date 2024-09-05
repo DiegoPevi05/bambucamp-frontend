@@ -5,27 +5,52 @@ import { styles } from "../lib/styles";
 import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
 import {fadeIn, slideIn} from "../lib/motions";
-import {motion, AnimatePresence} from "framer-motion";
+import {motion} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LanguageDropDownList from "./ui/LanguageSelector";
 import {useAuth} from "../contexts/AuthContext";
 import DropDownListAccount from "./DropDownListAccount";
 
-const NavBarItem = ({children, index}:{children:string, index:number}) => {
+const NavBarItem = ({children, index, route, scrollTarget, goToRoute}:{children:string; index:number; route?: string; scrollTarget?: string; goToRoute: (route: string) => void; }) => {
+
+  const handleClick = () => {
+    if (scrollTarget) {
+      const targetElement = document.getElementById(scrollTarget);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (route) {
+      goToRoute(route);
+    }
+  };
+
   return (
     <motion.div 
       initial="hidden"
       animate='show'
       viewport={{ once: true }}
       variants={fadeIn("down","",1+0.1*index,1)}
+      onClick={handleClick}
       className="w-full h-[80px] flex flex-column justify-center items-center">
       <li className="text-secondary text-xl hover:scale-[1.05]  hover:text-white ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
     </motion.div>
   )
 };
 
-const NavBarItemMobile = ({children, index}:{children:string, index:number}) => {
+const NavBarItemMobile = ({children, index, route, scrollTarget, goToRoute,closeNavBar}:{children:string; index:number ; route?: string; scrollTarget?: string; goToRoute: (route: string) => void; closeNavBar: ()=>void }) => {
+
+  const handleClick = () => {
+    if (scrollTarget) {
+      const targetElement = document.getElementById(scrollTarget);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (route) {
+      goToRoute(route);
+    }
+    closeNavBar();
+  };
   return (
 
     <motion.div 
@@ -34,6 +59,7 @@ const NavBarItemMobile = ({children, index}:{children:string, index:number}) => 
       viewport={{ once: true }}
       variants={slideIn("right","",0.1*index,0.3)}
       className="w-full h-auto sm:h-[50px]"
+      onClick={handleClick}
     >
       <li className="text-white text-lg sm:text-3xl hover:scale-[1.05]  hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
     </motion.div>
@@ -63,11 +89,11 @@ const Navbar = () => {
         </a>
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-6">
-        <NavBarItem index={1}>{t("Us")}</NavBarItem>
-        <NavBarItem index={3}>{t("Promotions")}</NavBarItem>
-        <NavBarItem index={2}>{t("Reservations")}</NavBarItem>
-        <NavBarItem index={4}>{t("Services")}</NavBarItem>
-        <NavBarItem index={5}>{t("Contact Us")}</NavBarItem>
+        <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("Us")}</NavBarItem>
+        <NavBarItem index={2} route="/booking" goToRoute={goToRoute}>{t("Reservations")}</NavBarItem>
+        <NavBarItem index={3} scrollTarget="promotions-section" goToRoute={goToRoute}>{t("Promotions")}</NavBarItem>
+        <NavBarItem index={4} scrollTarget="services-section" goToRoute={goToRoute}>{t("Services")}</NavBarItem>
+        <NavBarItem index={5} scrollTarget="contact-section" goToRoute={goToRoute}>{t("Contact Us")}</NavBarItem>
       </ul>
       <div className="w-[50%] lg:w-[20%] h-full flex justify-end lg:justify-center items-center">
         <LanguageDropDownList/>
@@ -88,11 +114,11 @@ const Navbar = () => {
                 <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
               </a>
               <ul className="flex flex-col justify-start items-start gap-y-6 mt-16">
-                <NavBarItemMobile index={1}>{t("Us")}</NavBarItemMobile>
-                <NavBarItemMobile index={2}>{t("Reservations")}</NavBarItemMobile>
-                <NavBarItemMobile index={3}>{t("Promotions")}</NavBarItemMobile>
-                <NavBarItemMobile index={4}>{t("Services")}</NavBarItemMobile>
-                <NavBarItemMobile index={5}>{t("Contact Us")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="us-section" goToRoute={goToRoute} index={1}>{t("Us")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} route="/booking" goToRoute={goToRoute}  index={2}>{t("Reservations")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="promotions-section" goToRoute={goToRoute} index={3}>{t("Promotions")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="services-section" goToRoute={goToRoute} index={4}>{t("Services")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="contact-section" goToRoute={goToRoute} index={5}>{t("Contact Us")}</NavBarItemMobile>
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
                 {user ?

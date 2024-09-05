@@ -29,7 +29,7 @@ const DropDownListAccount = (props:DropDownProps) => {
   };
 
   return(
-    <div className="relative w-auto h-full max-sm:mt-12 ml-auto sm:mx-6 z-[20]">
+    <div className="relative w-auto h-full ml-auto sm:mx-6 z-[20]">
       <div onClick={toogleDropDown} className={`${variant =="dark" ? "text-secondary" : "text-white"} text-sm sm:text-xl  px-2 flex flex-row gap-x-1 z-50 items-center justify-center cursor-pointer hover:text-tertiary duration-300`}><User className="h-5 w-5"/>{user?.firstName ? user.firstName : "user" }<ChevronDown/></div>
       <AnimatePresence>
         {open && 

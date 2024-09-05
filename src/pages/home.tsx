@@ -198,7 +198,7 @@ const Home = () => {
       </div>
 
       <div id="reservations" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
-        <VerticalCarousel/>
+        <VerticalCarousel tents={dataWebHome.tents}/>
       </div>
       <div id="services" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
         <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("Services")}</h1>

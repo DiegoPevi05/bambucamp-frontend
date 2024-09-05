@@ -186,7 +186,7 @@ const Booking: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-start justify-start flex-col  w-[80%] lg:w-[450px] h-[20%] lg:h-[100px] py-2 lg:py-4 px-12 mt-[5%] lg:mt-4">
-                      <p className="font-primary text-white text-xs">{tent.description}</p>
+                      <p className="font-primary text-white text-xs">{tent.description ? (tent.description.length > 250 ? tent.description.slice(0,250)+"..." : tent.description) : ""}</p>
                     </div>
                     <div className="flex items-start justify-start flex-col w-[80%] lg:w-[450px] h-[20%] lg:h-[100px] py-2 lg:py-4 px-10  mt-[4%] lg:mt-4">
                       <label className="text-white">{t("Services")}</label>
@@ -260,9 +260,9 @@ const Booking: React.FC = () => {
                       <h1 className="font-primary text-tertiary text-lg uppercase">{tent.title}</h1>
                       {tent.custom_price != tent.price ?
                         <>
-                          <h2 className="font-primary text-white text-sm uppercase line-through">{formatPrice(tent.price)}</h2>
+                          <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(tent.price)}</h2>
                           <h1 className="font-primary text-tertiary text-lg uppercase">{formatPrice(tent.custom_price)}</h1>
-                          <span className="text-white text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{"off of discount only for today"}</span>
+                          <span className="text-primary text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{"off of discount only for today"}</span>
                         </>
                       :
                         <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(tent.price)}</h1>

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { styles } from "../lib/styles"
 import { tentsData } from "../lib/constant"
 import { Tent } from "../lib/interfaces"
@@ -38,7 +38,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       exit="hidden"
       variants={fadeIn("left","", data.id*0.1,1)}
       onClick={selectCard}
-      className="bg-black
+      className="shrink-1 bg-black
       h-[300px] 2xl:h-[350px] min-w-[160px] 2xl:min-w-[200px]  2xl:w-[200px]
       w-full rounded-3xl shadow-3xl relative overflow-hidden hover:-translate-y-4 ease-in-out duration-1200 transition-all
       flex flex-col justify-end items-start pb-6 border border-4 border-secondary
@@ -59,7 +59,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       </motion.div>
       <div className={`w-full h-full ${ isSelected ? "opacity-100" : "opacity-50" } absolute top-0 left-0 bg-cover bg-center bg-no-repeat 
         hover:opacity-100 cursor-pointer duration-1200 transition-all`}
-        style={{backgroundImage: `url(${data.images[2]})`}}>
+        style={{backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${data.images[1]})`}}>
       </div>
     </motion.div>
   )
@@ -87,17 +87,21 @@ const CarouselImages = (props:carouselImagesProps) => {
   )
 }
 
-const VerticalCarousel = () => {
+interface VerticalCarousel{
+  tents:Tent[];
+}
+
+const VerticalCarousel = (props:VerticalCarousel) => {
+  const {tents} = props;
+  console.log(tents)
 
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const [tents, setTents] = useState<Tent[]>(tentsData)
   const [selectedTent, setSelectedTent] = useState<Tent>(tentsData[0])
   const [selectedImage, setSelectedImage] = useState<number>(0);
 
   const handleSelectTent = (id:number) => {
     const selectedIndex = tents.findIndex(tent => tent.id === id);
-    const previousIndex = tents.slice(0, selectedIndex).length;
     setSelectedTent(tents[selectedIndex]);
   }
 
@@ -111,6 +115,10 @@ const VerticalCarousel = () => {
     setSelectedImage(selectedImage-1)
   };
 
+  useEffect(()=>{
+    setSelectedImage(0);
+  },[selectedTent])
+
   const goBooking = () => {
     navigate("/booking")
   }
@@ -119,17 +127,15 @@ const VerticalCarousel = () => {
   return (
     <div className="w-full h-[100vh] bg-white relative flex flex-col lg:grid lg:grid-cols-5 lg:grid-rows-2 ">
         <div className="relative lg:col-span-2 lg:row-span-2 w-full h-full">
-          <AnimatePresence>
-            <motion.img 
-              key={`${selectedTent.id}-${selectedImage}`}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-              variants={fadeOnly("", 0, 1)}
-              src={selectedTent.images[selectedImage]} 
-              className="w-full h-full object-cover"
-            />
-          </AnimatePresence>
+          <motion.img 
+            key={`${selectedTent.id}-${selectedImage}`}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            variants={fadeOnly("", 0, 1)}
+            src={`${import.meta.env.VITE_BACKEND_URL}/`+selectedTent.images[selectedImage]} 
+            className="w-full h-full object-cover"
+          />
           <div className="absolute lg:bottom-[5%] max-lg:top-[5%] max-lg:right-[2%] lg:left-0 w-auto lg:w-full h-auto flex justify-center items-center gap-x-2 sm:gap-x-12">
             <button onClick={handlePrevImage} className="w-10 sm:w-16 h-10 sm:h-16 bg-white rounded-full flex justify-center items-center hover:cursor-pointer hover:-translate-x-2 duration-300 border-2 border-secondary">
               <ChevronLeftIcon className="w-6 sm:w-8 h-6 sm:h-8 text-primary"/>
@@ -150,16 +156,16 @@ const VerticalCarousel = () => {
               className="w-full h-full flex flex-col justify-end items-start max-lg:gap-y-2 px-4 lg:px-24 "
             >
                 <h2 
-                  className={`${styles.sectionSubText} text-white`}>{selectedTent.header}
+                  className={`${styles.sectionSubText} text-white hidden sm:block`}>{selectedTent.header}
                 </h2>
 
                 <h1 
                   className={`${styles.sectionHeadText} text-tertiary flex flex-row items-center`}><TentIcon className="h-8 w-8"/>{selectedTent.title}
                 </h1>
                 <p 
-                  className={`${styles.sectionBodyText} text-white`}>{selectedTent.description}
+                  className={`${styles.sectionBodyText} text-white mb-2`}>{selectedTent.description}
                 </p>
-              <ul className="w-full h-auto flex flex-row flex-wrap lg:grid lg:grid-cols-4 gap-2 lg:gap-4 sm:pb-6 lg:pb-12">
+              <ul className="w-full h-auto flex flex-row flex-wrap lg:grid lg:grid-cols-4 gap-2 lg:gap-4 sm:pb-4">
                 {Object.entries(selectedTent.services).map(([service, value]) => {
                     if (value) {
 

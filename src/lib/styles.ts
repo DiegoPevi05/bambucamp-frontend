@@ -13,7 +13,7 @@ const styles = {
   sectionSubText:
     "font-primary lg:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
   sectionBodyText:
-    "font-secondary lg:text-[16px] sm:text-[14px] text-[0.7rem] lg:leading-[40px] text-justify",
+    "font-secondary lg:text-[14px] sm:text-[14px] text-[0.5rem] sm:leading-[30px] text-justify",
 
   sectionNewsHeader:
     "font-secondary text-primary lg:text-[40px] sm:text-[40px] xs:text-[40px] text-[40px] lg:leading-[45px] my-4",

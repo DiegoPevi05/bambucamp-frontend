@@ -88,14 +88,14 @@ const Reservation:React.FC = () => {
         <SectionHeader identifier="payment"/>
         <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
-          <div className="flex flex-row w-full h-auto gap-x-4">
-            <button onClick={()=>goToRoute("/extras")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
+          <div className="flex flex-row w-full h-auto gap-x-4 mt-36 sm:mt-24 2xl:mt-auto">
+            <button onClick={()=>goToRoute("/extras")} className="rounded-full h-8 sm:h-12 w-8 sm:w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 ">
               <ChevronLeftIcon className="h-full w-full group-hover:text-white"/>
             </button>
-            <h1 className="font-primary text-secondary  text-6xl">{t("Reserve")}</h1>
+            <h1 className="font-primary text-secondary  text-2xl sm:text-6xl">{t("Reserve")}</h1>
           </div>
-          <div className="grid grid-cols-2 w-full h-auto">
-            <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-tertiary">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full h-auto">
+            <div className="flex flex-col justify-start items-start col-span-1 pt-10 sm:pt-16 sm:px-8 gap-y-4 text-tertiary">
               <span className="flex flex-row items-end gap-x-2">
                 <List className="h-8 w-8"/>
                 <h2 className="text-2xl">{t("Summary")}</h2>
@@ -185,8 +185,8 @@ const Reservation:React.FC = () => {
               )}
             </div>
 
-            <div className="flex flex-col justify-start items-start col-span-1 pt-16 px-8 gap-y-4 text-secondary">
-              <div className="w-[50%] h-auto flex flex-col justify-start items-start gap-y-2 rounded-xl border-2 border-slate-200 p-4 shadow-sm">
+            <div className="flex flex-col justify-start items-start col-span-1 pt-12 sm:pt-16 sm:px-8 gap-y-4 text-secondary">
+              <div className="w-full 2xl:w-[50%] h-auto flex flex-col justify-start items-start gap-y-2 rounded-xl border-2 border-slate-200 p-4 shadow-sm">
                 <span className="flex flex-row items-end gap-x-2 mb-2">
                   <Coins className="h-6 w-6"/>
                 </span>
@@ -211,7 +211,7 @@ const Reservation:React.FC = () => {
                 </div>
               </div>
 
-              <div className="w-[50%] flex flex-col gap-y-2">
+              <div className="w-full 2xl:w-[50%] flex flex-col gap-y-2">
                 <Button 
                       onClick={()=>onSubmitCreateReserve()}
                       variant="dark" effect="default" size="lg"  

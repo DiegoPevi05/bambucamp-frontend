@@ -59,7 +59,7 @@ export const getContentWeb = async (language:string): Promise<webContent|null> =
 export const ContactFormSubmit = async (contactFormValues: ContactForm, language:string): Promise<boolean> => {
 
   try {
-    const contactFormResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/contact`, contactFormValues, {
+    const contactFormResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/web/contact`, contactFormValues, {
       headers: {
         'Accept-Language':language,
       }

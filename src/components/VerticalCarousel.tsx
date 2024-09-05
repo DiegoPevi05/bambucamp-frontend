@@ -75,8 +75,8 @@ const CarouselImages = (props:carouselImagesProps) => {
   const {tents,selectedTentId,handleSelect} = props;
 
   return (
-    <div className="w-full h-full  flex flex-row justify-center items-center overflow-x-scroll no-scroll-bar">
-      <div className="w-full h-full flex flex-row gap-x-6 px-12 2xl:px-24 py-12 ">
+    <div className="w-full h-full  flex flex-row justify-center items-center overflow-x-scroll">
+      <div className="w-full h-full flex flex-row-reverse justify-end gap-x-6 px-12 py-12">
         <AnimatePresence>
           {tents.map((tent,index)=>(
             <CarouselCard key={tent.id+"-"+index} data={tent} isSelected={tent.id === selectedTentId} handleSelect={handleSelect}/>
@@ -93,11 +93,10 @@ interface VerticalCarousel{
 
 const VerticalCarousel = (props:VerticalCarousel) => {
   const {tents} = props;
-  console.log(tents)
 
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const [selectedTent, setSelectedTent] = useState<Tent>(tentsData[0])
+  const [selectedTent, setSelectedTent] = useState<Tent>(tents[0])
   const [selectedImage, setSelectedImage] = useState<number>(0);
 
   const handleSelectTent = (id:number) => {
@@ -206,7 +205,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
         </div>
         <div className="max-lg:absolute max-lg:bottom-[5%] w-full h-auto flex flex-row justify-center items-center lg:hidden z-[20] gap-x-4">
           {tents.map((tent,index)=>(
-            <span onClick={()=>handleSelectTent(tent.id)} className={`${ selectedTent.id == tent.id ? "bg-secondary" : "bg-white" } duration-300 h-6 w-6 cursor-pointer rounded-full border-2 border-secondary`}></span>
+            <span key={"span_tent_selection"+index} onClick={()=>handleSelectTent(tent.id)} className={`${ selectedTent.id == tent.id ? "bg-secondary" : "bg-white" } duration-300 h-6 w-6 cursor-pointer rounded-full border-2 border-secondary`}></span>
           ))}
         </div>
     </div>

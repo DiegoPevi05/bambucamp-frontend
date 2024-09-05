@@ -25,7 +25,7 @@ import {ContactForm, webContent} from "../lib/interfaces.ts";
 import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
 import FooterDevelopment from "../components/FooterDevelopment.tsx";
 
-const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:string,iconName:any}) => {
+const ServiceCard = ({name,image,iconName}:{name:string;image:string;href:string,iconName:any}) => {
   const navigate = useNavigate();
 
   // @ts-ignore: Ignore TypeScript checking for IconComponent
@@ -60,8 +60,6 @@ const Home = () => {
           setDataWebHome(webContent);
       }
   }
-
-  console.log(dataWebHome);
 
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
 
@@ -191,15 +189,17 @@ const Home = () => {
         <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 2xl:gap-24 max-lg:mt-12 max-sm:overflow-auto">
           {promotionsData.length > 1 && (
             promotionsData.map((promotion,index) => (
-              <PromotionCard promotion={promotion} index={index}/>
+              <PromotionCard key={"promotion_card"+index} promotion={promotion} index={index}/>
             ))
           )}
         </div>
       </div>
 
-      <div id="reservations" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
-        <VerticalCarousel tents={dataWebHome.tents}/>
-      </div>
+      {dataWebHome.tents.length > 1 && (
+        <div id="reservations" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
+          <VerticalCarousel tents={dataWebHome.tents}/>
+        </div>
+      )}
       <div id="services" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
         <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("Services")}</h1>
         <ServiceCard name="BambuAdventure" image={SERVICE_1} href="services" iconName="Waves" />
@@ -238,7 +238,7 @@ const Home = () => {
           viewport={{ once: true }}
           variants={fadeIn("left","tween",0.8,1.5)}
           className="block w-full h-full col-span-1 flex flex-col justify-start items-center lg:px-24">
-          {dataWebHome.faqs.map((faq,index)=>{
+          {dataWebHome.faqs.map((faq)=>{
             return(
               <Collapsible key={`faqs_question_${faq.id}`} title={faq.question} content={faq.answer}/>
             )

@@ -23,6 +23,7 @@ import * as LucideIcons from 'lucide-react';
 import ChatComponent from "../components/ChatWhatsapp.tsx"
 import {ContactForm, webContent} from "../lib/interfaces.ts";
 import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
+import FooterDevelopment from "../components/FooterDevelopment.tsx";
 
 const ServiceCard = ({name,image,href,iconName}:{name:string;image:string;href:string,iconName:any}) => {
   const navigate = useNavigate();
@@ -328,6 +329,7 @@ const Home = () => {
         </motion.form>
       </div>
       <Footer/>
+      <FooterDevelopment/>
     </div>
   )
 }

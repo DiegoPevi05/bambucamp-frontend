@@ -78,9 +78,8 @@ const Navbar = () => {
         }
         <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
       </div>
-
-          <div
-            className={`w-screen h-[100vh] absolute top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
+      <div className={`sm:hidden ${!openSideBar ? "pointer-events-none" :"" } w-screen h-screen absolute top-0 left-0`}>
+          <div className={`sm:hidden w-screen h-[100vh] fixed top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
             <div className="h-10 sm:h-16 w-10 sm:w-16 absolute top-12 right-12">
               <X onClick={toogleSidebar} className="h-full w-auto text-white cursor-pointer hover:text-primary"/>
             </div>
@@ -115,6 +114,8 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+      </div>
+
     </nav>
   );
 };

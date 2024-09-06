@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react"
 import {GOOGLE_ICON} from "../assets/images"
 import { ExternalLink, Star  } from "lucide-react"
-import {Review, ReviewIT} from "../lib/interfaces"
-import {reviewsData} from "../lib/constant"
+import {Review, } from "../lib/interfaces"
 import {useTranslation} from "react-i18next"
-import {capitalizeNames, formatDateToYYYYMMDD, getInitials, getTimeAgo} from "../lib/utils"
+import {capitalizeNames, getInitials, getTimeAgo} from "../lib/utils"
 
 interface CardReviewProps {
   data:Review 
 }
 
 const CardReview = (props:CardReviewProps) => {
-  const {t} = useTranslation()
-  const {data} = props
+  const {t,i18n} = useTranslation();
+  const {data} = props;
   const isMobile = window.innerWidth < 1026;
 
   return(
@@ -42,7 +40,7 @@ const CardReview = (props:CardReviewProps) => {
         </div>
 
         <div className="w-full h-auto flex flex-row justify-start items-center">
-          <p className="text-secondary text-xs">{getTimeAgo(data.day)}</p>
+          <p className="text-secondary text-xs">{getTimeAgo(data.day,t,i18n.language)}</p>
         </div>
 
       </div>

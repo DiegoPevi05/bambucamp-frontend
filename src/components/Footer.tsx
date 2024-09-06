@@ -1,5 +1,6 @@
-import {Dot, PhoneCall,Smartphone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { PhoneCall,Smartphone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
 import {LOGO_PRIMARY } from "../assets/images"
+import {useTranslation} from 'react-i18next';
 
 const FooterLink = ({children}:{children:string}) => {
   return (
@@ -8,6 +9,8 @@ const FooterLink = ({children}:{children:string}) => {
 };
 
 const Footer = () => {
+  const {t} = useTranslation();
+
   return (
     <footer className="relative w-full h-auto bg-primary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 px-12 sm:px-24 lg:px-48 py-12 lg:pt-12 gap-y-6 lg:gap-x-12">
 
@@ -24,27 +27,26 @@ const Footer = () => {
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
-        <FooterLink>About Us</FooterLink>
-        <FooterLink>Schedules</FooterLink>
-        <FooterLink>Promotions</FooterLink>
-        <FooterLink>Services</FooterLink>
-        <FooterLink>Contact Us</FooterLink>
+        <FooterLink>{t("About Us")}</FooterLink>
+        <FooterLink>{t("Promotions")}</FooterLink>
+        <FooterLink>{t("Services")}</FooterLink>
+        <FooterLink>{t("Contact Us")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
-        <FooterLink>Tents</FooterLink>
+        <FooterLink>Glampings</FooterLink>
         <FooterLink>Extras</FooterLink>
-        <FooterLink>My Reservations</FooterLink>
+        <FooterLink>{t("Reservations")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
-        <FooterLink>Service Politics</FooterLink>
-        <FooterLink>Privacy Politics</FooterLink>
-        <FooterLink>Cookies Politics</FooterLink>
+        <FooterLink>{t("Service Politics")}</FooterLink>
+        <FooterLink>{t("Privacy Politics")}</FooterLink>
+        <FooterLink>{t("Cookies Politics")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-3">
-        <h2 className="font-primary text-white text-md">Contact us</h2>
+        <h2 className="font-primary text-white text-md">{t("Contact Us")}</h2>
         <div className="flex flex-row gap-x-4">
           <div className="flex flex-row gap-x-2 text-white">
             <PhoneCall className="h-4 w-4" />

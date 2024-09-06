@@ -767,7 +767,7 @@ const DashboardReserves = () => {
     const { user } = useAuth();
 
     const [datasetReserves,setDataSetReserves] = useState<{reserves:Reserve[],totalPages:Number,currentPage:Number}>({reserves:[],totalPages:1,currentPage:1});
-    const [datasetReserveCalendar,setDataSetReservesCalendar] = useState<{ reserves: { id:number, dateFrom:Date, dateTo:Date }[] }>({reserves:[]})
+    const [datasetReserveCalendar,setDataSetReservesCalendar] = useState<{ reserves: { id:number, external_id:string, dateFrom:Date, dateTo:Date }[] }>({reserves:[]})
 
     const [dataNotifications,setDataNotifications] = useState<{notifications:NotificationDto[], totalPages:Number, currentPage:Number}>({notifications:[],totalPages:1, currentPage:1})
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -824,7 +824,7 @@ const DashboardReserves = () => {
 
     },[currentDate])
 
-    const calendarDays = Calendar(currentDate, datasetReserveCalendar.reserves.map((reserve) => ({ reserveID:reserve.id , checkin: reserve.dateFrom, checkout: reserve.dateTo })));
+    const calendarDays = Calendar(currentDate, datasetReserveCalendar.reserves.map((reserve) => ({ reserveID:reserve.id , external_id:reserve.external_id , checkin: reserve.dateFrom, checkout: reserve.dateTo })));
 
     return (
     <Dashboard>
@@ -833,8 +833,9 @@ const DashboardReserves = () => {
         animate="show"
         exit="hidden"
         variants={fadeIn("up","",0,0.5)}
-        className="bg-white flex flex-col justify-start items-start sm:row-span-7 sm:grid sm:grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto flex flex-col sm:col-span-1 sm:row-span-2">
+        className="bg-white h-auto flex flex-col justify-start items-start lg:row-span-7 lg:grid lg:grid-cols-2 lg:grid-rows-3 gap-4">
+
+        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto flex flex-col lg:col-span-1 lg:row-span-2">
             <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
             <p className="font-secondary text-sm sm:text-md text-tertiary">{t("View your reserves through months")}</p>
             <div className="w-full h-auto flex flex-row gap-x-2 my-4 sm:my-2">
@@ -860,9 +861,9 @@ const DashboardReserves = () => {
                   </div>
                 </motion.div>
             </AnimatePresence>
-          </div>
+        </div>
 
-        <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] sm:min-h-[500px] lg:h-full col-span-1 row-span-3 flex flex-col">
+        <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] lg:h-full flex flex-col lg:col-span-1 lg:row-span-3 ">
           <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
           <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
 
@@ -875,17 +876,21 @@ const DashboardReserves = () => {
                 <Button onClick={ () => getMyReservesHandler( Number(datasetReserves.currentPage) - 1)} size="sm" variant="dark" effect="default" isRound={true} disabled={datasetReserves.currentPage == 1}> <ChevronLeft/>  </Button>
                 <Button onClick={ () => getMyReservesHandler( Number(datasetReserves.currentPage) + 1)} size="sm" variant="dark" effect="default" isRound={true} disabled={datasetReserves.currentPage >= datasetReserves.totalPages}> <ChevronRight/> </Button>
             </div>
-          </div>
+        </div>
 
-        <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 max-sm:min-h-[400px] sm:col-span-1 sm:row-span-1 overflow-hidden">
+        <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full max-lg:min-h-[400px] flex flex-col lg:col-span-1 lg:row-span-1">
             <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
-            <p className="font-secondary text-md text-tertiary">{"Aqui estan las ultimas notificaciones"}</p>
-            <div className="w-full h-full sm:h-[60%] flex flex-col overflow-y-scroll gap-y-4 mt-4">
-                {dataNotifications.notifications.map((notification, index) => (
-                  <NotificationCard key={index} notification={notification}/>
-                ))}
+            <p className="font-secondary text-md text-tertiary">{t("Here are the latest notifications")}</p>
+            <div className="w-full h-full overflow-hidden">
+              <div className="w-full h-[300px] lg:h-36 flex flex-col overflow-y-scroll gap-y-4 mt-4 pr-2">
+                  {dataNotifications.notifications.map((notification, index) => (
+                    <NotificationCard key={index} notification={notification}/>
+                  ))}
+              </div>
             </div>
-          </div>
+        </div>
+
+
       </motion.div>
     </Dashboard>
     )

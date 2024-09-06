@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber';
 import {  useGLTF } from '@react-three/drei';
 import { a } from '@react-spring/three';
 import { BG_BOOKING, NOTICE_BOARD } from '../assets/images';
-import { AnimatePresence, motion } from 'framer-motion';
-import { fadeIn, fadeOnly, slideIn } from '../lib/motions';
+import {  motion } from 'framer-motion';
+import { fadeIn, fadeOnly } from '../lib/motions';
 import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, User, UserIcon, X} from 'lucide-react';
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
@@ -262,7 +262,7 @@ const Booking: React.FC = () => {
                         <>
                           <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(tent.price)}</h2>
                           <h1 className="font-primary text-tertiary text-lg uppercase">{formatPrice(tent.custom_price)}</h1>
-                          <span className="text-primary text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{"off of discount only for today"}</span>
+                          <span className="text-primary text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{t("off of discount only for today")}</span>
                         </>
                       :
                         <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(tent.price)}</h1>
@@ -275,7 +275,7 @@ const Booking: React.FC = () => {
 
                   <button 
                     onClick={()=>setViewDetailsMobile(true)}
-                    className='mx-auto mt-[5%] h-auto w-auto px-4 py-2 bg-secondary rounded-full text-white hover:text-primary text-[11px] hover:bg-white group shadow-lg'>Ver mas</button>
+                    className='mx-auto mt-[5%] h-auto w-auto px-4 py-2 bg-secondary rounded-full text-white hover:text-primary text-[11px] hover:bg-white group shadow-lg'>{t("View more")}</button>
 
                   <div className="mt-[5%] flex flex-row justify-center items-center w-full h-auto gap-x-2">
                     {tents.map((_,index)=>{
@@ -354,7 +354,7 @@ const Booking: React.FC = () => {
         <Button 
           onClick={()=>goToRoute("/extras")}
               variant="default" effect="default" size="lg"  
-              className="group text-xs sm:text-lg h-8 sm:h-10"
+              className="group text-xs sm:text-lg h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
               disabled={totalItems == 0}>
               {t('Continue')}

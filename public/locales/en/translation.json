@@ -183,5 +183,25 @@
 	"Request Adding Experiences": "Request Add Experiences",
 	"Send": "Send",
 	"Save info for future promotions": "Save info for future promotions",
-	"Add": "Add"
+	"Add": "Add",
+	"View more": "View more",
+	"Description": "Description",
+	"Gallery": "Gallery",
+	"About Us": "About Us",
+	"Service Politics": "Service Politics",
+	"Privacy Politics": "Privacy Politics",
+	"Cookies Politics": "Cookies Politics",
+	"timeAgo": {
+		"day": "day",
+		"day_plural": "days",
+		"week": "week",
+		"week_plural": "weeks",
+		"month": "month",
+		"month_plural": "months",
+		"year": "year",
+		"year_plural": "years",
+		"ago": "ago"
+	},
+	"Categories": "Categories",
+	"Here are the latest notifications": "Here are the latest notifications"
 }

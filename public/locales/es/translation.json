@@ -183,5 +183,25 @@
 	"Request Adding Experiences": "Solicitar agregar experiencias ",
 	"Send": "Enviar",
 	"Save info for future promotions": "Guardar tu informacion para futuras promociones",
-	"Add": "Añadir"
+	"Add": "Añadir",
+	"View more": "Ver mas",
+	"Description": "Descripcion",
+	"Gallery": "Galeria",
+	"About Us": "Nosotros",
+	"Service Politics": "Politica de Servicios",
+	"Privacy Politics": "Politica de Privacidad",
+	"Cookies Politics": "Politica de Cookies",
+	"timeAgo": {
+		"day": "día",
+		"day_plural": "días",
+		"week": "semana",
+		"week_plural": "semanas",
+		"month": "mes",
+		"month_plural": "meses",
+		"year": "año",
+		"year_plural": "años",
+		"ago": "hace"
+	},
+	"Categories": "Categorias",
+	"Here are the latest notifications": "Aqui estan las ultimas notificaciones"
 }

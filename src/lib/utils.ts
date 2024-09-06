@@ -1,6 +1,6 @@
 import {ClassValue,clsx} from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice, Tent, Experience} from './interfaces'
+import {Reserve, ReserveExperienceDto, ReserveProductDto, ReserveTentDto, CustomPrice} from './interfaces'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -198,21 +198,31 @@ export const getInitials = (names:string) => {
   return firstInitial + lastInitial;
 }
 
-export const getTimeAgo = (date:Date) => {
+export const getTimeAgo = (date: Date, t: (key: string) => string, language: string) => {
   const now = new Date();
   const diffInMs = now.getTime() - date.getTime();
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
+  const isSpanish = language === 'es';
+
   if (diffInDays < 7) {
-    return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
+    return isSpanish
+      ? `${t('timeAgo.ago')} ${diffInDays} ${t(diffInDays === 1 ? 'timeAgo.day' : 'timeAgo.day_plural')}`
+      : `${diffInDays} ${t(diffInDays === 1 ? 'timeAgo.day' : 'timeAgo.day_plural')} ${t('timeAgo.ago')}`;
   } else if (diffInDays < 30) {
     const weeks = Math.floor(diffInDays / 7);
-    return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
+    return isSpanish
+      ? `${t('timeAgo.ago')} ${weeks} ${t(weeks === 1 ? 'timeAgo.week' : 'timeAgo.week_plural')}`
+      : `${weeks} ${t(weeks === 1 ? 'timeAgo.week' : 'timeAgo.week_plural')} ${t('timeAgo.ago')}`;
   } else if (diffInDays < 365) {
     const months = Math.floor(diffInDays / 30);
-    return `${months} month${months === 1 ? '' : 's'} ago`;
+    return isSpanish
+      ? `${t('timeAgo.ago')} ${months} ${t(months === 1 ? 'timeAgo.month' : 'timeAgo.month_plural')}`
+      : `${months} ${t(months === 1 ? 'timeAgo.month' : 'timeAgo.month_plural')} ${t('timeAgo.ago')}`;
   } else {
     const years = Math.floor(diffInDays / 365);
-    return `${years} year${years === 1 ? '' : 's'} ago`;
+    return isSpanish
+      ? `${t('timeAgo.ago')} ${years} ${t(years === 1 ? 'timeAgo.year' : 'timeAgo.year_plural')}`
+      : `${years} ${t(years === 1 ? 'timeAgo.year' : 'timeAgo.year_plural')} ${t('timeAgo.ago')}`;
   }
-}
+};

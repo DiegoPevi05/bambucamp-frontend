@@ -3,8 +3,8 @@ import axios from "axios";
 import { Reserve, NotificationDto, notifcationFilters } from "../../lib/interfaces";
 import { serializeMyReserves, serializeMyReservesCalendar, serializeNotification } from "../serializer";
 
-export const getAllMyReservesCalendar = async(token:string, page:Number, language:string):Promise<{reserves:{ id:number, dateFrom:Date, dateTo:Date }[]} |null> => {
-  let data:{ reserves:{ id:number, dateFrom:Date, dateTo:Date }[]}  | null = null;
+export const getAllMyReservesCalendar = async(token:string, page:Number, language:string):Promise<{reserves:{ id:number, external_id:string, dateFrom:Date, dateTo:Date }[]} |null> => {
+  let data:{ reserves:{ id:number, external_id:string, dateFrom:Date, dateTo:Date }[]}  | null = null;
   try{
 
     // Create a URLSearchParams object to construct the query string
@@ -129,7 +129,7 @@ export const getAllNotifications = async( token: string, page:Number,language:st
     }
 
     // Construct the URL with query parameters
-    const url = `${import.meta.env.VITE_BACKEND_URL}/notifications?${params.toString()}`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}/notifications/user?${params.toString()}`;
 
     const fetchProducts = await axios.get(url, {
       headers: {

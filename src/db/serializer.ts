@@ -225,12 +225,13 @@ export const serializeMyReserves = (data:any):Reserve|null => {
   return reserve;
 }
 
-export const serializeMyReservesCalendar = (data:any):{ id:number, dateFrom:Date, dateTo:Date } |null => {
+export const serializeMyReservesCalendar = (data:any):{ id:number, external_id:string, dateFrom:Date, dateTo:Date } |null => {
 
-  let reserve:{ id:number, dateFrom:Date, dateTo:Date }|null = null;
+  let reserve:{ id:number, external_id:string, dateFrom:Date, dateTo:Date }|null = null;
 
   reserve = {
     id: data.id,
+    external_id:data.external_id,
     dateFrom: data.dateFrom ? convertStrToCurrentTimezoneDate(data.dateFrom) : data.dateFrom,
     dateTo: data.dateTo ? convertStrToCurrentTimezoneDate(data.dateTo) : data.dateTo,
   };

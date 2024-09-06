@@ -53,7 +53,7 @@ const Reservation:React.FC = () => {
   }
 
   const goToRoute = (route:string) => {
-    navigate(route);
+    navigate(route, { state: { from: location.pathname } });
   };
 
   const onSubmitCreateReserve = async() => {

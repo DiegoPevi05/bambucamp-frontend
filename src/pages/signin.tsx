@@ -4,7 +4,7 @@ import { LUNAHUANA, LOGO_PRIMARY } from "../assets/images";
 import { signInSchema } from "../db/schemas.ts"
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
@@ -18,6 +18,8 @@ const SignIn = () => {
   const { login } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation(); 
+  const previousRoute = location.state?.from || "/";
 
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -64,7 +66,7 @@ const SignIn = () => {
             return;
         }
         login(userDB)
-        goToRoute("/");
+        goToRoute(previousRoute);
       }
       setLoadingForm(false);
   };

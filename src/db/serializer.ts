@@ -303,6 +303,7 @@ export const serializePromotion = (data:any):Promotion|null => {
   const transformedIdExperiences = data.idexperiences ? JSON.parse(data.idexperiences).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
 })) : [];
 
+
   promotion = {
     id: data.id,
     title:data.title,
@@ -322,6 +323,7 @@ export const serializePromotion = (data:any):Promotion|null => {
     createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
     updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
   };
+
   return promotion;
 }
 

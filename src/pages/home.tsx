@@ -60,6 +60,8 @@ const Home = () => {
       }
   }
 
+  console.log(dataWebHome.promotions)
+
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
 
   const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
@@ -186,7 +188,7 @@ const Home = () => {
         </div>
 
         <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 2xl:gap-24 max-lg:mt-12 max-sm:overflow-auto">
-          {dataWebHome.promotions.length > 1 && (
+          {dataWebHome.promotions.length > 0 && (
             dataWebHome.promotions.map((promotion,index) => (
               <PromotionCard key={"promotion_card"+index} promotion={promotion} index={index}/>
             ))
@@ -194,7 +196,7 @@ const Home = () => {
         </div>
       </div>
 
-      {dataWebHome.tents.length > 1 && (
+      {dataWebHome.tents.length > 0 && (
         <div id="services-section" className="relative w-full h-[100vh] flex flex-col justify-center items-start">
           <VerticalCarousel tents={dataWebHome.tents}/>
         </div>

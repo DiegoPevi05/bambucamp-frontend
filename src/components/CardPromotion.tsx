@@ -24,7 +24,7 @@ const PromotionCard = (props:PromptionCardProps) => {
       <div className="absolute -top-[32.5px] right-0 sm:-right-[32.5px] w-[65px] h-[65px] bg-secondary rounded-full flex justify-center items-center">
         <h1 className="text-sm text-center text-white">{t("Save")} {promotion.discount}%</h1>
       </div>
-      <img src={promotion.images[0]} alt="promotion" className="w-full h-full object-cover rounded-t-2xl"/>
+      <img src={`${import.meta.env.VITE_BACKEND_URL}/${promotion.images[0]}`} alt="promotion" className="w-full h-full object-cover rounded-t-2xl"/>
       <div className="p-5 flex flex-col justify-end">
         <h1 className="text-xs text-tertiary">{`${promotion.stock < 10 ? 
         t("Remain")+" "+promotion.stock+" "+t("promotions")+"!":

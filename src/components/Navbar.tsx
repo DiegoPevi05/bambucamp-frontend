@@ -1,16 +1,18 @@
 import  { useState } from "react";
 
-import {User, AlignJustify, Facebook, Instagram, Twitter, X, CalendarCheck  } from 'lucide-react';
+import {User, AlignJustify, Facebook, Instagram, Twitter, X, CalendarCheck, ShoppingCart  } from 'lucide-react';
 import { styles } from "../lib/styles";
 import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
 import {fadeIn, slideIn} from "../lib/motions";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LanguageDropDownList from "./ui/LanguageSelector";
 import {useAuth} from "../contexts/AuthContext";
 import DropDownListAccount from "./DropDownListAccount";
+import {useCart} from "../contexts/CartContext";
+import ShopCart from "./ShopCart";
 
 const NavBarItem = ({children, index, route, scrollTarget, goToRoute}:{children:string; index:number; route?: string; scrollTarget?: string; goToRoute: (route: string) => void; }) => {
 
@@ -32,8 +34,8 @@ const NavBarItem = ({children, index, route, scrollTarget, goToRoute}:{children:
       viewport={{ once: true }}
       variants={fadeIn("down","",1+0.1*index,1)}
       onClick={handleClick}
-      className="w-full h-[80px] flex flex-column justify-center items-center">
-      <li className="text-secondary text-xl hover:scale-[1.05]  hover:text-white ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
+      className="w-auto h-[80px] flex flex-column justify-center items-center">
+      <li className="text-secondary text-lg 2xl:text-xl hover:scale-[1.05]  hover:text-white ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
     </motion.div>
   )
 };
@@ -61,7 +63,7 @@ const NavBarItemMobile = ({children, index, route, scrollTarget, goToRoute,close
       className="w-full h-auto sm:h-[50px]"
       onClick={handleClick}
     >
-      <li className="text-white text-lg sm:text-3xl hover:scale-[1.05]  hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
+      <li className="text-white text-lg lg:text-3lg hover:scale-[1.05]  hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
     </motion.div>
   )
 };
@@ -69,6 +71,7 @@ const NavBarItemMobile = ({children, index, route, scrollTarget, goToRoute,close
 
 const Navbar = () => {
   const { user  } = useAuth();
+  const  {totalItems } = useCart();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -81,6 +84,12 @@ const Navbar = () => {
     setOpenSideBar(!openSideBar);
   };
 
+  const [openCart, setOpenCart] = useState<boolean>(false);
+
+  const toogleCart = () => {
+    setOpenCart(!openCart);
+  };
+
   return (
     <nav className={`${styles.paddingX} absolute w-full flex flex-row justify-center items-center bg-black-to-transparent absolute top-0 z-[100] max-h-[80px]`}>
       <div className="w-[50%] lg:w-[20%] flex justify-start lg:justify-center items-center">
@@ -88,24 +97,32 @@ const Navbar = () => {
           <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
         </a>
       </div>
-      <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-6">
+      <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-8">
         <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("Us")}</NavBarItem>
         <NavBarItem index={2} route="/booking" goToRoute={goToRoute}>{t("Reservations")}</NavBarItem>
         <NavBarItem index={3} scrollTarget="promotions-section" goToRoute={goToRoute}>{t("Promotions")}</NavBarItem>
         <NavBarItem index={4} scrollTarget="services-section" goToRoute={goToRoute}>{t("Services")}</NavBarItem>
         <NavBarItem index={5} scrollTarget="contact-section" goToRoute={goToRoute}>{t("Contact Us")}</NavBarItem>
       </ul>
-      <div className="w-[50%] lg:w-[20%] h-full flex justify-end lg:justify-center items-center">
+      <div className="w-[50%] lg:w-[20%] h-full flex justify-end items-center">
         <LanguageDropDownList/>
+        <button onClick={toogleCart} className="duration-300 group active:scale-95 hover:scale-105 flex justify-center items-center relative text-white mr-1 lg:ml-2 lg:mr-8"> 
+          <ShoppingCart className="hover:text-tertiary h-6 sm:h-8 w-8 sm:w-8  duration-300"/> 
+          {totalItems > 0 && (
+            <span className="absolute -top-3 -right-4 h-6 w-6 flex items-center justify-center text-xs bg-secondary text-white rounded-full">
+              {totalItems}
+            </span>
+          )}
+        </button>
         {user ? 
           <DropDownListAccount user={user} isDashboard={false}/>
           :
           <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Log In")}<User/> </Button>
         }
-        <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 sm:h-14 w-10 sm:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
+        <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 lg:h-14 w-10 lg:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
       </div>
-      <div className={`sm:hidden ${!openSideBar ? "pointer-events-none" :"" } w-screen h-screen absolute top-0 left-0`}>
-          <div className={`sm:hidden w-screen h-[100vh] fixed top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
+      <div className={`lg:hidden ${!openSideBar ? "pointer-events-none" :"" } w-screen h-screen absolute top-0 left-0`}>
+          <div className={`lg:hidden w-screen h-[100vh] fixed top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
             <div className="h-10 sm:h-16 w-10 sm:w-16 absolute top-12 right-12">
               <X onClick={toogleSidebar} className="h-full w-auto text-white cursor-pointer hover:text-primary"/>
             </div>
@@ -122,9 +139,9 @@ const Navbar = () => {
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
                 {user ?
-                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>
+                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>
                   :
-                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-2xl gap-x-4">{t("Sign In")} <User/> </Button>
+                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("Sign In")} <User/> </Button>
                 }
               </div>
               <div className="w-full mt-auto flex flex-row justify-start items-center gap-x-4 sm:gap-x-6">
@@ -142,6 +159,11 @@ const Navbar = () => {
           </div>
       </div>
 
+      <AnimatePresence>
+        {openCart && (
+          <ShopCart onClose={toogleCart}/>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

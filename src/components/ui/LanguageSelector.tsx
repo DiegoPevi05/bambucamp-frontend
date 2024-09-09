@@ -23,8 +23,8 @@ const LanguageDropDownList = (props:LanguageDropDownList) => {
   };
 
   return (
-    <div className="relative w-auto h-full mx-1 lg:mx-6">
-      <div onClick={toogleDropDown} className={`${variant == "dark" ? "text-secondary hover:text-tertiary" : "text-white hover:text-tertiary"}  text-xl px-2 flex flex-row gap-x-1 z-50 items-center justify-center cursor-pointer  duration-300`}><Earth className="h-5 w-5"/>{i18n.language}<ChevronDown/></div>
+    <div className="relative w-auto h-full mx-1">
+      <div onClick={toogleDropDown} className={`${variant == "dark" ? "text-secondary hover:text-tertiary" : "text-white hover:text-tertiary"}  text-xl flex flex-row gap-x-1 z-50 items-center justify-center cursor-pointer  duration-300`}><Earth className="h-5 w-5"/>{i18n.language}<ChevronDown/></div>
       <AnimatePresence>
         {open && 
           <motion.div 

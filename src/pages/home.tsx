@@ -190,7 +190,7 @@ const Home = () => {
         <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 2xl:gap-24 max-lg:mt-12 max-sm:overflow-auto">
           {dataWebHome.promotions.length > 0 && (
             dataWebHome.promotions.map((promotion,index) => (
-              <PromotionCard key={"promotion_card"+index} promotion={promotion} index={index}/>
+                <PromotionCard key={"promotion_card"+index} promotion={promotion} index={index}/>
             ))
           )}
         </div>

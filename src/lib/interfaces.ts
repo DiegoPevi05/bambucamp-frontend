@@ -120,11 +120,38 @@ export interface Experience {
 }
 
 
-export interface itemPromotion {
-  id:number;
-  label:string;
-  qty:number;
+export interface optTentPromotionDto {
+  idTent:number;
+  name:string;
   price:number;
+  quantity:number;
+}
+
+export interface optTentPromotionPublicDto extends optTentPromotionDto {
+  id:number;
+}
+
+export interface optProductPromotionDto {
+  idProduct:number;
+  name:string;
+  price:number;
+  quantity:number;
+}
+
+export interface optProductPromotionPublicDto extends optProductPromotionDto {
+  id:number;
+}
+
+
+export interface optExperiencePromotionDto {
+  idExperience:number;
+  name:string;
+  price:number;
+  quantity:number;
+}
+
+export interface optExperiencePromotionPublicDto extends optExperiencePromotionDto {
+  id:number;
 }
 
 export interface optionsPromotion {
@@ -132,6 +159,7 @@ export interface optionsPromotion {
   products:Product[];
   experiences:Experience[];
 }
+
 
 export interface Promotion {
   id: number;
@@ -146,9 +174,9 @@ export interface Promotion {
   discount:number;
   grossImport:number;
   stock:number;
-  idtents:itemPromotion[];
-  idproducts:itemPromotion[];
-  idexperiences:itemPromotion[];
+  tents:optTentPromotionPublicDto[];
+  products:optProductPromotionPublicDto[];
+  experiences:optExperiencePromotionPublicDto[];
   createdAt:Date|null;
   updatedAt:Date|null;
 }

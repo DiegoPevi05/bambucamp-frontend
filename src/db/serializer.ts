@@ -294,16 +294,6 @@ export const serializeFaq = (data:any): Faq | null => {
 export const serializePromotion = (data:any):Promotion|null => {
   let promotion:Promotion|null = null;
 
-  const transformedIdtents = data.idtents ? JSON.parse(data.idtents).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
-})) : [];
-
-  const transformedIdProducts = data.idproducts ? JSON.parse(data.idproducts).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
-})) : [];
-
-  const transformedIdExperiences = data.idexperiences ? JSON.parse(data.idexperiences).map((item:any) => ({  ...item, id: Number(item.id), qty: Number(item.qty) , price: Number(item.price)
-})) : [];
-
-
   promotion = {
     id: data.id,
     title:data.title,
@@ -317,9 +307,9 @@ export const serializePromotion = (data:any):Promotion|null => {
     discount: data.discount || 0,
     grossImport: data.grossImport || 0,
     stock: data.stock || 0,
-    idtents: transformedIdtents,
-    idproducts: transformedIdProducts,
-    idexperiences: transformedIdExperiences,
+    tents: data.tents,
+    products: data.products,
+    experiences: data.experiences,
     createdAt:data.createdAt ? convertStrToCurrentTimezoneDate(data.createdAt) : data.createdAt,
     updatedAt:data.updatedAt ? convertStrToCurrentTimezoneDate(data.updatedAt) : data.updatedAt
   };

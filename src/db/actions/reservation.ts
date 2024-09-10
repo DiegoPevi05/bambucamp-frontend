@@ -424,3 +424,51 @@ export const addExperienceToReserve = async (experiences: ReserveExperienceDto[]
     return false;
   }
 };
+
+export const validatePromotion = async (promotionId:number,dates:{ dateFrom: Date, dateTo: Date }, language:string): Promise<Boolean> => {
+
+  try {
+    const params = new URLSearchParams();
+    params.append('promotion', promotionId.toString());
+    params.append('dateFrom', dates.dateFrom.toString());
+    params.append('dateTo', dates.dateTo.toString());
+    // Construct the URL with query parameters
+    const url = `${import.meta.env.VITE_BACKEND_URL}/promotions/validate?${params.toString()}`;
+
+
+    const ValidatePromotionAvailabilityResponse = await axios.get(url, {
+      headers: {
+        'Accept-Language':language,
+      }
+    });
+
+    toast.success(ValidatePromotionAvailabilityResponse.data.message)
+
+    return true;
+
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const statusCode = error.response?.status;
+      const errorData = error.response?.data;
+      const errorMessage = errorData?.error;
+
+      if (Array.isArray(errorMessage)) {
+        // Handle validation errors (array of errors)
+        errorMessage.forEach((err) => {
+          toast.error(err.msg || 'Validation error occurred');
+        });
+      } else {
+        // Handle other types of errors
+        if (statusCode) {
+          toast.error(`${errorData?.error || "Error during Validating the promotion."} (Code: ${statusCode})`);
+        } else {
+          toast.error(errorData?.error || "An error occurred.");
+        }
+      }
+    } else {
+      toast.error("An unexpected error occurred.");
+    }
+    console.error(error);
+  }
+  return false;
+};

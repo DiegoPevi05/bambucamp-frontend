@@ -7,6 +7,9 @@ import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import DatePicker from "./DatePicker";
 import Button from "./ui/Button";
+import {formatPrice, getDiscount, getTotalNightsFromDates} from "../lib/utils";
+import {validatePromotion} from "../db/actions/reservation";
+import {useCart} from "../contexts/CartContext";
 
 interface PromotionProps {
   isOpen: boolean;
@@ -15,7 +18,9 @@ interface PromotionProps {
 }
 
 const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
+
+  const {addPromotion } = useCart();
 
   const [dates, setDates] = useState<{ dateFrom: Date, dateTo: Date }>({
     dateFrom: new Date(), // Initialize with current date
@@ -46,6 +51,30 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
     }));
   };
 
+  const [loadingPromotion,setLoadingPromotion] = useState<boolean>(false);
+
+
+  const ValidatePromotionHandler = async() => {
+    setLoadingPromotion(true)
+
+    const isPromotionValid = await validatePromotion(promotion.id,dates,i18n.language);
+    if(isPromotionValid){
+      addPromotion({
+        idPromotion:promotion.id,
+        name:promotion.title,
+        price:promotion.grossImport,
+        nights:getTotalNightsFromDates(dates.dateFrom,dates.dateTo),
+        dateFrom:dates.dateFrom,
+        dateTo:dates.dateTo,
+        confirmed:false
+      })
+      //promotion is added to cart
+      setLoadingPromotion(false);
+      onClose();
+    }
+    setLoadingPromotion(false);
+  }
+
   return(
     <>
       {isOpen && (
@@ -57,11 +86,24 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
                 animate="show"
                 exit="hidden"
                 variants={fadeIn("up","",0,0.5)}
-                className="relative top-0 bottom-0 left-0 right-0 bg-white lg:p-4 rounded-lg shadow-lg w-full lg:w-[50%] h-full sm:h-[60%] overflow-x-hidden lg:overflow-y-auto z-[120]"
+                className="relative top-0 bottom-0 left-0 right-0 bg-white lg:p-4 rounded-lg shadow-lg w-full lg:w-[50%] h-full sm:h-[60%] overflow-x-hidden overflow-y-auto z-[120]"
               > 
-                <button className="absolute top-4 right-4 hover:text-tertiary duration-300" onClick={onClose}><X/></button>
-                <div className="w-full h-full flex flex-col justify-start items-start max-sm:pt-24 px-6 pb-8 sm:p-4">
-                  <h1 className="text-tertiary text-2xl">{promotion.title}</h1>
+                <button className="absolute top-4 right-4 text-white hover:text-tertiary duration-300 z-[20]" onClick={onClose}><X/></button>
+                <div className="w-full h-full flex flex-col justify-start items-start px-6 pb-8 sm:p-4">
+                  <div className="absolute left-0 top-0 w-full h-[200px] sm:h-[150px] bg-cover bg-center" style={{backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${promotion.images[0]})`}}>
+                  </div>
+                  <div className="w-full h-auto mt-[220px] sm:mt-[150px]">
+                    {promotion.netImport != promotion.grossImport ?
+                      <>
+                        <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(promotion.netImport)}</h2>
+                        <h1 className="font-primary text-tertiary text-2xl uppercase">{formatPrice(promotion.grossImport)}</h1>
+                        <span className="text-primary text-[11px]">{getDiscount(promotion.netImport,promotion.grossImport)}%{" "}{t("off of discount only for today")}</span>
+                      </>
+                    :
+                      <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(promotion.grossImport)}</h1>
+                    }
+                  </div>
+                  <h1 className="text-tertiary text-xl">{promotion.title}</h1>
                   <div className="w-full h-auto flex flex-col sm:flex-row mt-6 sm:mt-2 gap-y-6 sm:gap-x-6 justify-between">
                     <div className="w-full sm:w-[50%] flex flex-col h-auto justify-start items-start">
                       <label className="text-secondary">{t("From")}:</label>
@@ -76,22 +118,10 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
                       </div>
                     </div>
                   </div>
-                  {promotion.experiences && promotion.experiences.length > 0 &&(
-                    <div className="w-full h-auto flex flex-col justify-start items-start gap-y-4">
-                      <h2>{t("Experiences")}</h2>
-                      <ul className="w-full h-auto flex flex-col">
-                          {promotion.experiences.map((experience)=>{
-                            return(
-                            <li className="w-full h-auto flex flex-row">
-                              {experience.name}
-                            </li>
-                            )
-                          })}
-                      </ul>
-                    </div>
-                  )}
                   <div className="w-full h-auto flex flex-row justify-end mt-auto">
                     <Button
+                      onClick={()=>ValidatePromotionHandler()}
+                      isLoading={loadingPromotion}
                       effect="default"
                       variant="dark" 
                       size="lg" 

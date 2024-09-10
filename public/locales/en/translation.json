@@ -203,5 +203,8 @@
 		"ago": "ago"
 	},
 	"Categories": "Categories",
-	"Here are the latest notifications": "Here are the latest notifications"
+	"Here are the latest notifications": "Here are the latest notifications",
+	"From": "From",
+	"To": "To",
+	"Select the days for the experiences included on this promotion": "Select the days for the experiences included on this promotion"
 }

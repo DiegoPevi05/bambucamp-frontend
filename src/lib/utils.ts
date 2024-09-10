@@ -34,9 +34,6 @@ export const formatDate = (date:Date) => {
   return new Intl.DateTimeFormat("en-US", {dateStyle: "medium", timeStyle: "short"}).format(date);
 }
 
-export const formatDateCorrectly = (date:Date) => {
-}
-
 export const getDiscount = (basePrice:number, discountedPrice:number) => {
   const priceDiscounted =  100 - 100* (discountedPrice/basePrice);
   return priceDiscounted.toFixed(2);
@@ -226,3 +223,46 @@ export const getTimeAgo = (date: Date, t: (key: string) => string, language: str
       : `${years} ${t(years === 1 ? 'timeAgo.year' : 'timeAgo.year_plural')} ${t('timeAgo.ago')}`;
   }
 };
+
+export const getRangeDatesFromDates = (dateFrom:Date,dateTo:Date):{ date: Date; label: string }[] => {
+
+    let dateRanges: { date: Date; label: string }[] = [];
+
+      // Initialize the current date to tent's dateFrom
+    let currentDate = new Date(dateFrom);
+    // Loop through the dates from dateFrom to dateTo for each tent
+    while (currentDate <= dateTo) {
+      const formattedDate = currentDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+
+      // Check if the date is already in the dateRanges array to avoid overlap
+      const dateExists = dateRanges.some((range) => range.label === formattedDate);
+
+      if (!dateExists) {
+        dateRanges.push({
+          date: new Date(currentDate),
+          label: formattedDate,
+        });
+      }
+      // Move to the next day
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dateRanges;
+}
+
+
+export const getTotalNightsFromDates = (dateFrom:Date,dateTo:Date): number => {
+    const start = new Date(dateFrom);
+    const end = new Date(dateTo);
+
+    // Set both dates to 12:00 PM
+    start.setHours(12, 0, 0, 0);
+    end.setHours(12, 0, 0, 0);
+
+    // Calculate difference in time
+    const timeDifference = end.getTime() - start.getTime();
+
+    // Convert the difference to days (1 day = 86400000 ms)
+    const totalNights = timeDifference / (1000 * 3600 * 24);
+
+    return totalNights > 0 ? totalNights : 0; // Ensure no negative nights
+  }

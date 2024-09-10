@@ -5,6 +5,7 @@ import { Promotion } from "../lib/interfaces";
 import { useTranslation } from "react-i18next";
 import {useState} from "react";
 import PromotionAddForm from "./ModalPromotion";
+import {formatPrice, getDiscount} from "../lib/utils";
 
 interface PromptionCardProps {
   promotion: Promotion,
@@ -43,6 +44,15 @@ const PromotionCard = (props:PromptionCardProps) => {
           </h1>
           <h2 className="text-sm">{promotion.title}</h2>
           <p className="text-xs text-secondary">{promotion.description}</p>
+          {promotion.netImport != promotion.grossImport ?
+            <>
+              <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(promotion.netImport)}</h2>
+              <h1 className="font-primary text-tertiary text-lg uppercase">{formatPrice(promotion.grossImport)}</h1>
+              <span className="text-primary text-[11px]">{getDiscount(promotion.netImport,promotion.grossImport)}%{" "}{t("off of discount only for today")}</span>
+            </>
+          :
+            <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(promotion.grossImport)}</h1>
+          }
           <Button onClick={toogleOpenForm} effect="default" variant="dark" size="sm" className="mt-4 w-[80%] ml-auto">{t("Add to reserve")}</Button>
         </div>
       </motion.div>

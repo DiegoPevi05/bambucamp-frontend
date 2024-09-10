@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {LOGO_PRIMARY} from "../assets/images";
 import { motion } from "framer-motion";
 import { formatPrice, formatDateToYYYYMMDD } from "../lib/utils";
-import { X, CalendarCheck, User } from "lucide-react";
+import { X, CalendarCheck, User, ChevronRightIcon } from "lucide-react";
 
 interface CartProps {
   variant?:string;
@@ -18,7 +18,7 @@ const ShopCart = (props:CartProps) => {
 
   const { variant, onClose } = props;
   const { user  } = useAuth();
-  const  { cart, getTotalCost, removeTent, removeProduct, removeExperience } = useCart();
+  const  { cart, getTotalCost, removeTent, removeProduct, removeExperience, removePromotion } = useCart();
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -119,6 +119,34 @@ const ShopCart = (props:CartProps) => {
                 </div>
               </>
             )}
+
+            {cart.promotions.length != 0 && (
+              <>
+                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Promotions")}</label>
+                <div className="w-full h-auto flex flex-col pt-4">
+                  {cart.promotions.map((promotionItem,index)=>{
+                    return(
+                      <div key={`cart_tentItem_${index}`} className={`w-full h-auto flex flex-row p-2 ${index != 0 ? "border-t-2 border-slate-200" : "" } `}>
+                        <div className="w-[60%] h-full flex flex-col justify-start items-start">
+
+                          <label className="text-tertiary text-sm font-primary">{promotionItem.name}</label>
+
+                          <label className="text-secondary text-xs font-primary">{"Check In"}: {formatDateToYYYYMMDD(promotionItem.dateFrom)}</label>
+                          <label className="text-secondary text-xs font-primary">{"Check Out"}: {formatDateToYYYYMMDD(promotionItem.dateTo)}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {promotionItem.nights}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(promotionItem.price)}</label>
+                        </div>
+                        <div className="w-[40%] h-full flex flex-col justify-start items-end">
+                          <button onClick={()=>removePromotion(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                          <label className="mt-auto">{formatPrice((promotionItem.price * promotionItem.nights))}</label>
+                        </div>
+                      </div>
+                    )
+                  })}
+
+                </div>
+              </>
+            )}
           </div>
 
 
@@ -131,6 +159,13 @@ const ShopCart = (props:CartProps) => {
               <label>{formatPrice(getTotalCost())}</label>
             </div>
           </div>
+          <Button
+            onClick={()=>goToRoute("/extras")}
+            effect="default"
+            variant="dark" 
+            className="group text-md"
+            rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
+          >{t("Go to Reserve")}</Button>
 
           <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">{t("My Account")}</label>
           <div className="w-full h-auto flex justify-start items-center">

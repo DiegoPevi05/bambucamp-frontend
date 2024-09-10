@@ -1,11 +1,12 @@
 import  { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto, DiscountCode } from '../lib/interfaces';
+import { ReserveTentDto, ReserveProductDto, ReserveExperienceDto, DiscountCode, ReservePromotionDto } from '../lib/interfaces';
 import {getCookie, setCookie} from '../lib/cookies';
 
 interface CartItem {
   tents: ReserveTentDto[];
   products: ReserveProductDto[];
   experiences: ReserveExperienceDto[];
+  promotions:ReservePromotionDto[];
   discount:DiscountCode;
 }
 
@@ -24,6 +25,8 @@ interface CartContextType {
   addExperience: (experience: ReserveExperienceDto) => void;
   removeExperience: (idExperience: number) => void;
   updateExperienceQuantity: (idExperience: number, quantity: number) => void;
+  addPromotion: (promotion: ReservePromotionDto) => void;
+  removePromotion: (idPromotion: number) => void;
   isTentInCart: (idTent: number) => boolean;
   getTotalNights: () => number;
   updateDateFrom: (newDateFrom: Date) => void;
@@ -44,7 +47,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const getInitialCart = (): CartItem => {
     const savedCart = getCookie(CART_COOKIE_NAME);
-    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [], discount: { id:0, code:"", discount:0 } };
+    return savedCart ? JSON.parse(savedCart) : { tents: [], products: [], experiences: [], promotions:[], discount: { id:0, code:"", discount:0 } };
   };
 
   const [cart, setCart] = useState<CartItem>(getInitialCart);
@@ -83,6 +86,27 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   };
 
+  const removeTent = (index: number) => {
+    updateCart(prevCart => ({
+      ...prevCart,
+      tents: prevCart.tents.filter((_,i) => i !== index),
+    }));
+  };
+
+  const addPromotion = (promotion: ReservePromotionDto) => {
+    updateCart(prevCart => ({
+      ...prevCart,
+      promotions: [...prevCart.promotions, promotion],
+    }));
+  };
+
+  const removePromotion = (index: number) => {
+    updateCart(prevCart => ({
+      ...prevCart,
+      promotions: prevCart.promotions.filter((_,i) => i !== index),
+    }));
+  };
+
   const addDiscountCode = (discountCode:DiscountCode) => {
     updateCart(prevCart => ({
       ...prevCart,
@@ -90,12 +114,7 @@ export function CartProvider({ children }: CartProviderProps) {
     }));
   }
 
-  const removeTent = (index: number) => {
-    updateCart(prevCart => ({
-      ...prevCart,
-      tents: prevCart.tents.filter((_,i) => i !== index),
-    }));
-  };
+
 
   const updateTentNights = (idTent: number, night: number) => {
     updateCart(prevCart => ({
@@ -193,10 +212,11 @@ export function CartProvider({ children }: CartProviderProps) {
   },[dates]);
 
   const getTotalCost = (): number => {
-    const tentTotal = cart.tents.reduce((sum, tent) => sum + (tent.price  * getTotalNights()), 0);
+    const tentTotal = cart.tents.reduce((sum, tent) => sum + (tent.price  * tent.nights), 0);
     const productTotal = cart.products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
     const experienceTotal = cart.experiences.reduce((sum, experience) => sum + (experience.price * experience.quantity), 0);
-    return tentTotal + productTotal + experienceTotal;
+    const promotionTotal = cart.promotions.reduce((sum, promotion) => sum + (promotion.price * promotion.nights), 0);
+    return tentTotal + productTotal + experienceTotal + promotionTotal;
   };
 
   const getRangeDates = useCallback(() => {
@@ -233,7 +253,7 @@ export function CartProvider({ children }: CartProviderProps) {
     return dateRanges;
   }, [cart.tents]);
 
-  const totalItems = cart.tents.length + cart.products.length + cart.experiences.length;
+  const totalItems = cart.tents.length + cart.products.length + cart.experiences.length + cart.promotions.length;
 
   // Recalculate tent nights when dates change
   useEffect(() => {
@@ -250,13 +270,13 @@ export function CartProvider({ children }: CartProviderProps) {
   }, [dates, getTotalNights]);
 
   const cleanCart = () => {
-    setCart({ tents: [], products: [], experiences: [], discount: { id:0, code:"", discount:0 } });
+    setCart({ tents: [], products: [], experiences: [], promotions:[], discount: { id:0, code:"", discount:0 } });
     // Clear the cart cookie by setting an expired date
     setCookie(CART_COOKIE_NAME, '', 0); // Set the cookie with an empty string and max age 0 to remove it
   }
 
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart, addPromotion, removePromotion }}>
       {children}
     </CartContext.Provider>
   );

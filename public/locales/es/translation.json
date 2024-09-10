@@ -203,5 +203,8 @@
 		"ago": "hace"
 	},
 	"Categories": "Categorias",
-	"Here are the latest notifications": "Aqui estan las ultimas notificaciones"
+	"Here are the latest notifications": "Aqui estan las ultimas notificaciones",
+	"From": "Desde",
+	"To": "Hasta",
+	"Select the days for the experiences included on this promotion": "Selecciona los dias para las experiencias incluidos en esta promocion"
 }

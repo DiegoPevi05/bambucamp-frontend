@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   deploy:
+    environment: digital_ocean
     runs-on: ubuntu-latest
     steps:
     - name: Initialize Deploy

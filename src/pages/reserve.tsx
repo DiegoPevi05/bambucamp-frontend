@@ -17,7 +17,7 @@ import { DiscountCode, ReserveFormData } from '../lib/interfaces';
 const Reservation:React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { cart, dates, getTotalNights, getTotalCost, addDiscountCode, cleanCart  } = useCart();
+  const { cart, dates, getTotalNights, getTotalCost, addDiscountCode, cleanCart, getReservationsDates  } = useCart();
   const navigate = useNavigate();
   const [discountCode, setDiscountCode] = useState<DiscountCode>({id:0,code:"",discount:0});
   const [loadingDiscountCode, setLoadingDiscountcode] = useState<boolean>(false);
@@ -107,11 +107,11 @@ const Reservation:React.FC = () => {
                 </div>
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>
                   <span className="text-lg font-primary text-secondary">Desde:</span>
-                  <span className="text-md font-secondary">{formatDate(dates.dateFrom)}</span>
+                  <span className="text-md font-secondary">{formatDate(getReservationsDates().checkin)}</span>
                 </div>
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>
                   <span className="text-lg font-primary text-secondary">Hasta:</span>
-                  <span className="text-md font-secondary">{formatDate(dates.dateTo)}</span>
+                  <span className="text-md font-secondary">{formatDate(getReservationsDates().checkout)}</span>
                 </div>
               </div>
 

@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import DatePicker from "./DatePicker";
 import Button from "./ui/Button";
-import {formatPrice, getDiscount, getTotalNightsFromDates} from "../lib/utils";
+import {formatPrice, getDiscount} from "../lib/utils";
 import {validatePromotion} from "../db/actions/reservation";
 import {useCart} from "../contexts/CartContext";
 import {toast} from "sonner";
@@ -21,7 +21,7 @@ interface PromotionProps {
 const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
   const {t,i18n} = useTranslation();
 
-  const {addPromotion } = useCart();
+  const {addPromotion, updateDateFrom, updateDateTo } = useCart();
 
   const [dates, setDates] = useState<{ dateFrom: Date, dateTo: Date }>({
     dateFrom: new Date(), // Initialize with current date
@@ -38,14 +38,14 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
     }
   };
 
-  const updateDateFrom = (newDateFrom: Date) => {
+  const updateDateFromHandler = (newDateFrom: Date) => {
     setDates(prevDates => ({
       ...prevDates,
       dateFrom: newDateFrom,
     }));
   };
 
-  const updateDateTo = (newDateTo: Date) => {
+  const updateDateToHandler = (newDateTo: Date) => {
     setDates(prevDates => ({
       ...prevDates,
       dateTo: newDateTo,
@@ -71,8 +71,8 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
         name:promotion.title,
         price:promotion.grossImport,
         nights:promotion.tents[0].nights,
-        dateFrom:dates.dateFrom,
-        dateTo:dates.dateTo,
+        dateFrom: new Date(dates.dateFrom.setUTCHours(5,0,0,0)),
+        dateTo: new Date(dates.dateTo.setUTCHours(5,0,0,0)),
         confirmed:false
       })
       //promotion is added to cart
@@ -115,13 +115,13 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
                     <div className="w-full sm:w-[50%] flex flex-col h-auto justify-start items-start">
                       <label className="text-secondary">{t("From")}:</label>
                       <div className="w-full  sm:p-2 border-b-2  border-b-secondary">
-                        <DatePicker openBar={ openBar['startDate']} type="startDate" section="promotion_form" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
+                        <DatePicker openBar={ openBar['startDate']} type="startDate" section="promotion_form" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFromHandler} />
                       </div>
                     </div>
                     <div className="w-full sm:w-[50%] flex flex-col h-auto justify-start items-start">
                       <label className="text-secondary">{t("To")}:</label>
                       <div className="w-full  p-2 border-b-2  border-b-secondary">
-                        <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} section="promotion_form" date={dates.dateTo} setDate={updateDateTo} />
+                        <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} section="promotion_form" date={dates.dateTo} setDate={updateDateToHandler} />
                       </div>
                     </div>
                   </div>

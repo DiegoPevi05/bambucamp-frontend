@@ -32,6 +32,7 @@ interface CartContextType {
   updateDateFrom: (newDateFrom: Date) => void;
   updateDateTo: (newDateTo: Date) => void;
   getRangeDates: () => {date:Date, label:string}[];
+  getReservationsDates: () => {checkin:Date,checkout:Date};
   cleanCart: () => void;
 }
 
@@ -247,11 +248,46 @@ export function CartProvider({ children }: CartProviderProps) {
       }
     });
 
+    // Loop through each tent in the cart
+    cart.promotions.forEach((promotion) => {
+      // Initialize the current date to tent's dateFrom
+      let currentDate = new Date(promotion.dateFrom);
+
+      // Loop through the dates from dateFrom to dateTo for each tent
+      while (currentDate <= new Date(promotion.dateTo)) {
+        const formattedDate = currentDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+
+        // Check if the date is already in the dateRanges array to avoid overlap
+        const dateExists = dateRanges.some((range) => range.label === formattedDate);
+
+        if (!dateExists) {
+          dateRanges.push({
+            date: new Date(currentDate),
+            label: formattedDate,
+          });
+        }
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    });
+
+
     // Sort the dateRanges array by date to ensure the dates are in chronological order
     dateRanges = dateRanges.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     return dateRanges;
-  }, [cart.tents]);
+  }, [cart.tents,cart.promotions]);
+
+  const getReservationsDates = ():{checkin:Date,checkout:Date} => {
+    const rangeDates =  getRangeDates();
+
+    const lastItem = rangeDates.length -1;
+
+    return {
+      checkin:rangeDates[0].date,
+      checkout:rangeDates[lastItem].date
+    }
+  }
 
   const totalItems = cart.tents.length + cart.products.length + cart.experiences.length + cart.promotions.length;
 
@@ -276,7 +312,7 @@ export function CartProvider({ children }: CartProviderProps) {
   }
 
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart, addPromotion, removePromotion }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart, addPromotion, removePromotion, getReservationsDates }}>
       {children}
     </CartContext.Provider>
   );

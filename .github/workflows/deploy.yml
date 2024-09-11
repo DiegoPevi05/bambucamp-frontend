@@ -42,7 +42,7 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Add host key to known host
       env:
-        SLACK_MESSAGE: " * Set Connection and Enable it to SSH Digital Ocean server :digtal_ocean:"
+        SLACK_MESSAGE: " * Set Connection and Enable it to SSH Digital Ocean server :digital_ocean:"
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       run: |
         echo "${SLACK_MESSAGE}"
@@ -54,7 +54,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       run: |
         echo "${SLACK_MESSAGE}"
-        ssh root@104.236.199.84 'mkdir -p /root/bambucamp-frontend'
+        ssh root@104.236.199.84 'mkdir -p /var/www/bambucamp-frontend'
         curl -X POST -H 'Content-type: application/json' --data '{"text":"'"${SLACK_MESSAGE}"'"}' ${{ secrets.SLACK_WEBHOOK_URL }}
     - name: Deploy
       env:
@@ -62,5 +62,5 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       run: |
         echo "${SLACK_MESSAGE}"
-        scp -r dist/* root@104.236.199.84:/root/bambucamp-frontend/
+        scp -r dist/* root@104.236.199.84:/var/www/bambucamp-frontend/
         curl -X POST -H 'Content-type: application/json' --data '{"text":"'"${SLACK_MESSAGE}"'"}' ${{ secrets.SLACK_WEBHOOK_URL }}

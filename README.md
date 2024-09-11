@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# BAMBUCAMP Reservation System
+# BAMBUCAMP WEB PAGE 
 
 <p align="center">
   <!-- Example badges -->

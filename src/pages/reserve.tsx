@@ -17,7 +17,7 @@ import { DiscountCode, ReserveFormData } from '../lib/interfaces';
 const Reservation:React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { cart, dates, getTotalNights, getTotalCost, addDiscountCode, cleanCart, getReservationsDates  } = useCart();
+  const { cart, getTotalNights, getTotalCost, addDiscountCode, cleanCart, getReservationsDates  } = useCart();
   const navigate = useNavigate();
   const [discountCode, setDiscountCode] = useState<DiscountCode>({id:0,code:"",discount:0});
   const [loadingDiscountCode, setLoadingDiscountcode] = useState<boolean>(false);

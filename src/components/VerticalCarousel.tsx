@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { styles } from "../lib/styles"
-import { tentsData } from "../lib/constant"
 import { Tent } from "../lib/interfaces"
 import { motion, AnimatePresence } from "framer-motion"
 import { fadeIn, fadeOnly } from "../lib/motions"

@@ -42,7 +42,7 @@ const DashboardAccount = () => {
     }
   }, [user, reset, isUserEdit]);
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = () => {
     setLoadingForm(true);
     setTimeout(() => {
       setLoadingForm(false);

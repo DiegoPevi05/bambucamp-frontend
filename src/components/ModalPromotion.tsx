@@ -21,7 +21,7 @@ interface PromotionProps {
 const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
   const {t,i18n} = useTranslation();
 
-  const {addPromotion, updateDateFrom, updateDateTo } = useCart();
+  const {addPromotion } = useCart();
 
   const [dates, setDates] = useState<{ dateFrom: Date, dateTo: Date }>({
     dateFrom: new Date(), // Initialize with current date

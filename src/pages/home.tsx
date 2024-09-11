@@ -17,7 +17,6 @@ import PromotionCard from "../components/CardPromotion"
 import Collapsible from "../components/Collapsible"
 import { Tent  } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import * as LucideIcons from 'lucide-react';
 import ChatComponent from "../components/ChatWhatsapp.tsx"
 import {ContactForm, webContent} from "../lib/interfaces.ts";
@@ -25,14 +24,9 @@ import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
 import FooterDevelopment from "../components/FooterDevelopment.tsx";
 
 const ServiceCard = ({name,image,iconName}:{name:string;image:string;href:string,iconName:any}) => {
-  const navigate = useNavigate();
 
   // @ts-ignore: Ignore TypeScript checking for IconComponent
   const IconComponent = LucideIcons[iconName];
-  
-  const goToRoute = (route:string) => {
-    navigate(route);
-  }
 
   return(
     <div className="relative row-span-1 col-span-1 hover:scale-105 hover:z-20 transition-all flex flex-col items-center justify-center cursor-pointer bg-primary max-lg:py-6">

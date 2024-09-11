@@ -145,7 +145,7 @@ const serializeReserveExperience = (data:any):ReserveExperienceDto => {
   return reserveExperience;
 }
 
-const serializeReservePromotion = (data:any):ReservePromotionDto => {
+const serializeReservePromotion = (data:any):ReservePromotionDto|null => {
 
   let reservePromotion:ReservePromotionDto|null = null;
 
@@ -156,7 +156,9 @@ const serializeReservePromotion = (data:any):ReservePromotionDto => {
     idPromotion:data.idPromotion,
     name:data.name,
     price:data.price || 0,
-    quantity:data.quantity || 0,
+    dateFrom:data.dateFrom ? convertStrToCurrentTimezoneDate(data.dateFrom) : data.dateFrom,
+    dateTo:data.dateTo ? convertStrToCurrentTimezoneDate(data.dateTo) : data.dateTo,
+    nights:data.nights || 0,
     confirmed:data.confirmed,
     //promotionDB: experience_db_parsed != null ?  experience_db_parsed : undefined
   }

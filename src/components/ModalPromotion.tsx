@@ -10,6 +10,7 @@ import Button from "./ui/Button";
 import {formatPrice, getDiscount, getTotalNightsFromDates} from "../lib/utils";
 import {validatePromotion} from "../db/actions/reservation";
 import {useCart} from "../contexts/CartContext";
+import {toast} from "sonner";
 
 interface PromotionProps {
   isOpen: boolean;
@@ -55,7 +56,13 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
 
 
   const ValidatePromotionHandler = async() => {
-    setLoadingPromotion(true)
+    setLoadingPromotion(true);
+
+    if(dates.dateFrom > dates.dateTo){
+      toast.error(t("CheckIn should be before than date Checkout"))
+      setLoadingPromotion(false);
+      return;
+    }
 
     const isPromotionValid = await validatePromotion(promotion.id,dates,i18n.language);
     if(isPromotionValid){
@@ -63,7 +70,7 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
         idPromotion:promotion.id,
         name:promotion.title,
         price:promotion.grossImport,
-        nights:getTotalNightsFromDates(dates.dateFrom,dates.dateTo),
+        nights:promotion.tents[0].nights,
         dateFrom:dates.dateFrom,
         dateTo:dates.dateTo,
         confirmed:false

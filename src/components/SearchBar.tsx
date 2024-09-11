@@ -1,6 +1,6 @@
-import  { useState, useRef, useEffect } from "react";
-import { MapPin, CalendarDays, Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import  { useState, useRef } from "react";
+import { MapPin, Search } from "lucide-react";
+import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {useTranslation} from "react-i18next";
 import {useCart} from "../contexts/CartContext";

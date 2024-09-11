@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip'
-import { ChevronLeftIcon, ChevronRightIcon, Coins, FlameKindlingIcon, List, Pizza, Tent} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, Coins, FlameKindlingIcon, List, Pizza, Tent, TicketPercent} from "lucide-react";
 import { styles } from "../lib/styles";
 import ShopNavbar from "../components/ShopNavbar";
 import {useCart} from "../contexts/CartContext";
@@ -114,26 +114,56 @@ const Reservation:React.FC = () => {
                   <span className="text-md font-secondary">{formatDate(dates.dateTo)}</span>
                 </div>
               </div>
-              <span className="flex flex-row items-end gap-x-2">
-                <Tent className="h-5 w-5"/>
-                <h2 className="text-lg">Glampings</h2>
-              </span>
-              <div className="w-full h-auto flex flex-col gap-y-3">
-                {cart.tents.map((tentCart,index)=>{
-                  return(
-                    <div key={`reserve_tent_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
-                      <div className="flex flex-col h-full w-auto">
-                        <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{tentCart.name}</span>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Nights")} :</span><span className="text-xs mt-auto">{tentCart.nights}</span></div>
-                        <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(tentCart.price)}</span></div>
-                      </div>
-                      <div className="flex flex-col items-end h-full w-[20%] ml-auto">
-                        <span>{formatPrice(tentCart.nights*tentCart.price)}</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+
+              {cart.promotions.length > 0 && (
+                <>
+                  <span className="flex flex-row items-end gap-x-2">
+                    <TicketPercent className="h-5 w-5"/>
+                    <h2 className="text-lg">{t("Promotions")}</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3">
+                    {cart.promotions.map((promotionCart,index)=>{
+                      return(
+                        <div key={`reserve_promotion_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                          <div className="flex flex-col h-full w-auto">
+                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{promotionCart.name}</span>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Nights")} :</span><span className="text-xs mt-auto">{promotionCart.nights}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(promotionCart.price)}</span></div>
+                          </div>
+                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                            <span>{formatPrice(promotionCart.price)}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
+
+              {cart.tents.length > 0 && (
+                <>
+                  <span className="flex flex-row items-end gap-x-2">
+                    <Tent className="h-5 w-5"/>
+                    <h2 className="text-lg">Glampings</h2>
+                  </span>
+                  <div className="w-full h-auto flex flex-col gap-y-3">
+                    {cart.tents.map((tentCart,index)=>{
+                      return(
+                        <div key={`reserve_tent_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
+                          <div className="flex flex-col h-full w-auto">
+                            <span className="text-sm text-secondary"></span><span className="text-sm mt-auto">{tentCart.name}</span>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Nights")} :</span><span className="text-xs mt-auto">{tentCart.nights}</span></div>
+                            <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(tentCart.price)}</span></div>
+                          </div>
+                          <div className="flex flex-col items-end h-full w-[20%] ml-auto">
+                            <span>{formatPrice(tentCart.nights*tentCart.price)}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
               {cart.experiences.length > 0 && (
                 <>
                   <span className="flex flex-row items-end gap-x-2">

@@ -206,5 +206,6 @@
 	"Here are the latest notifications": "Here are the latest notifications",
 	"From": "From",
 	"To": "To",
-	"Select the days for the experiences included on this promotion": "Select the days for the experiences included on this promotion"
+	"Select the days for the experiences included on this promotion": "Select the days for the experiences included on this promotion",
+	"CheckIn should be before than date Checkout": "CheckIn should be before than date Checkout"
 }

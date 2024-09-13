@@ -50,13 +50,13 @@ const DropDownListAccount = (props:DropDownProps) => {
               <>
                 <span  onClick={() => goToRoute("/dashboard/reserves")} className="rounded-t-md w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group py-2">
                   <CalendarCheck className="text-white group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer "/>
-                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("Reserves")}</p>
+                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("reserve.reserves")}</p>
                 </span>
 
 
                 <span  onClick={() => goToRoute("/dashboard/account")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group py-2">
                   <User className="text-white group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer"/>
-                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("Account")}</p>
+                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("reserve.account")}</p>
                 </span>
 
               </>
@@ -64,7 +64,7 @@ const DropDownListAccount = (props:DropDownProps) => {
 
                 <span  onClick={() => goToRoute("/")} className="w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group py-2">
                   <PanelTop className="text-white group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer"/>
-                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("Go to Web")}</p>
+                  <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("reserve.go_to_web")}</p>
                 </span>
 
             }
@@ -73,7 +73,7 @@ const DropDownListAccount = (props:DropDownProps) => {
 
             <span  onClick={() => logout()} className="rounded-b-md w-full h-auto flex flex-row justify-center items-center gap-x-2 hover:bg-white cursor-pointer group py-2">
               <DoorClosed className="text-white group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer"/>
-              <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("Log out")}</p>
+              <p className="text-white text-sm group-hover:scale-[1.05]  group-hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{t("auth.log_out")}</p>
             </span>
           </motion.div>
         }

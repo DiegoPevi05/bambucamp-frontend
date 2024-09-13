@@ -36,7 +36,7 @@ const ProductCard:React.FC<propsItemExtra> = (props:propsItemExtra) => {
       exit="hidden"
       variants={fadeIn(` ${variant == "line" ? "up" : "left"}`,"",0.5*index, 0.5)}
       className={`shrink-0 bg-white  ${variant == "line" ? "w-full h-auto" : "w-[250px] h-[300px]"}  flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
-      <div className={`${variant == "line" ? "h-[0px]" : "h-[30%]"} w-full bg-center bg-cover rounded-t-lg`} style={{ backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${product.images[0]})`}}></div>
+      <div className={`${variant == "line" ? "h-[0px]" : "h-[30%]"} w-full bg-center bg-cover rounded-t-lg`} style={{ backgroundImage: `url(${product.images[0]})`}}></div>
       <div className="w-full h-[25%] flex flex-col justify-start items-start py-2 px-4">
 
         <div className={`w-full h-auto p-none m-none flex ${variant == "line" ? "flex-row" : "flex-col"}`}>
@@ -59,7 +59,7 @@ const ProductCard:React.FC<propsItemExtra> = (props:propsItemExtra) => {
         </div>
       </div>
       <div className={`${variant == "line" ? "hidden" :"w-full" } h-[15%] flex flex-row justify-end px-4 py-2`}>
-        <button onClick={()=>handleAddProduct(product.id,quantity)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">{t("Add to reserve")}</button>
+        <button onClick={()=>handleAddProduct(product.id,quantity)} className="px-2 bg-secondary text-white rounded-full group hover:bg-white hover:border-2 hover:border-secondary hover:text-secondary h-full w-auto flex items-center justify-center active:scale-95 duration-300 text-xs">{t("reserve.add_to_reserve")}</button>
       </div>
     </motion.div>
   )

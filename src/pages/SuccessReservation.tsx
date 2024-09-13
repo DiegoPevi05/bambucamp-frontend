@@ -33,11 +33,11 @@ const SuccessReservation:React.FC = () => {
                 exit="hidden"
                 variants={fadeIn("up","",0.5, 0.5)}
                 className="w-[70%] h-[400px] flex flex-col justify-center items-center border-4 border-secondary shadow-lg rounded-lg mt-32 gap-y-4">
-                <h1 className="font-primary text-secondary  text-6xl"><Tent className="h-8 w-8"/>{t("Congratulations")}</h1>
-                <p>{t("Thanks for trust in our service, you will receive an email with the confirmation of the reservation, with all the details on it")}</p>
+                <h1 className="font-primary text-secondary  text-6xl"><Tent className="h-8 w-8"/>{t("reserve.congratulations")}</h1>
+                <p>{t("reserve.thanks_congratulations")}</p>
                 <div className="w-[50%] flex flex-row justify-center items-center gap-x-12">
-                  <Button onClick={()=>goToRoute("/")} variant="dark" isRound={true}>{t("Home")}</Button>
-                  <Button onClick={()=>goToRoute("/dashboard/reserves")}variant="ghostLight" isRound={true}>{t("My Reserves")}</Button>
+                  <Button onClick={()=>goToRoute("/")} variant="dark" isRound={true}>{t("common.home")}</Button>
+                  <Button onClick={()=>goToRoute("/dashboard/reserves")}variant="ghostLight" isRound={true}>{t("reserve.my_reserves")}</Button>
                 </div>
               </motion.div>
             </div>

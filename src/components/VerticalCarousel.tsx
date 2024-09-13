@@ -58,7 +58,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       </motion.div>
       <div className={`w-full h-full ${ isSelected ? "opacity-100" : "opacity-50" } absolute top-0 left-0 bg-cover bg-center bg-no-repeat 
         hover:opacity-100 cursor-pointer duration-1200 transition-all`}
-        style={{backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${data.images[1]})`}}>
+        style={{backgroundImage: `url(${data.images[1]})`}}>
       </div>
     </motion.div>
   )
@@ -131,7 +131,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
             animate="show"
             exit="hidden"
             variants={fadeOnly("", 0, 1)}
-            src={`${import.meta.env.VITE_BACKEND_URL}/`+selectedTent.images[selectedImage]} 
+            src={selectedTent.images[selectedImage]} 
             className="w-full h-full object-cover"
           />
           <div className="absolute lg:bottom-[5%] max-lg:top-[5%] max-lg:right-[2%] lg:left-0 w-auto lg:w-full h-auto flex justify-center items-center gap-x-2 sm:gap-x-12">
@@ -181,7 +181,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
                   rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
                   onClick={()=>goBooking()}
                 >
-                  {t("Book now")}
+                  {t("common.book_now")}
                 </Button>
 
                 <Button 
@@ -192,7 +192,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
                   rightIcon={<ChevronRightIcon className="w-6 h-6 ml-2 duration-300"/>}
                   onClick={()=>goBooking()}
                 >
-                  {t("Services")}
+                  {t("common.services")}
                 </Button>
               </div>
             </motion.div>

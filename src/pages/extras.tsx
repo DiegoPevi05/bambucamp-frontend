@@ -136,15 +136,15 @@ const Extras:React.FC = () => {
           <div className={`w-full flex flex-col gap-y-4 mt-2`}>
             <span className="flex flex-row items-end gap-x-2">
               <FlameKindlingIcon className="h-8 sm:h-10 w-8 sm:w-10"/>
-              <h2 className="text-md sm:text-lg">{t("Experiences")}</h2>
+              <h2 className="text-md sm:text-lg">{t("reserve.experiences")}</h2>
             </span>
-            <p className="text-sm sm:text-md">{t("Reserve one of our more requested experience")}</p>
-            <h2 className="text-secondary hidden sm:block">{t("Categories")}</h2>
+            <p className="text-sm sm:text-md">{t("experience.header")}</p>
+            <h2 className="text-secondary hidden sm:block">{t("common.categories")}</h2>
 
             <div className="w-full h-auto pb-4">
               <div className="relative w-full h-auto mb-2 sm:hidden" onMouseOver={()=>setOpenCategory("experiences" )} onMouseLeave={()=>setOpenCategory(undefined)} >
                 <div className="p-none m-none flex flex-row w-auto h-6">
-                  <h2 className="text-secondary  w-auto" >{t("Categories")}</h2>
+                  <h2 className="text-secondary  w-auto" >{t("common.categories")}</h2>
                   { openCategory == "experiences" ? <ChevronUpIcon/> : <ChevronDownIcon/> }
                 </div>
                 <AnimatePresence>
@@ -191,14 +191,14 @@ const Extras:React.FC = () => {
           <div className={`w-full flex flex-col gap-y-4 mt-2`}>
             <span className="flex flex-row items-end gap-x-2">
               <Pizza className="h-8 sm:h-10 w-8 sm:w-10"/>
-              <h2 className="text-md sm:text-lg">{t("Products")}</h2>
+              <h2 className="text-md sm:text-lg">{t("reserve.products")}</h2>
             </span>
-            <p className="text-sm sm:text-md">{t("Here you can add the products you most whish")}</p>
+            <p className="text-sm sm:text-md">{t("product.header")}</p>
             <h2 className="text-secondary hidden sm:block">{t("Categories")}</h2>
 
             <div className="relative w-full h-auto mb-2 sm:hidden" onMouseOver={()=>setOpenCategory("products" )} onMouseLeave={()=>setOpenCategory(undefined)} >
               <div className="p-none m-none flex flex-row w-auto h-6">
-                <h2 className="text-secondary  w-auto" >{t("Categories")}</h2>
+                <h2 className="text-secondary  w-auto" >{t("common.categories")}</h2>
                 { openCategory == "products" ? <ChevronUpIcon/> : <ChevronDownIcon/> }
               </div>
               <AnimatePresence>
@@ -250,7 +250,7 @@ const Extras:React.FC = () => {
             variant="dark" effect="default" size="lg"  
                 className="group text-xs sm:text-lg h-8 sm:h-10"
                 rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}>
-            {t("Go to Reserve")}
+            {t("common.go_to_reserve")}
           </Button>
         </div>
       </div>

@@ -112,13 +112,13 @@ const validateCode = () => {
       <div className="w-full h-full flex justify-center items-center">
         <form id="form_user_validate_code" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitValidateCode(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
-          <p className="text-primary text-[11px] sm:text-xs my-2">{t("Input the code that your receive at your email account, once the time expired you can request another code")}</p>
+          <p className="text-primary text-[11px] sm:text-xs my-2">{t("auth.input_code")}</p>
           <div className="flex flex-row justify-end w-full h-auto">
             <span>{formattedTimer}</span>
           </div>
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4 sm:gap-y-1">
-            <label htmlFor="code" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Code")}</label>
-            <input name="code" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Code")}/>
+            <label htmlFor="code" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("auth.code")}</label>
+            <input name="code" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("auth.code")}/>
             <div className="w-full h-6">
               {errorMessages.code && 
                 <motion.p 
@@ -132,8 +132,8 @@ const validateCode = () => {
             </div>
           </div>
 
-          <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("Validate code")}</Button>
-          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 flex flex-row items-center gap-x-2 hover:text-tertiary cursor-pointer group">{t("You have an account?")}<span  className="text-primary group-hover:text-tertiary">{t("Sign In")}</span></p>
+          <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("auth.validate_code")}</Button>
+          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 flex flex-row items-center gap-x-2 hover:text-tertiary cursor-pointer group">{t("auth.account_question")}<span  className="text-primary group-hover:text-tertiary">{t("auth.sign_in")}</span></p>
         </form>
       </div>
     </div>

@@ -28,6 +28,7 @@ jobs:
     - name: Create .env file
       run: |
         echo VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }} >> .env
+        echo VITE_BACKEND_PUBLIC_URL=${{ secrets.VITE_BACKEND_PUBLIC_URL }} >> .env
     - name: Build
       env:
         SLACK_MESSAGE: " * Building React App Dist Folder :vite:"

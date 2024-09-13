@@ -19,13 +19,17 @@ export const serializeUser = (data:any):User|null => {
 }
 
 const formatImagePaths = (images: string[]): string[] => {
-  return images.map(image => 
-    image.replace(/\\/g, '/')
-  );
+  return images.map(image => {
+    image = image.replace(/\\/g, '/'); // Assign the result of replace to image
+    image = image.replace("public", import.meta.env.VITE_BACKEND_PUBLIC_URL); // Same here
+    return image;
+  });
 };
 
 export const serializeTent = (data:any):Tent|null => {
   let tent:Tent|null = null;
+
+  console.log(data);
 
   tent = {
     id: data.id,
@@ -46,6 +50,7 @@ export const serializeTent = (data:any):Tent|null => {
   };
 
 
+
   return tent;
 }
 
@@ -58,7 +63,7 @@ export const serializeProduct = (data:any):Product|null => {
     id: data.id,
     name:data.name,
     description: data.description,
-    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    images: formatImagePaths(data.images || []),
     price: data.price || 0,
     custom_price: data.custom_price
   };
@@ -75,7 +80,7 @@ export const serializeExperience = (data:any):Experience|null => {
     header:data.header,
     name:data.name,
     description: data.description,
-    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    images: formatImagePaths(data.images || []),
     price: data.price || 0,
     duration:data.duration || 0,
     qtypeople:data.qtypeople || 0,
@@ -90,7 +95,9 @@ const serializeReserveTent = (data:any):ReserveTentDto => {
 
   let reserveTent:ReserveTentDto|null = null;
 
+  console.log(data.tentDB);
   const tent_db_parsed = serializeTent(data.tentDB);
+  console.log(tent_db_parsed)
 
   reserveTent = {
     id:data.id,
@@ -196,34 +203,6 @@ export const serializeReserve = (data:any):Reserve|null => {
 
 export const serializeMyReserves = (data:any):Reserve|null => {
   let reserve = serializeReserve(data);
-
-  reserve?.tents?.forEach((tent) => {
-    if (tent?.tentDB) {
-      const serialized = serializeTent(tent.tentDB);
-      if (serialized != null) {
-        tent.tentDB = serialized;
-      }
-    }
-  });
-
-  reserve?.experiences?.forEach((experience) => {
-    if (experience?.experienceDB) {
-      const serialized = serializeExperience(experience.experienceDB);
-      if (serialized != null) {
-        experience.experienceDB = serialized;
-      }
-    }
-  });
-
-  reserve?.products?.forEach((product) => {
-    if (product?.productDB) {
-      const serialized = serializeProduct(product.productDB);
-      if (serialized != null) {
-        product.productDB = serialized;
-      }
-    }
-  });
-
   return reserve;
 }
 
@@ -300,7 +279,7 @@ export const serializePromotion = (data:any):Promotion|null => {
     id: data.id,
     title:data.title,
     description: data.description,
-    images: data.images ? data.images.map((image:string) => image.replace(/\\/g, '/')) : [],
+    images: formatImagePaths(data.images || []),
     expiredDate: data.expiredDate ? convertStrToCurrentTimezoneDate(data.expiredDate) : data.expiredDate,
     status : data.status,
     qtypeople: data.qtypeople || 0,

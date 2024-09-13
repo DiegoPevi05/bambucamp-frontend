@@ -81,12 +81,12 @@ const SignUp = () => {
       <div className="w-full h-full flex justify-center items-center">
         <form id="form_user_sign_up" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitSignUp(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
-          <p className="text-secondary text-sm my-2">{t("Sign up for a new account")}</p>
+          <p className="text-secondary text-sm my-2">{t("auth.sign_in_header")}</p>
 
           <div className="flex flex-row justify-start items-center w-full h-auto gap-x-2">
             <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden gap-y-2  sm:gap-y-1">
-              <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Firstname")}</label>
-              <input name="firstName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Firstname")}/>
+              <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("reserve.firstname")}</label>
+              <input name="firstName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.firstname")}/>
               <div className="w-full h-6">
                 {errorMessages.firstName && 
                   <motion.p 
@@ -100,8 +100,8 @@ const SignUp = () => {
               </div>
             </div>
             <div className="flex flex-col justify-start items-start w-1/2 h-auto overflow-hidden gap-y-2 sm:gap-y-1">
-              <label htmlFor="lastName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Lastname")}</label>
-              <input name="lastName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Lastname")}/>
+              <label htmlFor="lastName" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("reserve.lastname")}</label>
+              <input name="lastName" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.lastname")}/>
               <div className="w-full h-6">
                 {errorMessages.lastName && 
                   <motion.p 
@@ -120,8 +120,8 @@ const SignUp = () => {
 
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-2 sm:gap-y-1">
-            <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Email")}</label>
-            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+            <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("common.email")}</label>
+            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("common.email")}/>
             <div className="w-full h-6">
               {errorMessages.email && 
                 <motion.p 
@@ -136,8 +136,8 @@ const SignUp = () => {
           </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-2 sm:gap-y-1">
-            <label htmlFor="phoneNumber" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("PhoneNumber")}</label>
-            <input name="phoneNumber" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("PhoneNumber")}/>
+            <label htmlFor="phoneNumber" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("reserve.phone")}</label>
+            <input name="phoneNumber" className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.phone")}/>
             <div className="w-full h-6">
               {errorMessages.phoneNumber && 
                 <motion.p 
@@ -152,9 +152,9 @@ const SignUp = () => {
           </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-1 sm:gap-y-1">
-            <label htmlFor="password" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("Password")}</label>
+            <label htmlFor="password" className="font-primary text-secondary text-xs sm:text-lg h-auto sm:h-6">{t("auth.password")}</label>
             <div className="h-auto w-full relative">
-              <input name="password" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Password")}/>
+              <input name="password" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("auth.password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
             <div className="w-full h-8">
@@ -171,9 +171,9 @@ const SignUp = () => {
           </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-1 sm:gap-y-1">
-            <label htmlFor="confirmPassword" className="font-primary text-secondary text-xs  sm:text-lg h-auto">{t("Confirmation Password")}</label>
+            <label htmlFor="confirmPassword" className="font-primary text-secondary text-xs  sm:text-lg h-auto">{t("auth.confirm_password")}</label>
             <div className="h-auto w-full relative">
-              <input name="confirmPassword" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Confirmation Password")}/>
+              <input name="confirmPassword" type={showPassword ? "text" : "password"} className="relative w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("auth.confirm_password")}/>
               <div onClick={()=>setShowPassword(!showPassword)} className="absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer z-50">{ showPassword ? <EyeOff/> : <Eye />} </div>
             </div>
             <div className="w-full h-8">
@@ -190,8 +190,8 @@ const SignUp = () => {
           </div>
 
 
-          <Button type="submit" className="mb-4" isRound={true} isLoading={loadingForm}>{t("Sign Up")}</Button>
-          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("You have an account?")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("Sign In")}</span></p>
+          <Button type="submit" className="mb-4" isRound={true} isLoading={loadingForm}>{t("auth.sign_up")}</Button>
+          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("auth.account_question")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("auth.sign_in")}</span></p>
         </form>
       </div>
     </div>

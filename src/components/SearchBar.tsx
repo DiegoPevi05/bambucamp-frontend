@@ -52,7 +52,7 @@ const SearchDatesBar = ({section}:propssSearchBar) => {
       </div>
       <DatePicker openBar={ openBar['startDate']} type="startDate" section={section}  toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFrom} />
       <DatePicker openBar={ openBar['endDate']} type="endDate" section={section} toggleBar={toggleBar} date={dates.dateTo} setDate={updateDateTo} />
-      <button className="bg-tertiary text-white w-full col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("Book now")}</button>
+      <button className="bg-tertiary text-white w-full col-span-2 lg:col-span-1 hover:bg-primary hover:text-white flex flex-row justify-center items-center gap-x-2 duration-300" onClick={handleSearchReservation}><Search/>{t("common.book_now")}</button>
     </motion.div>
 
   );

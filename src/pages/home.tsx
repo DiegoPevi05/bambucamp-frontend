@@ -54,8 +54,6 @@ const Home = () => {
       }
   }
 
-  console.log(dataWebHome.promotions)
-
   const [loadingForm, setLoadingForm] = useState<boolean>(false);
 
   const [errorMessages, setErrorMessages] = useState<Record<string, string>>({});
@@ -133,7 +131,7 @@ const Home = () => {
             whileInView='show'
             viewport={{ once: true }}
             variants={fadeIn("down","",0.3,1)}
-            className="font-primary text-white text-center text-4xl sm:text-5xl p-4">{t("Welcome to Bambucamp Glamping")}</motion.h2>
+            className="font-primary text-white text-center text-4xl sm:text-5xl p-4">{t("home_page.greeting")}</motion.h2>
           <motion.div 
             initial="hidden"
             whileInView='show'
@@ -141,7 +139,7 @@ const Home = () => {
             variants={fadeIn("down","",0.5,1)}
             className="font-primary text-white text-center">
             <p className="text-white font-secondary text-md">
-              {t("Welcome to Bambucamp Glamping, a place where you can relax and enjoy the nature.")}
+              {t("home_page.greeting_description")}
             </p>
           </motion.div>
           <motion.div 
@@ -150,10 +148,10 @@ const Home = () => {
             viewport={{ once: true }}
             variants={fadeIn("down","",0.8,1)}
             className="flex flex-row max-sm:flex-wrap justify-center items-center max-sm:gap-4 sm:gap-x-4">
-            <Button variant="dark">{t("Book now")}</Button>
-            <Button variant="default">{t("See our Tents")}</Button>
-            <Button variant="light">{t("See our Services")}</Button>
-            <Button variant="ghost">{t("Learn More")}</Button>
+            <Button variant="dark">{t("common.book_now")}</Button>
+            <Button variant="default">{t("home_page.see_tents")}</Button>
+            <Button variant="light">{t("home_page.see_services")}</Button>
+            <Button variant="ghost">{t("home_page.learn_more")}</Button>
           </motion.div>
         </div>
       </div>
@@ -164,21 +162,21 @@ const Home = () => {
           whileInView='show'
           viewport={{ once: true }}
           variants={fadeIn("down","",0,1)}
-          className="font-primary text-secondary  text-4xl sm:text-7xl">{t("Promotions")}</motion.h2>
+          className="font-primary text-secondary  text-4xl sm:text-7xl">{t("promotions.singular")}</motion.h2>
         <div className="flex flex-row flex-wrap gap-x-2">
           <motion.h3 
           initial="hidden"
           whileInView='show'
           viewport={{ once: true }}
           variants={fadeIn("left","",0.5,1.5)}
-          className="font-tertiary text-secondary text-lg sm:text-4xl">{t("Check out our latest promotions and all our offerst")} 
+          className="font-tertiary text-secondary text-lg sm:text-4xl">{t("promotions.header_1")} 
           </motion.h3>
           <motion.p 
           initial="hidden"
           whileInView='show'
           viewport={{ once: true }}
           variants={fadeIn("left","",0.5,1.5)}
-          className="font-tertiary text-white bg-secondary text-lg sm:text-4xl">{t("are off 50%")}</motion.p>
+          className="font-tertiary text-white bg-secondary text-lg sm:text-4xl">{t("promotions.header_2")}</motion.p>
         </div>
 
         <div className="w-full h-auto lg:h-[500px] mx-auto flex flex-row sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12 2xl:gap-24 max-lg:mt-12 max-sm:overflow-auto">
@@ -196,7 +194,7 @@ const Home = () => {
         </div>
       )}
       <div id="services-2-section" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
-        <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("Services")}</h1>
+        <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("common.services")}</h1>
         <ServiceCard name="BambuAdventure" image={SERVICE_1} href="services" iconName="Waves" />
         <ServiceCard name="BambuFood" image={SERVICE_2} href="services" iconName="Pizza"/>
         <ServiceCard name="BambuRelax" image={SERVICE_3} href="services" iconName="Tent"/>
@@ -219,7 +217,7 @@ const Home = () => {
             whileInView='show'
             viewport={{ once: true }}
             variants={fadeIn("up","",0.5,1.5)}
-            className={`${styles.sectionSubText} text-white`}>{t("Here are some of the most frequently asked questions that we get from our customers")}</motion.h3>
+            className={`${styles.sectionSubText} text-white`}>{t("home_page.faqs_header")}</motion.h3>
           <motion.img 
             initial="hidden"
             whileInView='show'
@@ -250,12 +248,12 @@ const Home = () => {
           variants={fadeIn("up","tween",0.8,1.5)}
           id="form_contact_home" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-4 sm:p-6 z-[50]" style={{background: "rgba(255,255,255,0.20)"}} onSubmit={(e)=>onSubmitCreation(e)}>
           <Tent className="h-12 w-12 text-tertiary"/>
-          <h2 className="text-tertiary text-2xl my-2">{t("Contact Us")}</h2>
+          <h2 className="text-tertiary text-2xl my-2">{t("home_page.contact_us")}</h2>
 
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <label htmlFor="name" className="font-primary text-tertiary text-sm h-auto">{t("Name")}</label>
-            <input name="name" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Name")}/>
+            <label htmlFor="name" className="font-primary text-tertiary text-sm h-auto">{t("common.name")}</label>
+            <input name="name" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("common.name")}/>
             <div className="w-full h-6">
               {errorMessages.name && 
                 <motion.p 
@@ -270,8 +268,8 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <label htmlFor="email" className="font-primary text-tertiary text-sm h-auto">{t("Email")}</label>
-            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Email")}/>
+            <label htmlFor="email" className="font-primary text-tertiary text-sm h-auto">{t("common.email")}</label>
+            <input name="email" className="w-full h-8 sm:h-10 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("common.email")}/>
             <div className="w-full h-6">
               {errorMessages.email && 
                 <motion.p 
@@ -287,8 +285,8 @@ const Home = () => {
 
 
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-            <label htmlFor="message" className="font-primary text-tertiary text-sm h-auto">{t("Message")}</label>
-            <textarea name="message" className="w-full h-12 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("Message")}>
+            <label htmlFor="message" className="font-primary text-tertiary text-sm h-auto">{t("home_page.contact_form_message")}</label>
+            <textarea name="message" className="w-full h-12 text-xs sm:text-md bg-transparent text-white focus:text-white placeholder:text-white px-2 border-b-2 border-secondary focus:outline-none" placeholder={t("home_page.contact_form_message")}>
             </textarea>
             <div className="w-full h-6">
               {errorMessages.message && 
@@ -307,7 +305,7 @@ const Home = () => {
             <div className="w-full h-auto flex flex-row p-none m-none justify-start items-end">
               <div key="checkbox_save_info" className="checkbox-wrapper-13">
                 <input name="saveinfo" type="checkbox" aria-hidden="true"/>
-                <label htmlFor="saveinfo" className="text-xs">{t("Save info for future promotions")} </label>
+                <label htmlFor="saveinfo" className="text-xs">{t("home_page.contact_form_save_info")} </label>
               </div>
             </div>
             <div className="w-full h-6">
@@ -322,7 +320,7 @@ const Home = () => {
               }
             </div>
           </div>
-          <Button variant="dark" type="submit" isLoading={loadingForm}>{t("Send")}</Button>
+          <Button variant="dark" type="submit" isLoading={loadingForm}>{t("common.send")}</Button>
         </motion.form>
       </div>
       <Footer/>

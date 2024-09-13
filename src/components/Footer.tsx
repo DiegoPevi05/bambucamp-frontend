@@ -27,26 +27,26 @@ const Footer = () => {
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
-        <FooterLink>{t("About Us")}</FooterLink>
-        <FooterLink>{t("Promotions")}</FooterLink>
-        <FooterLink>{t("Services")}</FooterLink>
-        <FooterLink>{t("Contact Us")}</FooterLink>
+        <FooterLink>{t("common.about_us")}</FooterLink>
+        <FooterLink>{t("promotions.singular")}</FooterLink>
+        <FooterLink>{t("common.services")}</FooterLink>
+        <FooterLink>{t("home_page.contact_us")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
         <FooterLink>Glampings</FooterLink>
         <FooterLink>Extras</FooterLink>
-        <FooterLink>{t("Reservations")}</FooterLink>
+        <FooterLink>{t("reserve.reservations")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-2">
-        <FooterLink>{t("Service Politics")}</FooterLink>
-        <FooterLink>{t("Privacy Politics")}</FooterLink>
-        <FooterLink>{t("Cookies Politics")}</FooterLink>
+        <FooterLink>{t("common.service_politics")}</FooterLink>
+        <FooterLink>{t("common.privacy_politics")}</FooterLink>
+        <FooterLink>{t("common.cookies_politics")}</FooterLink>
       </div>
 
       <div className="col-span-1 flex flex-col gap-y-3">
-        <h2 className="font-primary text-white text-md">{t("Contact Us")}</h2>
+        <h2 className="font-primary text-white text-md">{t("home_page.contact_us")}</h2>
         <div className="flex flex-row gap-x-4">
           <div className="flex flex-row gap-x-2 text-white">
             <PhoneCall className="h-4 w-4" />

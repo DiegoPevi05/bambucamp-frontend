@@ -78,10 +78,10 @@ const ForgotPassword = () => {
       <div className="w-full h-full flex justify-center items-center">
         <form id="form_user_forget_password" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitForgotPassword(e)}>
           <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
-          <p className="text-primary text-[11px] sm:text-sm my-2">{t("An email with a restore code will be send to your email")}</p>
+          <p className="text-primary text-[11px] sm:text-sm my-2">{t("auth.email_restore_code")}</p>
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden gap-y-4 sm:gap-y-1">
-            <label htmlFor="email" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("Email")}</label>
-            <input name="email"  className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+            <label htmlFor="email" className="font-primary text-secondary text-sm sm:text-lg h-3 sm:h-6">{t("common.email")}</label>
+            <input name="email"  className="w-full h-8 sm:h-10 text-xs sm:text-md font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("common.email")}/>
             <div className="w-full h-6">
               {errorMessages.email && 
                 <motion.p 
@@ -95,9 +95,9 @@ const ForgotPassword = () => {
             </div>
           </div>
 
-          <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("Send Email")}</Button>
-          <p onClick={()=>goToRoute("/validate-code")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("I already have a code")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("Validate my code")}</span></p>
-          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 flex flex-row items-center gap-x-2 hover:text-tertiary cursor-pointer group">{t("You have an account?")}<span  className="text-primary group-hover:text-tertiary">{t("Sign In")}</span></p>
+          <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("auth.send_email")}</Button>
+          <p onClick={()=>goToRoute("/validate-code")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("auth.i_have_code")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("auth.validate_my_code")}</span></p>
+          <p onClick={()=>goToRoute("/signin")} className="text-secondary text-xs mb-2 flex flex-row items-center gap-x-2 hover:text-tertiary cursor-pointer group">{t("auth.account_question")}<span  className="text-primary group-hover:text-tertiary">{t("auth.sign_in")}</span></p>
         </form>
       </div>
     </div>

@@ -1,40 +1,40 @@
 import { z } from 'zod';
 
 const formHomeSchema = z.object({
-  name: z.string().nonempty({ message: 'Name is required.' }),
-  email: z.string().nonempty({ message: 'Email is required.' }).email({ message: 'Email is not valid.' }),
-  message: z.string().nonempty({ message: 'Message is required.' }),
+  name: z.string().nonempty({ message: 'validations.name_required' }),
+  email: z.string().nonempty({ message: 'validations.email_required' }).email({ message: 'validations.email_invalid' }),
+  message: z.string().nonempty({ message: 'validations.message_required' }),
   saveinfo: z.boolean(),
 });
 
 const signInSchema = z.object({
-  email: z.string().email({ message: "Correo no es valido." }),
-  password: z.string().min(6, { message: "La Contraseña debe tener almenos 8 caracteres." }),
+  email: z.string().email({ message: "validations.email_invalid" }),
+  password: z.string().min(6, { message: "validations.password_length" }),
 });
 
 const signUpSchema = z.object({
-  email: z.string().email({ message: "Email is not valid." }),
-  password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
-  confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
-  firstName: z.string().nonempty({ message: "First name is required." }),
-  lastName: z.string().nonempty({ message: "Last name is required." }),
-  phoneNumber:z.string().nonempty({ message: "Phone number is required." }),
+  email: z.string().email({ message: "validations.email_invalid" }),
+  password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "validations.password_format" }),
+  confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "validations.password_format" }),
+  firstName: z.string().nonempty({ message: "validations.first_name_required" }),
+  lastName: z.string().nonempty({ message: "validations.last_name_required" }),
+  phoneNumber:z.string().nonempty({ message: "validations.phone_required" }),
 }).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match.", path: ["confirmPassword"], });
+  message: "validations.passwords_missmatch", path: ["confirmPassword"], });
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email({ message: "Email is not valid." }),
+  email: z.string().email({ message: "validations.email_invalid" }),
 });
 
 const validateCodeSchema = z.object({
-  code: z.string().length(6, { message: "Code must be 6 characters." }),
+  code: z.string().length(6, { message: "validations.restore_password_code_length" }),
 });
 
 const resetPasswordSchema = z.object({
-  password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
-  confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "Password must have at least 8 characters, 1 letter, 1 number, and 1 special character." }),
+  password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "validations.password_format" }),
+  confirmPassword: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, { message: "validations.password_format" }),
 }).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match.", path: ["confirmPassword"], });
+  message: "validations.passwords_missmatch", path: ["confirmPassword"], });
 
 
 

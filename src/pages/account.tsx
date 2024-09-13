@@ -62,24 +62,24 @@ const DashboardAccount = () => {
                   <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 col-span-2 row-span-7">
                     <div className="w-full h-auto flex flex-row">
                       <div className="w-[50%] h-auto flex flex-col justify-start items-start">
-                        <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><User/>{t("Account")}</h1>
-                        <p className="font-secondary text-md text-tertiary">{t("View your personal information and complete missing fields")}</p>
+                        <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><User/>{t("reserve.account")}</h1>
+                        <p className="font-secondary text-md text-tertiary">{t("reserve.view_personal_information")}</p>
                       </div>
                       <div className="w-[50%] h-auto flex flex-row justify-end">
                         {isUserEdit ?
-                          <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(false)}><UserX className="h-5 w-5"/>{t("Edit")}</Button>
+                          <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(false)}><UserX className="h-5 w-5"/>{t("reserve.edit")}</Button>
                         :
-                          <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(true)}><UserCog className="h-5 w-5"/>{t("Edit")}</Button>
+                          <Button variant="ghostLight" className="gap-x-4" onClick={()=>setUserEdit(true)}><UserCog className="h-5 w-5"/>{t("reserve.edit")}</Button>
                         }
                       </div>
                     </div>
                     <form className="w-full h-full grid grid-cols-2 grid-rows-4" onSubmit={handleSubmit(onSubmit)}>
                       <div className="col-span-1 row-span-1 p-6">
                         <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-                          <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("Email")}</label>
+                          <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("common.email")}</label>
                           {isUserEdit ?
                             <>
-                              <input {...register("email")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Email")}/>
+                              <input {...register("email")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("common.email")}/>
                               <div className="w-full h-6">
                                 {errors?.email && 
                                   <motion.p 
@@ -101,10 +101,10 @@ const DashboardAccount = () => {
 
                       <div className="col-span-1 row-span-1 p-6">
                         <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-                          <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("Firstname")}</label>
+                          <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("reserve.firstname")}</label>
                           {isUserEdit ?
                             <>
-                              <input {...register("firstName")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Firstname")}/>
+                              <input {...register("firstName")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.firstname")}/>
                               <div className="w-full h-6">
                                 {errors?.firstName && 
                                   <motion.p 
@@ -126,10 +126,10 @@ const DashboardAccount = () => {
 
                       <div className="col-span-1 row-span-1 p-6">
                         <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-                          <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("Lastname")}</label>
+                          <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("reserve.lastname")}</label>
                           {isUserEdit ?
                             <>
-                              <input {...register("lastName")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("Lastname")}/>
+                              <input {...register("lastName")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.las")}/>
                               <div className="w-full h-6">
                                 {errors?.lastName && 
                                   <motion.p 
@@ -151,10 +151,10 @@ const DashboardAccount = () => {
 
                       <div className="col-span-1 row-span-1 p-6">
                         <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
-                          <label htmlFor="FirstName" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("PhoneNumber")}</label>
+                          <label htmlFor="Phone" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6 flex flex-row gap-x-2 my-2"><User/>{t("reserve.phone")}</label>
                           {isUserEdit ?
                             <>
-                              <input {...register("phoneNumber")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("PhoneNumber")}/>
+                              <input {...register("phoneNumber")} className="w-full h-8 sm:h-10 text-sm sm:text-lg font-tertiary px-2 border-b-2 border-secondary focus:outline-none focus:border-b-2 focus:border-b-primary" placeholder={t("reserve.phone")}/>
                               <div className="w-full h-6">
                                 {errors?.phoneNumber && 
                                   <motion.p 
@@ -176,7 +176,7 @@ const DashboardAccount = () => {
                       <div className="col-span-2 row-span-1 p-6 flex flex-row justify-end">
                         <Button 
                           isLoading={loadingForm}
-                          type="submit" variant="ghostLight" disabled={!isUserEdit}>{t("Update Info")}</Button>
+                          type="submit" variant="ghostLight" disabled={!isUserEdit}>{t("reserve.update_info")}</Button>
                       </div>
                     </form>
                   </div>

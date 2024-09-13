@@ -97,14 +97,14 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
               > 
                 <button className="absolute top-4 right-4 text-white hover:text-tertiary duration-300 z-[20]" onClick={onClose}><X/></button>
                 <div className="w-full h-full flex flex-col justify-start items-start px-6 pb-8 sm:p-4">
-                  <div className="absolute left-0 top-0 w-full h-[200px] sm:h-[150px] bg-cover bg-center" style={{backgroundImage: `url(${import.meta.env.VITE_BACKEND_URL}/${promotion.images[0]})`}}>
+                  <div className="absolute left-0 top-0 w-full h-[200px] sm:h-[150px] bg-cover bg-center" style={{backgroundImage: `url(${promotion.images[0]})`}}>
                   </div>
                   <div className="w-full h-auto mt-[220px] sm:mt-[150px]">
                     {promotion.netImport != promotion.grossImport ?
                       <>
                         <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(promotion.netImport)}</h2>
                         <h1 className="font-primary text-tertiary text-2xl uppercase">{formatPrice(promotion.grossImport)}</h1>
-                        <span className="text-primary text-[11px]">{getDiscount(promotion.netImport,promotion.grossImport)}%{" "}{t("off of discount only for today")}</span>
+                        <span className="text-primary text-[11px]">{getDiscount(promotion.netImport,promotion.grossImport)}%{" "}{t("booking.today_discount")}</span>
                       </>
                     :
                       <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(promotion.grossImport)}</h1>
@@ -113,13 +113,13 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
                   <h1 className="text-tertiary text-xl">{promotion.title}</h1>
                   <div className="w-full h-auto flex flex-col sm:flex-row mt-6 sm:mt-2 gap-y-6 sm:gap-x-6 justify-between">
                     <div className="w-full sm:w-[50%] flex flex-col h-auto justify-start items-start">
-                      <label className="text-secondary">{t("From")}:</label>
+                      <label className="text-secondary">{t("common.from")}:</label>
                       <div className="w-full  sm:p-2 border-b-2  border-b-secondary">
                         <DatePicker openBar={ openBar['startDate']} type="startDate" section="promotion_form" toggleBar={toggleBar} date={dates.dateFrom} setDate={updateDateFromHandler} />
                       </div>
                     </div>
                     <div className="w-full sm:w-[50%] flex flex-col h-auto justify-start items-start">
-                      <label className="text-secondary">{t("To")}:</label>
+                      <label className="text-secondary">{t("common.to")}:</label>
                       <div className="w-full  p-2 border-b-2  border-b-secondary">
                         <DatePicker openBar={ openBar['endDate']} type="endDate" toggleBar={toggleBar} section="promotion_form" date={dates.dateTo} setDate={updateDateToHandler} />
                       </div>
@@ -134,7 +134,7 @@ const PromotionAddForm = ({ isOpen, onClose, promotion }:PromotionProps ) => {
                       size="lg" 
                       className="group text-xs sm:text-lg h-10"
                       rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
-                    >{t("Add to reserve")}</Button>
+                    >{t("reserve.add_to_reserve")}</Button>
                   </div>
                 </div>
               </motion.div>

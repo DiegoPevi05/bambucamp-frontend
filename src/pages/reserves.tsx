@@ -205,19 +205,19 @@ const ReserveCard = (props:ReserveCardProps) => {
       className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto  gap-x-4 mt-4 flex flex-col sm:grid sm:grid-cols-6 sm:grid-rows-7">
       <div className="sm:col-span-4 2xl:col-span-3 sm:row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("Identificator")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("reserve.identificator")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.external_id}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("reserve.reservation")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status != "NOT_CONFIRMED" ? ( reserve.reserve_status == "CONFIRMED" ? (t("CONFIRMED")) : (t("COMPLETE")) ) : (t("NOT_CONFIRMED")) }</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("Total Import")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("reserve.total_import")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("Reservation")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("reserve.reservation")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{reserve.payment_status == "PAID" ? (t("PAID")) : (t("UNPAID"))}</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
@@ -231,15 +231,15 @@ const ReserveCard = (props:ReserveCardProps) => {
         </div>
       <div className="sm:col-span-2 2xl:col-span-3 sm:row-span-6 p-4 flex flex flex-row flex-wrap sm:border-l-2 sm:border-slate-200">
           <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><TentIcon className="h-5 w-5"/>{t("Tents")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><TentIcon className="h-5 w-5"/>{t("reserve.glampings")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{getTentsNames(reserve)}</p>
           </div>
           <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Pizza className="h-5 w-5"/>{t("Products")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Pizza className="h-5 w-5"/>{t("reserve.products")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{getProductsNames(reserve)}</p>
           </div>
           <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><FlameKindling className="h-5 w-5"/>{t("Experiences")}{":"}</h2>
+            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><FlameKindling className="h-5 w-5"/>{t("reserve.experiences")}{":"}</h2>
             <p className="text-xs font-primary text-slate-400 mt-2">{getExperiencesNames(reserve)}</p>
           </div>
         </div>
@@ -251,7 +251,7 @@ const ReserveCard = (props:ReserveCardProps) => {
             variant="ghostLight"
             onClick={() => setOpenReserve(true)}
             isRound={true}
-          >{t("View Details")} <Eye /></Button>
+          >{t("reserve.view_details")} <Eye /></Button>
         </div>
       </motion.div>
 
@@ -262,7 +262,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 className="w-auto" 
                 onClick={()=>{setOpenDetails("tents") ; setSelectedOption(0)}} 
                 name="category" 
-                placeholder={t("Tents")} 
+                placeholder={t("reserve.glampings")} 
                 rightIcon={<TentIcon/>} 
                 checked={openDetails === "tents"}
               />
@@ -270,7 +270,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 className="w-auto" 
                 onClick={()=>{setOpenDetails("products"); setSelectedOption(0);setStateAdd(undefined)}} 
                 name="category" 
-                placeholder={t("Products")} 
+                placeholder={t("reserve.products")} 
                 rightIcon={<Pizza/>}
                 checked={openDetails === "products"}
               />
@@ -278,7 +278,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 className="w-auto" 
                 onClick={()=>{setOpenDetails("experiences"); setSelectedOption(0);setStateAdd(undefined)}} 
                 name="category" 
-                placeholder={t("Experiences")} 
+                placeholder={t("reserve.experiences")} 
                 rightIcon={<FlameKindling/>}
                 checked={openDetails === "experiences"}
               />
@@ -308,14 +308,14 @@ const ReserveCard = (props:ReserveCardProps) => {
                     : 
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <TentIcon className="h-12 w-12"/>
-                      <p className="text-secondary text-sm">{t("No tents available")}</p>
+                      <p className="text-secondary text-sm">{t("reserve.no_tents_available")}</p>
                       <Button 
                         className="w-auto mt-4"
                         effect="default"
                         size="sm" 
                         variant="ghostLight" 
                         rightIcon={<Plus/>}
-                      >{t("Add Tent")}</Button>
+                      >{t("reserve.add_tent")}</Button>
                     </div>
                     }
                   </motion.div>
@@ -339,12 +339,12 @@ const ReserveCard = (props:ReserveCardProps) => {
                           size="sm" 
                           variant="ghostLight" 
                           rightIcon={<Plus/>}
-                        >{t("Add Product")}</Button>
+                        >{t("reserve.add_product")}</Button>
                       </div>
                       {reserve.products.map((product, index) => (
                         <div key={"product"+index} className="flex flex-row w-full border border-2 border-gray-200 p-2 rounded-lg">
                           <div className="w-48 h-24 bg-gray-200 rounded-lg">
-                            <img src={`${import.meta.env.VITE_BACKEND_URL}/${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
+                            <img src={`${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
                           </div>
                           <div className="w-full h-auto flex flex-col gap-y-2 px-4">
                             <p className="text-primary text-sm">{product?.productDB?.name}</p>
@@ -352,14 +352,14 @@ const ReserveCard = (props:ReserveCardProps) => {
                             <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
                           </div>
                           <div className="w-24 h-auto flex flex-col justify-center items-center">
-                            <p className="text-primary text-sm">{t("Quantity")}</p>
+                            <p className="text-primary text-sm">{t("reserve.quantity")}</p>
                             <p className="text-primary text-sm">{product.quantity}</p>
                             <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
                           </div>
                         </div>
                       ))}
                       <div className="w-full h-auto flex flex-row justify-between  border-t-2 border-secondary mt-auto p-4">
-                        <p className="text-primary text-sm">{t("Gross Amount")}</p>
+                        <p className="text-primary text-sm">{t("common.gross_amount")}</p>
                         <p className="text-primary text-sm">{formatPrice(reserve.products.reduce((acc,product) => acc + product.price*product?.quantity,0))}</p>
                       </div>
                     </>
@@ -367,7 +367,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   : 
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <Pizza className="h-12 w-12"/>
-                      <p className="text-secondary text-sm">{t("There are no products available")}</p>
+                      <p className="text-secondary text-sm">{t("product.no_products_available")}</p>
                       <Button 
                         onClick={()=>setStateAdd("add_product")}
                         className="w-auto mt-4"
@@ -375,7 +375,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                         size="sm" 
                         variant="ghostLight" 
                         rightIcon={<Plus/>}
-                      >{t("Add Product")}</Button>
+                      >{t("reserve.add_product")}</Button>
                     </div>
                   }
                 </motion.div>
@@ -419,14 +419,14 @@ const ReserveCard = (props:ReserveCardProps) => {
                           size="sm" 
                           variant="ghostLight" 
                           rightIcon={<Plus/>}
-                        >{t("Add Experience")}</Button>
+                        >{t("reserve.add_experience")}</Button>
                       </div>
                     </>
                   )
                   :
                     <div className="w-full h-[200px] flex justify-center items-center flex-col">
                       <FlameKindling className="h-12 w-12"/>
-                      <p className="text-secondary text-sm">{t("There are no experiences available")}</p>
+                      <p className="text-secondary text-sm">{t("experience.no_experiences_available")}</p>
                       <Button 
                         onClick={()=>(setStateAdd("add_experience"),setSelectedExperience(undefined))}
                         className="w-auto mt-4 mx-auto"
@@ -434,7 +434,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                         size="sm" 
                         variant="ghostLight" 
                         rightIcon={<Plus/>}
-                      >{t("Add Experience")}</Button>
+                      >{t("reserve.add_experience")}</Button>
                     </div>
                   }
                 </motion.div>
@@ -450,7 +450,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   size="sm" 
                   variant="ghostLight" 
                   rightIcon={<FlameKindling/>}
-                >{t("My Experiences")}</Button>
+                >{t("reserve.my_experiences")}</Button>
               </div>
               <motion.div 
                 initial="hidden"
@@ -463,7 +463,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                     <div className="w-full h-full flex flex-col justify-start items-start mb-2">
                       <span className="flex flex-row items-end gap-x-2">
                         <ShoppingBasket className="h-5 w-5"/>
-                        <h2 className="text-lg">{t("List")}</h2>
+                        <h2 className="text-lg">{t("reserve.list")}</h2>
                       </span>
                       <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
                         {experiences.length > 0 ?
@@ -472,9 +472,9 @@ const ReserveCard = (props:ReserveCardProps) => {
                             <div key={`reserve_experience_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
                               <div className="flex flex-col h-full w-auto">
                                 <span className="text-sm mt-auto text-tertiary">{experienceCart.name}</span>
-                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
-                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
-                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{"Day"} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("reserve.quantity")} :</span><span className="text-xs mt-auto">{experienceCart.quantity}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("reserve.unit_price")}:</span><span className="text-xs mt-auto">{formatPrice(experienceCart.price)}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("reserve.day")} :</span><span className="text-xs mt-auto">{formatDateToYYYYMMDD(experienceCart.day)}</span></div>
                               </div>
                               <div className="flex flex-col items-end h-full w-[20%] ml-auto">
                                 <span onClick={()=>removeExperienceFromBasket(index)} className="h-5 w-5 mb-auto active:scale-95 hover:scale-110 duration-300 transition-all cursor-pointer hover:text-tertiary"><X className="w-full h-full"/></span>
@@ -501,7 +501,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                       size="sm" 
                       variant="ghostLight" 
                       rightIcon={<Plus/>}
-                    >{t("Request Adding Experiences")}</Button>
+                    >{t("reserve.request_adding_experiences")}</Button>
                   </div>
                 </div>
 
@@ -509,7 +509,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
                     <span className="flex flex-row items-end gap-x-2 mb-4">
                       <FlameKindling className="h-5 w-5"/>
-                      <h2 className="text-lg">{t("Experiences")}</h2>
+                      <h2 className="text-lg">{t("reserve.experiences")}</h2>
                     </span>
                     <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll pr-2">
                       {experiencesDB.map((experienceItem,index)=>{
@@ -536,7 +536,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   size="sm" 
                   variant="ghostLight" 
                   rightIcon={<Pizza/>}
-                >{t("My Products")}</Button>
+                >{t("reserve.my_products")}</Button>
               </div>
               <motion.div 
                 initial="hidden"
@@ -549,7 +549,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                     <div className="w-full h-full flex flex-col justify-start items-start mb-2">
                       <span className="flex flex-row items-end gap-x-2">
                         <ShoppingBasket className="h-5 w-5"/>
-                        <h2 className="text-lg">{t("List")}</h2>
+                        <h2 className="text-lg">{t("reserve.list")}</h2>
                       </span>
                       <div className="w-full h-auto flex flex-col gap-y-3 mt-4 overflow-y-scroll">
                         {products.length > 0 ?
@@ -558,8 +558,8 @@ const ReserveCard = (props:ReserveCardProps) => {
                             <div key={`reserve_product_cart_${index}`} className="flex flex-row w-full h-auto border-2 border-slate-200 rounded-lg shadow-sm p-4">
                               <div className="flex flex-col h-full w-auto">
                                 <span className="text-sm mt-auto text-tertiary">{productCart.name}</span>
-                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
-                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("Unit Price.")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("reserve.quantity")} :</span><span className="text-xs mt-auto">{productCart.quantity}</span></div>
+                                <div className="flex flex-row gap-x-2"><span className="text-xs text-secondary">{t("reserve.unit_price")}:</span><span className="text-xs mt-auto">{formatPrice(productCart.price)}</span></div>
                               </div>
                               <div className="flex flex-col items-end h-full w-[20%] ml-auto">
                                 <span onClick={()=>removeProductFromBasket(index)} className="h-5 w-5 mb-auto active:scale-95 hover:scale-110 duration-300 transition-all cursor-pointer hover:text-tertiary"><X className="w-full h-full"/></span>
@@ -586,7 +586,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                       size="sm" 
                       variant="ghostLight" 
                       rightIcon={<Plus/>}
-                    >{t("Request Adding Products")}</Button>
+                    >{t("reserve.request_adding_products")}</Button>
                   </div>
                 </div>
 
@@ -594,7 +594,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                   <div className="w-full h-full flex flex-col justify-start items-start overlfow-y-scroll">
                     <span className="flex flex-row items-end gap-x-2 mb-4">
                       <FlameKindling className="h-5 w-5"/>
-                      <h2 className="text-lg">{t("Products")}</h2>
+                      <h2 className="text-lg">{t("reserve.products")}</h2>
                     </span>
                     <div className="w-full h-auto flex flex-col gap-y-3 overflow-y-scroll pr-2">
                       {productsDB.map((productItem,index)=>{
@@ -636,16 +636,16 @@ const ReserveCard = (props:ReserveCardProps) => {
                       </p>
                     </div>
                     <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-auto">
-                      <p className="text-primary text-sm">{t("Gross Amount")}</p>
+                      <p className="text-primary text-sm">{t("common.gross_amount")}</p>
                       <p className="text-gray-400 text-sm">{formatPrice(selectedTent.price)}</p>
                     </div>
                   </div>
                   <div className="h-full w-[50%] lg:w-[25%] flex justify-center items-center overflow-hidden p-2">
-                    <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedTent.tentDB?.images[0]}`} alt={selectedTent.name} className="w-full h-auto object-cover"/>
+                    <img src={`${selectedTent.tentDB?.images[0]}`} alt={selectedTent.name} className="w-full h-auto object-cover"/>
                   </div>
                 </div>
                 <div className="h-auto lg:h-[30%] w-full px-4 py-2 flex flex-col bg-secondary">
-                  <h3 className="text-white mb-4">{t("Services")}</h3>
+                  <h3 className="text-white mb-4">{t("common.services")}</h3>
                   <div className="w-full h-auto flex flex-row flex-wrap gap-4">
                   {selectedTent.tentDB?.services && Object.entries(selectedTent.tentDB.services).map(([service, value]) => {
                       if (value) {
@@ -674,7 +674,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-3 w-3 bg-red-300"></span>
                       </span>
-                      {t("Experience pending confirmation")}
+                      {t("reserve.pending_experience")}
                     </span>
                   )}
                   <h1 className="text-tertiary">{selectedExperience.experienceDB?.name}</h1>
@@ -682,19 +682,19 @@ const ReserveCard = (props:ReserveCardProps) => {
                   <div className="w-full h-auto flex flex-col lg:flex-row mt-2">
                     <div className="w-[100%] lg:w-[50%] h-full flex flex-col">
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs">{t("Day")}:</p>
+                        <p className="text-primary text-xs">{t("reserve.day")}:</p>
                         <p className="text-gray-400 text-sm">
                           {formatDateToYYYYMMDD(selectedExperience.day)}
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-col lg:flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-xs">{t("Duration")}:</p>
+                        <p className="text-primary text-xs">{t("reserve.duration")}:</p>
                         <p className="text-gray-400 text-sm">
                           { `${selectedExperience.experienceDB?.duration} min.`  }
                         </p>
                       </div>
                       <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
-                        <p className="text-primary text-xs">{t("Quantity of people allowed by experience")}:</p>
+                        <p className="text-primary text-xs">{t("experience.qty_people")}:</p>
 
                         <div className="w-auto h-auto flex flex-col lg:flex-row items-start gap-x-2">
                           <User className="text-primary h-4 w-4"/>
@@ -702,21 +702,21 @@ const ReserveCard = (props:ReserveCardProps) => {
                         </div>
                       </div>
                       <div className="w-full h-auto flex flex-col gap-x-6 mt-4">
-                        <p className="text-primary text-xs">{t("Limit of age for this experience")}:</p>
+                        <p className="text-primary text-xs">{t("experience.limit_age")}:</p>
                         <p className="text-gray-400 text-sm">{selectedExperience.experienceDB?.limit_age}{" "}{t("Years")}</p>
                       </div>
                     </div>
                     <div className="hidden w-[50%] h-full lg:flex flex-col border border-2 border-gray-200 rounded-lg px-4 m-2">
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">{t("Price")}</p>
+                        <p className="text-primary text-sm">{t("common.price")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{formatPrice(selectedExperience.price)}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-4">
-                        <p className="text-primary text-sm">{t("Quantity")}</p>
+                        <p className="text-primary text-sm">{t("reserve.quantity")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-6 mt-auto border-t-2 border-secondary p-2">
-                        <p className="text-primary text-sm">{t("Gross Amount")}:</p>
+                        <p className="text-primary text-sm">{t("common.gross_amount")}:</p>
                           <p className="text-gray-400 text-sm ml-auto">
                             {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
@@ -725,18 +725,18 @@ const ReserveCard = (props:ReserveCardProps) => {
                   </div>
                 </div>
                 <div className="h-full w-[50%] lg:w-[25%] flex max-lg:flex-col justify-center items-center overflow-hidden p-2">
-                  <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedExperience.experienceDB?.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
+                  <img src={`${selectedExperience.experienceDB?.images[0]}`} alt={selectedExperience.name} className="w-auto h-full object-cover"/>
                     <div className="flex w-[100%] h-full lg:hidden flex-col border border-2 border-gray-200 rounded-lg px-4 my-2">
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
-                        <p className="text-primary text-xs">{t("Price")}</p>
+                        <p className="text-primary text-xs">{t("common.price")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{formatPrice(selectedExperience.price)}</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-4">
-                        <p className="text-primary text-xs">{t("Quantity")}</p>
+                        <p className="text-primary text-xs">{t("reserve.quantity")}</p>
                         <p className="text-gray-400 text-sm ml-auto">{ selectedExperience.quantity }</p>
                       </div>
                       <div className="w-full h-auto flex flex-row gap-x-4 mt-auto border-t-2 border-secondary py-4">
-                        <p className="text-primary text-xs">{t("Gross Amount")}:</p>
+                        <p className="text-primary text-xs">{t("common.gross_amount")}:</p>
                           <p className="text-gray-400 text-sm ml-auto">
                             {formatPrice(selectedExperience.price * selectedExperience.quantity)}
                           </p>
@@ -745,7 +745,7 @@ const ReserveCard = (props:ReserveCardProps) => {
                 </div>
               </div>
               <div className="h-[20%] w-full px-4 py-2 flex flex-col bg-secondary">
-                <h3 className="text-white mb-1 text-md">{t("Suggestions")}</h3>
+                <h3 className="text-white mb-1 text-md">{t("experience.suggestions")}</h3>
                 <div className="w-full h-full flex flex-col lg:flex-row lg:flex-wrap gap-y-2 gap-x-4">
                   {selectedExperience.experienceDB?.suggestions.map((suggestion, index) => (
                     <p key={index} className="text-white text-xs"> * {suggestion}</p>
@@ -836,13 +836,13 @@ const DashboardReserves = () => {
         className="bg-white h-auto flex flex-col justify-start items-start lg:row-span-7 lg:grid lg:grid-cols-2 lg:grid-rows-3 gap-4">
 
         <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto flex flex-col lg:col-span-1 lg:row-span-2">
-            <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("Calendar")}</h1>
-            <p className="font-secondary text-sm sm:text-md text-tertiary">{t("View your reserves through months")}</p>
+            <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.calendar")}</h1>
+            <p className="font-secondary text-sm sm:text-md text-tertiary">{t("reserve.view_reserves_month")}</p>
             <div className="w-full h-auto flex flex-row gap-x-2 my-4 sm:my-2">
               <span className="h-4 sm:h-6 w-4 sm:w-6 bg-tertiary rounded-md"></span>
-              <p className="font-primary text-tertiary text-sm">{t("Reserves")}</p>
+              <p className="font-primary text-tertiary text-sm">{t("reserve.reserves")}</p>
               <span className="h-4 sm:h-6 w-4 sm:w-6 bg-white rounded-md border-2 border-slate-400"></span>
-              <p className="font-primary text-slate-400 text-sm">{t("Today")}</p>
+              <p className="font-primary text-slate-400 text-sm">{t("reserve.today")}</p>
             </div>
             <AnimatePresence>
                 <motion.div 
@@ -852,9 +852,9 @@ const DashboardReserves = () => {
                 variants={fadeOnly("",0,0.5)}
                 className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
                   <div className="flex flex-row justify-between items-center mb-4 px-4">
-                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
+                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("common.previous")}</button>
                     <h1 className="text-sm sm:text-md text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
+                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("common.next")}</button>
                   </div>
                   <div className="grid grid-cols-7 gap-2 p-2">
                     {calendarDays}
@@ -864,7 +864,7 @@ const DashboardReserves = () => {
         </div>
 
         <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] lg:h-full flex flex-col lg:col-span-1 lg:row-span-3 ">
-          <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("Reserves")}</h1>
+          <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("reserve.reserves")}</h1>
           <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
 
           <div className="w-full h-[80%] flex flex-col overflow-y-scroll pr-2 sm:pr-4">
@@ -879,8 +879,8 @@ const DashboardReserves = () => {
         </div>
 
         <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full max-lg:min-h-[400px] flex flex-col lg:col-span-1 lg:row-span-1">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("News")}</h1>
-            <p className="font-secondary text-md text-tertiary">{t("Here are the latest notifications")}</p>
+            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.news")}</h1>
+            <p className="font-secondary text-md text-tertiary">{t("reserve.latest_notifications")}</p>
             <div className="w-full h-full overflow-hidden">
               <div className="w-full h-[300px] lg:h-36 flex flex-col overflow-y-scroll gap-y-4 mt-4 pr-2">
                   {dataNotifications.notifications.map((notification, index) => (

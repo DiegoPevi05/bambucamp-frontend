@@ -13,17 +13,17 @@ import { AlignJustify } from "lucide-react";
 
 const DashboardButtons: DashboardButtonDataProps[] = [
   {
-    "title": "Reserves",
+    "title": "reserve.reserves",
     "icon": <CalendarCheck/>,
     "section": "reserves"
   },
   {
-    "title": "Account",
+    "title": "reserve.account",
     "icon": <User />,
     "section": "account"
   },
   {
-    "title": "Settings",
+    "title": "reserve.settings",
     "icon": <UserCog />,
     "section": "settings"
   }
@@ -96,7 +96,7 @@ const Dashboard = ({children}:{children:React.ReactNode}) => {
             onClick={logout}
           >
             {<DoorClosed/>}
-            <span>{t("Sign Out")}</span>
+            <span>{t("auth.log_out")}</span>
           </Button>
         </div>
         <div className="bg-white sm:px-4 flex flex-col lg:col-span-5 lg:grid lg:grid-rows-8 gap-4 h-auto sm:h-full overflow-y-scroll max-2xl:py-4">
@@ -104,11 +104,11 @@ const Dashboard = ({children}:{children:React.ReactNode}) => {
             <div className="flex flex-row items-center justify-center gap-x-4">
               <button className="2xl:hidden h-full w-12 flex items-center justify-center text-secondary rounded-xl active:scale-95 active:bg-white active:text-secondary active:border active:border-secondary" onClick={()=>setOpenNavbar((prev)=> !prev)} ><AlignJustify className=""/></button>
               <div className="flex gap-x-4 items-center flex-col">
-                <h1 className="text-sm sm:text-lg text-secondary">{t("Welcome")} {user?.firstName}{" "}{user?.lastName}</h1>
-                <p className="font-secondary max-sm:hidden text-md text-tertiary">{t("Here you can view your reserves")}{" "}</p>
+                <h1 className="text-sm sm:text-lg text-secondary">{t("common.welcome")} {user?.firstName}{" "}{user?.lastName}</h1>
+                <p className="font-secondary max-sm:hidden text-md text-tertiary">{t("reserve.view_reserves_here")}{" "}</p>
               </div>
             </div>
-            <DropDownListAccount user={user} variant="dark"/>
+            <DropDownListAccount user={user} variant="dark" isDashboard={true}/>
           </div>
           <AnimatePresence>
             {children}

@@ -15,6 +15,20 @@ const serviceIconMap: Record<string, keyof typeof LucideIcons> = {
   grill: 'Beef',
 };
 
+const serviceLabelMap: Record<string, string> = {
+  wifi: 'glampings.wi_fi',
+  parking: 'glampings.parking',
+  pool: 'glampings.pool',
+  breakfast: 'glampings.breakfast',
+  lunch: 'glampings.lunch',
+  dinner: 'glampings.dinner',
+  spa: 'glampings.spa',
+  bar: 'glampings.bar',
+  hotwater: 'glampings.hotwater',
+  airconditioning: 'glampings.air_conditioner',
+  grill: 'glampings.grill',
+};
+
 interface ServiceItemProps {
   icon: string;
   size?:string;
@@ -25,7 +39,7 @@ const ServiceItem = ({icon,size,color}:ServiceItemProps) => {
   const { t } = useTranslation();
 
   const iconName = serviceIconMap[icon];
-  const label = t(icon.charAt(0).toUpperCase() + icon.slice(1));
+  const label = t(serviceLabelMap[icon]);
   // @ts-ignore: Ignore TypeScript checking for IconComponent
   const IconComponent = LucideIcons[iconName];
 

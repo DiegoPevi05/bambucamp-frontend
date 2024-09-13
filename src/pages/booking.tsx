@@ -87,7 +87,7 @@ const Booking: React.FC = () => {
       if(tent){
 
         if(tent.max_aditional_people < aditionalPeople){
-          toast.success(t("Maximum number of aditional people for this glamping:")+(" ")+tent.max_aditional_people);
+          toast.success(t("validations.max_aditional_people")+(" ")+tent.max_aditional_people);
           return;
         }
 
@@ -109,7 +109,7 @@ const Booking: React.FC = () => {
 
     const searchAvailableTentsHandler = async() => {
       if(dates.dateFrom > dates.dateTo){
-        toast.error(t("Start date must be before end date."))
+        toast.error(t("validations.start_date_before_end_date"))
         return;
       }
       setLoadingTents(true);
@@ -153,7 +153,7 @@ const Booking: React.FC = () => {
               exit="hidden"
               variants={fadeOnly("down",0.5,0.5)}
               className='w-[300px] h-[200px] absolute right-1/2 top-1/2 left-1/2 bottom-1/2 -translate-x-1/2 -translate-y-1/2 bg-secondary rounded-xl border-4 border-white flex items-center justify-center flex-col gap-y-2 text-white p-2' >
-              <p className='font-secondary text-center mx-auto'>{t("There are no glampings available for the range of dates selected")}</p>
+              <p className='font-secondary text-center mx-auto'>{t("booking.glampings_no_availability")}</p>
               <TentIcon className='h-12 w-12'/>
             </motion.div>
 
@@ -177,11 +177,11 @@ const Booking: React.FC = () => {
                       <div className="flex flex-row gap-x-4 mt-1">
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <UserIcon className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtypeople} {t('adults')}</span>
+                          <span className="text-white text-sm">{tent.qtypeople} {t('common.adults')}</span>
                         </div>
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <ToyBrick className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtykids} {t('kids')}</span>
+                          <span className="text-white text-sm">{tent.qtykids} {t('common.kids')}</span>
                         </div>
                       </div>
                     </div>
@@ -189,7 +189,7 @@ const Booking: React.FC = () => {
                       <p className="font-primary text-white text-xs">{tent.description ? (tent.description.length > 250 ? tent.description.slice(0,250)+"..." : tent.description) : ""}</p>
                     </div>
                     <div className="flex items-start justify-start flex-col w-[80%] lg:w-[450px] h-[20%] lg:h-[100px] py-2 lg:py-4 px-10  mt-[4%] lg:mt-4">
-                      <label className="text-white">{t("Services")}</label>
+                      <label className="text-white">{t("common.services")}</label>
                       <div className="flex flex-row flex-wrap items-start justify-start w-full h-full gap-x-4">
                         {Object.entries(tent.services).map(([service, value]) => {
                             if (value) {
@@ -210,13 +210,13 @@ const Booking: React.FC = () => {
                       :
                         <h1 className="font-primary text-tertiary text-3xl uppercase">{formatPrice(tent.price)}</h1>
                       }
-                      <label className='absolute bottom-0 left-[10%] text-white text-[10px]'>{t("Aditional cost per person")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
+                      <label className='absolute bottom-0 left-[10%] text-white text-[10px]'>{t("glampings.aditional_people_cost")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
                     </div>
 
                   </div>
                   <div className='max-sm:hidden relative lg:mt-5 lg:-top-[5%] w-full h-auto flex flex-col bg-transparent  items-start justify-center gap-y-2 z-[12]'>
                     <div className='w-auto h-auto flex flex-col justify-start mx-auto'>
-                      <label className='flex flex-row gap-x-2 mx-auto mb-2 text-white'><User/>{t("Aditional People")}</label>
+                      <label className='flex flex-row gap-x-2 mx-auto mb-2 text-white'><User/>{t("glampings.aditional_people")}</label>
                       <div className='w-auto mx-auto flex flex-row items-center gap-x-4'>
                         <input value={aditionalPeople}  className="h-12 w-12 border-2 border-secondary rounded-lg text-center disabled:bg-white" disabled/>
                         <button onClick={()=>setAditionalPeople(prevAditionalPeople => (prevAditionalPeople - 1  >= 0 ? prevAditionalPeople - 1 : 0 ))}  className="active:scale-95 hover:bg-white hover:text-secondary duration-300 transition-all h-10 w-10 bg-secondary border-white border-2 rounded-lg text-white">-</button>
@@ -224,7 +224,7 @@ const Booking: React.FC = () => {
                       </div>
                     </div>
                     <div className='flex flex-row justify-around mx-auto'>
-                      <InputRadio onClick={()=>handleToggleTent(tent.id,index)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserved') : t('Add to reserve')} checked={isTentInCart(tent.id)} readOnly/>
+                      <InputRadio onClick={()=>handleToggleTent(tent.id,index)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('reserve.reserved') : t('reserve.add_to_reserve')} checked={isTentInCart(tent.id)} readOnly/>
                     </div>
 
                     <div className="flex flex-row justify-around w-[400px] mx-auto">
@@ -262,20 +262,20 @@ const Booking: React.FC = () => {
                         <>
                           <h2 className="font-primary text-primary text-sm uppercase line-through">{formatPrice(tent.price)}</h2>
                           <h1 className="font-primary text-tertiary text-lg uppercase">{formatPrice(tent.custom_price)}</h1>
-                          <span className="text-primary text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{t("off of discount only for today")}</span>
+                          <span className="text-primary text-[11px]">{getDiscount(tent.price,tent.custom_price)}%{" "}{t("booking.today_discount")}</span>
                         </>
                       :
                         <h1 className="font-primary text-secondary text-2xl uppercase">{formatPrice(tent.price)}</h1>
                       }
 
                       <div className="w-full h-auto mt-auto px-6">
-                        <InputRadio labelVisible={true} className="text-[12px] w-auto" onClick={()=>handleToggleTent(tent.id,index)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('Reserved') : t('Add')} checked={isTentInCart(tent.id)} readOnly/>
+                        <InputRadio labelVisible={true} className="text-[12px] w-auto" onClick={()=>handleToggleTent(tent.id,index)} variant="default" value={tent.id} placeholder={ isTentInCart(tent.id) ? t('reserve.reserved') : t('booking.add')} checked={isTentInCart(tent.id)} readOnly/>
                       </div>
                   </div>
 
                   <button 
                     onClick={()=>setViewDetailsMobile(true)}
-                    className='mx-auto mt-[5%] h-auto w-auto px-4 py-2 bg-secondary rounded-full text-white hover:text-primary text-[11px] hover:bg-white group shadow-lg'>{t("View more")}</button>
+                    className='mx-auto mt-[5%] h-auto w-auto px-4 py-2 bg-secondary rounded-full text-white hover:text-primary text-[11px] hover:bg-white group shadow-lg'>{t("booking.view_more")}</button>
 
                   <div className="mt-[5%] flex flex-row justify-center items-center w-full h-auto gap-x-2">
                     {tents.map((_,index)=>{
@@ -303,16 +303,16 @@ const Booking: React.FC = () => {
                       <div className="flex flex-row gap-x-4 mt-1">
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <UserIcon className="h-4 w-4 text-primary"/>
-                          <span className="text-primary text-sm">{tent.qtypeople} {t('adults')}</span>
+                          <span className="text-primary text-sm">{tent.qtypeople} {t('glampings.adults')}</span>
                         </div>
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <ToyBrick className="h-4 w-4 text-primary"/>
-                          <span className="text-primary text-sm">{tent.qtykids} {t('kids')}</span>
+                          <span className="text-primary text-sm">{tent.qtykids} {t('glampings.kids')}</span>
                         </div>
                       </div>
-                      <label className="text-primary text-sm mt-4">{t("Description")}</label>
+                      <label className="text-primary text-sm mt-4">{t("booking.description")}</label>
                       <p className="font-primary text-secondary text-xs my-2">{tent.description}</p>
-                      <label className="text-primary text-sm">{t("Services")}</label>
+                      <label className="text-primary text-sm">{t("common.services")}</label>
                       <div className="flex flex-row flex-wrap items-start justify-start w-full h-auto gap-x-4  mt-2">
                         {Object.entries(tent.services).map(([service, value]) => {
                             if (value) {
@@ -322,12 +322,12 @@ const Booking: React.FC = () => {
                             return null;
                           })}
                       </div>
-                      <label className="text-primary text-sm mt-4">{t("Gallery")}</label>
+                      <label className="text-primary text-sm mt-4">{t("booking.gallery")}</label>
                       <div className='w-full h-auto mt-2'>
                         <div className="grid grid-cols-2 gap-2">
                           {tent.images.map((image, index) => (
                             <div key={index} className="w-full h-auto">
-                              <img src={`${import.meta.env.VITE_BACKEND_URL}/${image}`} alt={`tent-image-${index}`} className="w-full h-[300px] object-cover rounded-xl shadow-sm" />
+                              <img src={`${image}`} alt={`tent-image-${index}`} className="w-full h-[300px] object-cover rounded-xl shadow-sm" />
                             </div>
                           ))}
                         </div>
@@ -357,7 +357,7 @@ const Booking: React.FC = () => {
               className="group text-xs sm:text-lg h-10"
               rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
               disabled={totalItems == 0}>
-              {t('Continue')}
+              {t('common.continue')}
         </Button>
       </div>
     </div>

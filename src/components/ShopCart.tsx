@@ -58,8 +58,8 @@ const ShopCart = (props:CartProps) => {
 
                           <label className="text-secondary text-xs font-primary">{"Check In"}: {formatDateToYYYYMMDD(tentItem.dateFrom)}</label>
                           <label className="text-secondary text-xs font-primary">{"Check Out"}: {formatDateToYYYYMMDD(tentItem.dateTo)}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {tentItem.nights}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(tentItem.price)}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.nights')} x {tentItem.nights}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')} : {formatPrice(tentItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
                           <button onClick={()=>removeTent(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
@@ -74,16 +74,16 @@ const ShopCart = (props:CartProps) => {
             )}
             {cart.experiences.length != 0 && (
               <>
-                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Experiences")}</label>
+                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("reserve.experiences")}</label>
                 <div className="w-full h-auto flex flex-col pt-4">
                   {cart.experiences.map((experienceItem,index)=>{
                     return(
                       <div key={`cart_productItem_${index}`} className={`w-full h-auto flex flex-row p-2      ${index != 0 ? "border-t-2 border-slate-200" : "" }`}>
                         <div className="w-[60%] h-full flex flex-col justify-start items-start">
                           <label className="text-tertiary text-sm font-primary">{experienceItem.name}</label>
-                          <label className="text-tertiary text-xs font-primary">{t('Day')}: {formatDateToYYYYMMDD(experienceItem.day)}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Quantity')} x {experienceItem.quantity}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price')}: {experienceItem.price}</label>
+                          <label className="text-tertiary text-xs font-primary">{t('reserve.day')}: {formatDateToYYYYMMDD(experienceItem.day)}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.quantity')} x {experienceItem.quantity}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')}: {experienceItem.price}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
                           <button onClick={()=>removeExperience(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
@@ -98,15 +98,15 @@ const ShopCart = (props:CartProps) => {
             )}
             {cart.products.length != 0 && (
               <>
-                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Products")}</label>
+                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("reserve.products")}</label>
                 <div className="w-full h-auto flex flex-col pt-4">
                   {cart.products.map((productItem,index)=>{
                     return(
                       <div key={`cart_productItem_${index}`} className={`w-full h-auto flex flex-row p-2 ${index != 0 ? "border-t-2 border-slate-200" : "" } `}>
                         <div className="w-[60%] h-full flex flex-col justify-start items-start">
                           <label className="text-tertiary text-sm font-primary">{productItem.name}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t("Quantity")} x {productItem.quantity}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t("Unit Price.")}: {formatPrice(productItem.price)}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t("reserve.quantity")} x {productItem.quantity}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t("reserve.unit_price")}: {formatPrice(productItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
                           <button onClick={()=>removeProduct(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
@@ -122,7 +122,7 @@ const ShopCart = (props:CartProps) => {
 
             {cart.promotions.length != 0 && (
               <>
-                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("Promotions")}</label>
+                <label className="text-tertiary  border-b-2 border-tertiary w-full pb-2">{t("promotions.singular")}</label>
                 <div className="w-full h-auto flex flex-col pt-4">
                   {cart.promotions.map((promotionItem,index)=>{
                     return(
@@ -133,8 +133,8 @@ const ShopCart = (props:CartProps) => {
 
                           <label className="text-secondary text-xs font-primary">{"Check In"}: {formatDateToYYYYMMDD(promotionItem.dateFrom)}</label>
                           <label className="text-secondary text-xs font-primary">{"Check Out"}: {formatDateToYYYYMMDD(promotionItem.dateTo)}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Nights')} x {promotionItem.nights}</label>
-                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('Unit Price.')} : {formatPrice(promotionItem.price)}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.nights')} x {promotionItem.nights}</label>
+                          <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')} : {formatPrice(promotionItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
                           <button onClick={()=>removePromotion(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
@@ -153,7 +153,7 @@ const ShopCart = (props:CartProps) => {
 
           <div key={`cart_total`} className="w-full h-auto flex flex-row p-2 border-t-2 border-tertiary">
             <div className="w-[60%] h-full flex flex-col justify-start items-start">
-              <label className="text-tertiary w-full">{t("Total Amount")}</label>
+              <label className="text-tertiary w-full">{t("reserve.total_amount")}</label>
             </div>
             <div className="w-[40%] h-full flex flex-col justify-start items-end">
               <label>{formatPrice(getTotalCost())}</label>
@@ -165,14 +165,14 @@ const ShopCart = (props:CartProps) => {
             variant="dark" 
             className="group text-md"
             rightIcon={<ChevronRightIcon className="w-4 sm:w-6 h-4 sm:h-6 ml-2 duration-300"/>}
-          >{t("Go to Reserve")}</Button>
+          >{t("common.go_to_reserve")}</Button>
 
-          <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">{t("My Account")}</label>
+          <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">{t("common.my_account")}</label>
           <div className="w-full h-auto flex justify-start items-center">
             {user ?
-              <Button onClick={()=>goToRoute("/dashboard")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>
+              <Button onClick={()=>goToRoute("/dashboard/reserves")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
               :
-              <Button onClick={()=>goToRoute("/signin")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("Sign In")} <User/> </Button>
+              <Button onClick={()=>goToRoute("/signin")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("auth.sign_in")} <User/> </Button>
             }
           </div>
         </div>

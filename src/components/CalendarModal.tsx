@@ -46,9 +46,9 @@ const CalendarModal = ({ show, type, section, handleSelectedDate, containerDimen
           style={{ top: topValue }}
         >
           <div className="flex flex-row justify-between items-center mb-4 p-4">
-            <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("Previous")}</button>
+            <button className="text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("common.previous")}</button>
             <h1 className="text-slate-700">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-            <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("Next")}</button>
+            <button className="text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("common.next")}</button>
           </div>
           <div className="grid grid-cols-7 gap-2 p-2">
             {calendarDays}

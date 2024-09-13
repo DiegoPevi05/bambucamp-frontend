@@ -98,11 +98,11 @@ const Navbar = () => {
         </a>
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-8">
-        <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("Us")}</NavBarItem>
-        <NavBarItem index={2} route="/booking" goToRoute={goToRoute}>{t("Reservations")}</NavBarItem>
-        <NavBarItem index={3} scrollTarget="promotions-section" goToRoute={goToRoute}>{t("Promotions")}</NavBarItem>
-        <NavBarItem index={4} scrollTarget="services-section" goToRoute={goToRoute}>{t("Services")}</NavBarItem>
-        <NavBarItem index={5} scrollTarget="contact-section" goToRoute={goToRoute}>{t("Contact Us")}</NavBarItem>
+        <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("common.us")}</NavBarItem>
+        <NavBarItem index={2} route="/booking" goToRoute={goToRoute}>{t("reserve.reservations")}</NavBarItem>
+        <NavBarItem index={3} scrollTarget="promotions-section" goToRoute={goToRoute}>{t("promotions.singular")}</NavBarItem>
+        <NavBarItem index={4} scrollTarget="services-section" goToRoute={goToRoute}>{t("common.services")}</NavBarItem>
+        <NavBarItem index={5} scrollTarget="contact-section" goToRoute={goToRoute}>{t("home_page.contact_us")}</NavBarItem>
       </ul>
       <div className="w-[50%] lg:w-[20%] h-full flex justify-end items-center">
         <LanguageDropDownList/>
@@ -117,7 +117,7 @@ const Navbar = () => {
         {user ? 
           <DropDownListAccount user={user} isDashboard={false}/>
           :
-          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("Log In")}<User/> </Button>
+          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("auth.log_in")}<User/> </Button>
         }
         <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 lg:h-14 w-10 lg:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
       </div>
@@ -131,17 +131,17 @@ const Navbar = () => {
                 <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
               </a>
               <ul className="flex flex-col justify-start items-start gap-y-6 mt-16">
-                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="us-section" goToRoute={goToRoute} index={1}>{t("Us")}</NavBarItemMobile>
-                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} route="/booking" goToRoute={goToRoute}  index={2}>{t("Reservations")}</NavBarItemMobile>
-                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="promotions-section" goToRoute={goToRoute} index={3}>{t("Promotions")}</NavBarItemMobile>
-                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="services-section" goToRoute={goToRoute} index={4}>{t("Services")}</NavBarItemMobile>
-                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="contact-section" goToRoute={goToRoute} index={5}>{t("Contact Us")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="us-section" goToRoute={goToRoute} index={1}>{t("common.us")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} route="/booking" goToRoute={goToRoute}  index={2}>{t("reserve.reservations")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="promotions-section" goToRoute={goToRoute} index={3}>{t("promotions.singular")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="services-section" goToRoute={goToRoute} index={4}>{t("common.services")}</NavBarItemMobile>
+                <NavBarItemMobile closeNavBar={()=>setOpenSideBar(false)} scrollTarget="contact-section" goToRoute={goToRoute} index={5}>{t("home_page.contact_us")}</NavBarItemMobile>
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
                 {user ?
-                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("My Reserves")} <CalendarCheck/> </Button>
+                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
                   :
-                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("Sign In")} <User/> </Button>
+                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("auth.log_in")} <User/> </Button>
                 }
               </div>
               <div className="w-full mt-auto flex flex-row justify-start items-center gap-x-4 sm:gap-x-6">

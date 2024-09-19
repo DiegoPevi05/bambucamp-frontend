@@ -29,8 +29,6 @@ const formatImagePaths = (images: string[]): string[] => {
 export const serializeTent = (data:any):Tent|null => {
   let tent:Tent|null = null;
 
-  console.log(data);
-
   tent = {
     id: data.id,
     header: data.header,
@@ -95,9 +93,7 @@ const serializeReserveTent = (data:any):ReserveTentDto => {
 
   let reserveTent:ReserveTentDto|null = null;
 
-  console.log(data.tentDB);
   const tent_db_parsed = serializeTent(data.tentDB);
-  console.log(tent_db_parsed)
 
   reserveTent = {
     id:data.id,

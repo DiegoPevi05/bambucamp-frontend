@@ -210,7 +210,7 @@ const ReserveCard = (props:ReserveCardProps) => {
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("reserve.reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status != "NOT_CONFIRMED" ? ( reserve.reserve_status == "CONFIRMED" ? (t("CONFIRMED")) : (t("COMPLETE")) ) : (t("NOT_CONFIRMED")) }</p>
+            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status != "NOT_CONFIRMED" ? ( reserve.reserve_status == "CONFIRMED" ? (t("reserve.CONFIRMED")) : (t("reserve.COMPLETE")) ) : (t("reserve.NOT_CONFIRMED")) }</p>
           </div>
           <div className="w-[50%] h-auto flex flex-col">
             <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("reserve.total_import")}{":"}</h2>

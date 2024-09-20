@@ -19,6 +19,7 @@ import {CartProvider} from './contexts/CartContext';
 import Extras from './pages/extras';
 import Reserve from './pages/reserve';
 import SuccessReservation from './pages/SuccessReservation';
+import ErrorPage from './pages/error';
 
 
 const AppRoutes: React.FC = () => {
@@ -83,6 +84,7 @@ const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="*" element={<ErrorPage/>} />
 
     </Routes>
   );

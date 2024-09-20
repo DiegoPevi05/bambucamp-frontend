@@ -22,7 +22,8 @@
 		"home": "Inicio",
 		"about_us": "Nosotros",
 		"from": "Desde",
-		"to": "Hasta"
+		"to": "Hasta",
+		"error_not_found": "no encontrado"
 	},
 	"glampings": {
 		"adults": "Adultos",

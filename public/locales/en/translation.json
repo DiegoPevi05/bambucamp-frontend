@@ -22,7 +22,8 @@
 		"home": "Home",
 		"about_us": "About Us",
 		"from": "From",
-		"to": "To"
+		"to": "To",
+		"error_not_found": "not found"
 	},
 	"glampings": {
 		"adults": "adults",

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
-import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket, X  } from "lucide-react"
+import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Eye, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket, X, ReceiptText, FileDown  } from "lucide-react"
 import {  Experience, NotificationDto, Product, Reserve, ReserveExperienceDto, ReserveTentDto, createReserveExperienceDto, createReserveProductDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";
@@ -197,63 +197,134 @@ const ReserveCard = (props:ReserveCardProps) => {
 
   return (
     <>
-    <motion.div 
-      initial="hidden"
-      whileInView="show"
-      viewport={{once: true}}
-      variants={fadeIn("up","",0,0.5)}
-      className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto  gap-x-4 mt-4 flex flex-col sm:grid sm:grid-cols-6 sm:grid-rows-7">
-      <div className="sm:col-span-4 2xl:col-span-3 sm:row-span-6 p-4 flex flex-row flex-wrap gap-y-4">
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CircleSlash className="h-5 w-5"/>{t("reserve.identificator")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.external_id}</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CalendarCheck className="h-5 w-5"/>{t("reserve.reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.reserve_status != "NOT_CONFIRMED" ? ( reserve.reserve_status == "CONFIRMED" ? (t("reserve.CONFIRMED")) : (t("reserve.COMPLETE")) ) : (t("reserve.NOT_CONFIRMED")) }</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Coins className="h-5 w-5"/>{t("reserve.total_import")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{"S/."}{reserve.gross_import}{".00"}</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><CreditCard className="h-5 w-5"/>{t("reserve.reservation")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{reserve.payment_status == "PAID" ? (t("PAID")) : (t("UNPAID"))}</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorClosed className="h-5 w-5"/>{t("Check In")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(getReserveDates(reserve.tents).dateFrom)}</p>
-          </div>
-          <div className="w-[50%] h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><DoorOpen className="h-5 w-5"/>{t("Check Out")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{formatDate(getReserveDates(reserve.tents).dateTo)}</p>
-          </div>
-        </div>
-      <div className="sm:col-span-2 2xl:col-span-3 sm:row-span-6 p-4 flex flex flex-row flex-wrap sm:border-l-2 sm:border-slate-200">
-          <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><TentIcon className="h-5 w-5"/>{t("reserve.glampings")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{getTentsNames(reserve)}</p>
-          </div>
-          <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><Pizza className="h-5 w-5"/>{t("reserve.products")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{getProductsNames(reserve)}</p>
-          </div>
-          <div className="w-full h-auto flex flex-col">
-            <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start"><FlameKindling className="h-5 w-5"/>{t("reserve.experiences")}{":"}</h2>
-            <p className="text-xs font-primary text-slate-400 mt-2">{getExperiencesNames(reserve)}</p>
-          </div>
-        </div>
-        <div className="col-span-6 row-span-1 flex flex-row justify-end gap-x-4">
-          <Button
-            effect="default"
-            className="w-auto"
-            size="sm"
-            variant="ghostLight"
-            onClick={() => setOpenReserve(true)}
-            isRound={true}
-          >{t("reserve.view_details")} <Eye /></Button>
-        </div>
-      </motion.div>
+<motion.div 
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true }}
+  variants={fadeIn("up", "", 0, 0.5)}
+  className="bg-white p-2 rounded-xl shadow-lg border-2 border-gray-200 w-full h-auto gap-4 mt-4 grid grid-cols-6 grid-rows-7">
+
+  {/* Header Section */}
+  <div className="col-span-6 row-span-1 flex justify-between gap-x-4">
+    <Button
+      effect="default"
+      className="w-auto max-sm:text-[12px]"
+      size="sm"
+      variant="ghostLight"
+      onClick={() => setOpenReserve(true)}
+      rightIcon={<FileDown />}
+      smShrink={true}
+      isRound={true}>
+      {t("reserve.download_bill")} 
+    </Button>
+    <Button
+      effect="default"
+      className="w-auto max-sm:text-[12px]"
+      size="sm"
+      variant="ghostLight"
+      onClick={() => setOpenReserve(true)}
+      rightIcon={<ReceiptText/>}
+      smShrink={true}
+      isRound={true}>
+      {t("reserve.view_details")} 
+    </Button>
+  </div>
+  
+  {/* Left Section */}
+  <div className="col-span-6 sm:col-span-4 2xl:col-span-3 row-span-3 sm:row-span-6 p-4 grid grid-cols-2 gap-y-4">
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <CircleSlash className="h-5 w-5"/>
+        {t("reserve.identificator")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {reserve.external_id}
+      </p>
+    </div>
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <CalendarCheck className="h-5 w-5"/>
+        {t("reserve.reservation")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {reserve.reserve_status !== "NOT_CONFIRMED" 
+          ? reserve.reserve_status === "CONFIRMED" 
+            ? t("reserve.CONFIRMED") 
+            : t("reserve.COMPLETE") 
+          : t("reserve.NOT_CONFIRMED")}
+      </p>
+    </div>
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <Coins className="h-5 w-5"/>
+        {t("reserve.total_import")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {formatPrice(reserve.net_import)}
+      </p>
+    </div>
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <CreditCard className="h-5 w-5"/>
+        {t("reserve.reservation")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {reserve.payment_status === "PAID" ? t("PAID") : t("UNPAID")}
+      </p>
+    </div>
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <DoorClosed className="h-5 w-5"/>
+        {t("Check In")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {formatDate(getReserveDates(reserve.tents).dateFrom)}
+      </p>
+    </div>
+    <div className="col-span-1">
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <DoorOpen className="h-5 w-5"/>
+        {t("Check Out")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {formatDate(getReserveDates(reserve.tents).dateTo)}
+      </p>
+    </div>
+  </div>
+
+  {/* Right Section */}
+  <div className="col-span-6 sm:col-span-2 2xl:col-span-3 row-span-3 sm:row-span-6 p-4 grid grid-cols-1 gap-y-4 sm:border-l-2 sm:border-slate-200">
+    <div>
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <TentIcon className="h-5 w-5"/>
+        {t("reserve.glampings")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {getTentsNames(reserve)}
+      </p>
+    </div>
+    <div>
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <Pizza className="h-5 w-5"/>
+        {t("reserve.products")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {getProductsNames(reserve)}
+      </p>
+    </div>
+    <div>
+      <h2 className="text-sm font-secondary text-primary flex flex-row gap-x-2 items-start">
+        <FlameKindling className="h-5 w-5"/>
+        {t("reserve.experiences")}:
+      </h2>
+      <p className="text-xs font-primary text-slate-400 mt-2">
+        {getExperiencesNames(reserve)}
+      </p>
+    </div>
+  </div>
+
+
+</motion.div>
 
       <Modal isOpen={openReserve} onClose={()=>setOpenReserve(false)}>
         <div className="w-screen lg:w-[800px] h-auto lg:h-[600px] flex flex-col items-start justify-start text-secondary py-16 px-4 sm:p-6 overflow-hidden">
@@ -342,19 +413,31 @@ const ReserveCard = (props:ReserveCardProps) => {
                         >{t("reserve.add_product")}</Button>
                       </div>
                       {reserve.products.map((product, index) => (
-                        <div key={"product"+index} className="flex flex-row w-full border border-2 border-gray-200 p-2 rounded-lg">
-                          <div className="w-48 h-24 bg-gray-200 rounded-lg">
-                            <img src={`${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
-                          </div>
-                          <div className="w-full h-auto flex flex-col gap-y-2 px-4">
-                            <p className="text-primary text-sm">{product?.productDB?.name}</p>
-                            <p className="text-secondary text-xs">{product?.productDB?.description}</p>
-                            <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
-                          </div>
-                          <div className="w-24 h-auto flex flex-col justify-center items-center">
-                            <p className="text-primary text-sm">{t("reserve.quantity")}</p>
-                            <p className="text-primary text-sm">{product.quantity}</p>
-                            <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
+                        <div key={"product"+index} className="flex flex-col w-full border border-2 border-gray-200 p-2 rounded-lg">
+                          {!product.confirmed && (
+                            <span className="text-[10px] bg-red-100 text-red-400 w-auto sm:w-[50%] rounded-lg px-4 py-1 mb-2 flex flex-row gap-x-2">
+                              <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-300"></span>
+                              </span>
+                              {t("reserve.pending_product")}
+                            </span>
+                          )}
+                          <div className="flex flex-row w-full">
+                            <div className="w-48 h-24 bg-gray-200 rounded-lg">
+                              <img src={`${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
+                            </div>
+                            <div className="w-full h-auto flex flex-col gap-y-2 px-4">
+
+                              <p className="text-primary text-sm">{product?.productDB?.name}</p>
+                              <p className="text-secondary text-xs">{product?.productDB?.description}</p>
+                              <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
+                            </div>
+                            <div className="w-24 h-auto flex flex-col justify-center items-center">
+                              <p className="text-primary text-sm">{t("reserve.quantity")}</p>
+                              <p className="text-primary text-sm">{product.quantity}</p>
+                              <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -771,6 +854,29 @@ const DashboardReserves = () => {
 
     const [dataNotifications,setDataNotifications] = useState<{notifications:NotificationDto[], totalPages:Number, currentPage:Number}>({notifications:[],totalPages:1, currentPage:1})
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [pageSize,setPageSize] = useState<Number>(10);
+
+    useEffect(() => {
+        const updatePageSize = () => {
+            const width = window.innerWidth;
+            if (width < 640) {
+                setPageSize(2);
+            } else if (width < 1024) {
+                setPageSize(2);
+            } else if (width < 1280) {
+                setPageSize(2);
+            } else {
+                setPageSize(2);
+            }
+        };
+
+        updatePageSize(); // Set initial page size based on the current window width
+        window.addEventListener('resize', updatePageSize); // Update on window resize
+
+        return () => {
+            window.removeEventListener('resize', updatePageSize); // Clean up the event listener
+        };
+    }, []);
 
 
     useEffect(()=>{
@@ -781,7 +887,7 @@ const DashboardReserves = () => {
 
     const getMyReservesHandler = async (page:Number) => {
         if(user != null){
-            const reserves  = await getAllMyReserves(user.token,page,i18n.language);
+            const reserves  = await getAllMyReserves(user.token,page,pageSize,i18n.language);
             if(reserves){
                 setDataSetReserves(reserves);
             }
@@ -833,38 +939,56 @@ const DashboardReserves = () => {
         animate="show"
         exit="hidden"
         variants={fadeIn("up","",0,0.5)}
-        className="bg-white h-auto flex flex-col justify-start items-start lg:row-span-7 lg:grid lg:grid-cols-2 lg:grid-rows-3 gap-4">
+        className="bg-white 
+        h-auto 2xl:h-[90%]  
+        w-full
+        flex flex-col 2xl:flex-row 
+        justify-start items-start 2xl:gap-4 2xl:pb-4">
+        <div className="w-full 2xl:w-[50%] h-full flex flex-col 2xl:gap-y-4">
+          <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto 2xl:h-auto flex flex-col">
+              <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.calendar")}</h1>
+              <p className="font-secondary text-sm sm:text-md text-tertiary">{t("reserve.view_reserves_month")}</p>
+              <div className="w-full h-auto flex flex-row gap-x-2 my-4 sm:my-2">
+                <span className="h-4 sm:h-6 w-4 sm:w-6 bg-tertiary rounded-md"></span>
+                <p className="font-primary text-tertiary text-sm">{t("reserve.reserves")}</p>
+                <span className="h-4 sm:h-6 w-4 sm:w-6 bg-white rounded-md border-2 border-slate-400"></span>
+                <p className="font-primary text-slate-400 text-sm">{t("reserve.today")}</p>
+              </div>
+              <AnimatePresence>
+                  <motion.div 
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeOnly("",0,0.5)}
+                  className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
+                    <div className="flex flex-row justify-between items-center mb-4 px-4">
+                      <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("common.previous")}</button>
+                      <h1 className="text-sm sm:text-md text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
+                      <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("common.next")}</button>
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 p-2">
+                      {calendarDays}
+                    </div>
+                  </motion.div>
+              </AnimatePresence>
+          </div>
+          <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto 2xl:h-full flex flex-col">
+              <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.news")}</h1>
+              <p className="font-secondary text-md text-tertiary">{t("reserve.latest_notifications")}</p>
+              <div className="w-full h-full overflow-hidden">
+                <div className="w-full h-[300px] lg:h-36 flex flex-col overflow-y-scroll gap-y-4 mt-4 pr-2">
+                    {dataNotifications.notifications.map((notification, index) => (
+                      <NotificationCard key={index} notification={notification}/>
+                    ))}
+                </div>
+              </div>
+          </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full h-auto flex flex-col lg:col-span-1 lg:row-span-2">
-            <h1 className="text-md sm:text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.calendar")}</h1>
-            <p className="font-secondary text-sm sm:text-md text-tertiary">{t("reserve.view_reserves_month")}</p>
-            <div className="w-full h-auto flex flex-row gap-x-2 my-4 sm:my-2">
-              <span className="h-4 sm:h-6 w-4 sm:w-6 bg-tertiary rounded-md"></span>
-              <p className="font-primary text-tertiary text-sm">{t("reserve.reserves")}</p>
-              <span className="h-4 sm:h-6 w-4 sm:w-6 bg-white rounded-md border-2 border-slate-400"></span>
-              <p className="font-primary text-slate-400 text-sm">{t("reserve.today")}</p>
-            </div>
-            <AnimatePresence>
-                <motion.div 
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                variants={fadeOnly("",0,0.5)}
-                className="h-auto w-full w-full bg-white duration-800 transition-all transition-opacity rounded-b-xl">
-                  <div className="flex flex-row justify-between items-center mb-4 px-4">
-                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handlePreviousMonth}>{t("common.previous")}</button>
-                    <h1 className="text-sm sm:text-md text-secondary">{currentDate.getMonth()+1 +"/"+ currentDate.getFullYear()}</h1>
-                    <button className="text-sm sm:text-md text-secondary hover:text-primary duration-300" onClick={handleNextMonth}>{t("common.next")}</button>
-                  </div>
-                  <div className="grid grid-cols-7 gap-2 p-2">
-                    {calendarDays}
-                  </div>
-                </motion.div>
-            </AnimatePresence>
         </div>
 
-        <div className="bg-white p-2 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-[650px] lg:h-full flex flex-col lg:col-span-1 lg:row-span-3 ">
-          <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary"><TentIcon/>{t("reserve.reserves")}</h1>
+
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full 2xl:w-[50%] h-auto 2xl:h-full flex flex-col ">
+          <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary max-sm:mt-4"><TentIcon/>{t("reserve.reserves")}</h1>
           <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
 
           <div className="w-full h-[80%] flex flex-col overflow-y-scroll pr-2 sm:pr-4">
@@ -872,23 +996,13 @@ const DashboardReserves = () => {
                 <ReserveCard key={index} reserve={reserve}/>
               ))}
             </div>
-            <div className="flex flex-row justify-between w-full mt-auto">
+          <div className="flex flex-row justify-between w-full mt-auto max-2xl:mt-4">
                 <Button onClick={ () => getMyReservesHandler( Number(datasetReserves.currentPage) - 1)} size="sm" variant="dark" effect="default" isRound={true} disabled={datasetReserves.currentPage == 1}> <ChevronLeft/>  </Button>
                 <Button onClick={ () => getMyReservesHandler( Number(datasetReserves.currentPage) + 1)} size="sm" variant="dark" effect="default" isRound={true} disabled={datasetReserves.currentPage >= datasetReserves.totalPages}> <ChevronRight/> </Button>
             </div>
         </div>
 
-        <div className="bg-white px-2 py-4 sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full max-lg:min-h-[400px] flex flex-col lg:col-span-1 lg:row-span-1">
-            <h1 className="text-lg flex flex-row gap-x-2 text-secondary"><CalendarCheck/>{t("reserve.news")}</h1>
-            <p className="font-secondary text-md text-tertiary">{t("reserve.latest_notifications")}</p>
-            <div className="w-full h-full overflow-hidden">
-              <div className="w-full h-[300px] lg:h-36 flex flex-col overflow-y-scroll gap-y-4 mt-4 pr-2">
-                  {dataNotifications.notifications.map((notification, index) => (
-                    <NotificationCard key={index} notification={notification}/>
-                  ))}
-              </div>
-            </div>
-        </div>
+
 
 
       </motion.div>

@@ -55,13 +55,15 @@ export const getAllMyReservesCalendar = async(token:string, page:Number, languag
   return data;
 }
 
-export const getAllMyReserves = async(token:string, page:Number,language:string):Promise<{reserves:Reserve[], totalPages:Number ,currentPage:Number}|null> => {
+export const getAllMyReserves = async(token:string, page:Number,pageSize:Number,language:string):Promise<{reserves:Reserve[], totalPages:Number ,currentPage:Number}|null> => {
   let data:{ reserves:Reserve[],totalPages:Number,currentPage:Number } | null = null;
   try{
 
+    console.log(pageSize)
     // Create a URLSearchParams object to construct the query string
     const params = new URLSearchParams();
     params.append('page', page.toString());
+    params.append('pageSize',pageSize.toString())
 
     // Construct the URL with query parameters
     const url = `${import.meta.env.VITE_BACKEND_URL}/reserves/me?${params.toString()}`;

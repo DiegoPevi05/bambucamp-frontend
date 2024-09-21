@@ -72,9 +72,9 @@ const Dashboard = ({children}:{children:React.ReactNode}) => {
   };
 
   return (
-    <div className="bg-white w-full min-h-screen">
-      <div className="flex flex-col lg:grid lg:grid-cols-1 2xl:grid-cols-6 2xl:grid-rows-1 gap-4 px-2 pb-4 sm:px-4 2xl:p-4 h-screen w-full">
-        <div className={`${openNavbar ? "max-2xl:left-[0px]" : "max-sm:-left-[100%] max-2xl:left-[-400px]"} bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 max-2xl:absolute  max-2xl:h-screen max-sm:w-screen max-2xl:w-[400px] 2xl:col-span-1 flex flex-col items-start gap-y-4 duration-300 z-[100]`}>
+    <div className="bg-white w-full h-auto 2xl:h-screen">
+      <div className="flex flex-col 2xl:flex-row gap-4 px-2 pb-4 sm:px-4 2xl:p-4 h-auto h-full w-full">
+        <div className={`${openNavbar ? "max-2xl:left-[0px]" : "max-sm:-left-[100%] max-2xl:left-[-400px]"} bg-white p-4 rounded-lg shadow-lg border-2 border-gray-200 max-2xl:absolute  max-2xl:h-screen max-sm:w-screen max-2xl:w-[400px] h-full w-[20%] flex flex-col items-start gap-y-4 duration-300 z-[100]`}>
           <button className="2xl:hidden h-12 w-12 flex items-center justify-center text-secondary rounded-xl active:scale-95 active:bg-white active:text-secondary active:border active:border-secondary" onClick={()=>setOpenNavbar((prev)=> !prev)} ><AlignJustify className=""/></button>
           <a href="/" className="hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 rounded-full bg-white w-[80px] sm:w-[125px] h-[80px] sm:h-[125px] flex items-center justify-center border border-secondary border-2 mx-auto">
             <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[80px] h-[40px] sm:h-[80px]"/>
@@ -99,8 +99,26 @@ const Dashboard = ({children}:{children:React.ReactNode}) => {
             <span>{t("auth.log_out")}</span>
           </Button>
         </div>
-        <div className="bg-white sm:px-4 flex flex-col lg:col-span-5 lg:grid lg:grid-rows-8 gap-4 h-auto sm:h-full overflow-y-scroll max-2xl:py-4">
-          <div className="bg-white sm:p-4 rounded-lg shadow-lg border-2 border-gray-200 min-h-20 lg:row-span-1 flex flex-row justify-between items-center">
+        <div 
+          className="
+          w-full 2xl:w-[80%] h-full
+          flex flex-col
+          bg-white 
+          gap-4 
+          sm:px-4">
+          <div 
+            className="
+            w-full h-auto 2xl:h-[10%]
+            bg-white 
+            sm:p-4 
+            rounded-lg 
+            shadow-lg 
+            border-2 
+            border-gray-200 
+            flex 
+            flex-row 
+            justify-between 
+            items-center">
             <div className="flex flex-row items-center justify-center gap-x-4">
               <button className="2xl:hidden h-full w-12 flex items-center justify-center text-secondary rounded-xl active:scale-95 active:bg-white active:text-secondary active:border active:border-secondary" onClick={()=>setOpenNavbar((prev)=> !prev)} ><AlignJustify className=""/></button>
               <div className="flex gap-x-4 items-center flex-col">

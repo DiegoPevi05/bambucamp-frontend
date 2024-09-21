@@ -42,6 +42,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   isLoading?: boolean
   rightIcon?: React.ReactNode
+  smShrink?:boolean
 }
 
 const Button: FC<ButtonProps> = ({
@@ -53,6 +54,7 @@ const Button: FC<ButtonProps> = ({
   effect,
   isRound,
   rightIcon,
+  smShrink,
   ...props
 }) => {
 

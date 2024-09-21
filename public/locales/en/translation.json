@@ -68,6 +68,8 @@
 		"no_products_available": "There are no products available"
 	},
 	"reserve": {
+		"download_bill": "Voucher",
+		"pending_product": "Product pending confirmation",
 		"view_personal_information": "View your personal information and complete missing fields",
 		"request_adding_products": "Request Add Products",
 		"my_products": "My Products",

@@ -139,7 +139,7 @@ const Navbar = () => {
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
                 {user ?
-                  <Button onClick={()=>goToRoute("/dashboard")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
+                  <Button onClick={()=>goToRoute("/dashboard/reserves")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
                   :
                   <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("auth.log_in")} <User/> </Button>
                 }

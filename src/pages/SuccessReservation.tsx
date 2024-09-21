@@ -23,7 +23,7 @@ const SuccessReservation:React.FC = () => {
         <ShopNavbar variant="dark"/>
         <div className={`relative w-full h-full flex flex-col  ${styles.padding}`}>
           <div className="flex flex-row w-full h-auto gap-x-4">
-            <button onClick={()=>goToRoute("/dashboard")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 p-2">
+            <button onClick={()=>goToRoute("/")} className="rounded-full h-12 w-12 bg-white border-2 border-secondary text-secondary duration-300 transition-all hover:bg-secondary group active:scale-95 p-2">
               <Home className="h-full w-full group-hover:text-white"/>
             </button>
             <div className="w-full h-full flex items-center justify-center">

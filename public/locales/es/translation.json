@@ -68,6 +68,8 @@
 		"no_products_available": "No hay productos disponbiles"
 	},
 	"reserve": {
+		"download_bill": "Comprobante",
+		"pending_product": "Producto pendiente confirmacion",
 		"view_personal_information": "Mira tu informacion personal y completa los campos faltantes",
 		"request_adding_products": "Solicitar Agregar Productos",
 		"my_products": "Mis Productos",

@@ -21,7 +21,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
                 animate="show"
                 exit="hidden"
                 variants={fadeIn("up","",0,0.5)}
-                className="relative top-0 bottom-0 left-0 right-0 bg-white lg:p-4 rounded-lg shadow-lg max-lg:w-screen lg:min-w-96 h-screen lg:h-auto lg:overflow-y-auto z-[150]"
+                className="relative top-0 bottom-0 left-0 right-0 bg-white lg:p-4 lg:rounded-lg shadow-lg max-lg:w-screen lg:min-w-96 h-screen lg:h-auto lg:overflow-y-auto z-[150]"
               > 
                 <button className="absolute top-4 right-4 hover:text-tertiary duration-300" onClick={onClose}><X/></button>
                 {children}

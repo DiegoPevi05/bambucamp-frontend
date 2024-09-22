@@ -16,6 +16,8 @@ import BG_BOOKING from './bg_booking.jpg';
 import NOTICE_BOARD from './notice_board.png';
 import NO_CHAT from './chat.svg';
 import TENT_SVG_2 from './tent_2_svg.svg';
+import NO_TENTS from './no_reservations.svg';
+import NO_NOTIFCATIONS from './no_notifications.svg';
 
 
 import GOLD_KULLAQ_1 from './tents/gold_kullaq/kullaq_1.jpeg';
@@ -116,5 +118,7 @@ export {
 	BG_BOOKING,
 	NOTICE_BOARD,
 	NO_CHAT,
-	TENT_SVG_2
+	TENT_SVG_2,
+	NO_TENTS,
+	NO_NOTIFCATIONS
 }

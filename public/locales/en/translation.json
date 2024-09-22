@@ -68,6 +68,8 @@
 		"no_products_available": "There are no products available"
 	},
 	"reserve": {
+		"no_notifications": "No Notifications",
+		"no_tents_reservations": "No glampings reserved",
 		"download_bill": "Voucher",
 		"pending_product": "Product pending confirmation",
 		"view_personal_information": "View your personal information and complete missing fields",

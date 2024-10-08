@@ -65,11 +65,13 @@ const NotificationCard = (props:NotificationCardProps) => {
 
 interface ReserveCardProps {
   reserve: Reserve;
+  fetchReserves: (page:Number) => void;
+  currentPage:Number;
 };
 
 
 const ReserveCard = (props:ReserveCardProps) => {
-  const { reserve } = props;
+  const { reserve, fetchReserves, currentPage } = props;
   const {user} = useAuth();
   const {t,i18n} = useTranslation();
   const [openReserve,setOpenReserve] = useState<boolean>(false);
@@ -168,12 +170,13 @@ const ReserveCard = (props:ReserveCardProps) => {
   const addExperienceToReserveHandler = async() => {
     setLoadingCreateExperienceInReserve(true);
     if(user == null){
-      toast.error("User must be log in to create a reservation");
+      toast.error(t("reserve.user_log_in_experience"));
       setLoadingCreateExperienceInReserve(false);
       return;
     }
     const responseReserve = await addExperienceToReserve(experiences,user.token,i18n.language);
     if(responseReserve){
+      fetchReserves(currentPage);
       setLoadingCreateExperienceInReserve(false);
       setStateAdd(undefined);
     }
@@ -185,12 +188,13 @@ const ReserveCard = (props:ReserveCardProps) => {
   const addProductToReserveHandler = async() => {
     setLoadingCreateProductInReserve(true);
     if(user == null){
-      toast.error("User must be log in to create a reservation");
+      toast.error(t("reserve.user_log_in_product"));
       setLoadingCreateProductInReserve(false);
       return;
     }
     const responseReserve = await addProductToReserve(products,user.token,i18n.language);
     if(responseReserve){
+      fetchReserves(currentPage);
       setLoadingCreateProductInReserve(false);
       setStateAdd(undefined);
     }
@@ -421,35 +425,40 @@ const ReserveCard = (props:ReserveCardProps) => {
                           rightIcon={<Plus/>}
                         >{t("reserve.add_product")}</Button>
                       </div>
-                      {reserve.products.map((product, index) => (
-                        <div key={"product"+index} className="flex flex-col w-full border border-2 border-gray-200 p-2 rounded-lg">
-                          {!product.confirmed && (
-                            <span className="text-[10px] bg-red-100 text-red-400 w-auto sm:w-[50%] rounded-lg px-4 py-1 mb-2 flex flex-row gap-x-2">
-                              <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-300"></span>
-                              </span>
-                              {t("reserve.pending_product")}
-                            </span>
-                          )}
-                          <div className="flex flex-row w-full">
-                            <div className="w-48 h-24 bg-gray-200 rounded-lg">
-                              <img src={`${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
-                            </div>
-                            <div className="w-full h-auto flex flex-col gap-y-2 px-4">
 
-                              <p className="text-primary text-sm">{product?.productDB?.name}</p>
-                              <p className="text-secondary text-xs">{product?.productDB?.description}</p>
-                              <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
+                      <div className="w-full h-full sm:h-[300px] flex flex-col">
+                        <div className="w-full h-full flex flex-col gap-y-6 overflow-y-scroll pr-2">
+                          {reserve.products.map((product, index) => (
+                            <div key={"product"+index} className="flex flex-col w-full border border-2 border-gray-200 p-2 rounded-lg">
+                              {!product.confirmed && (
+                                <span className="text-[10px] bg-red-100 text-red-400 w-auto sm:w-[50%] rounded-lg px-4 py-1 mb-2 flex flex-row gap-x-2">
+                                  <span className="relative flex h-3 w-3">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-300"></span>
+                                  </span>
+                                  {t("reserve.pending_product")}
+                                </span>
+                              )}
+                              <div className="flex flex-row w-full">
+                                <div className="w-48 h-24 bg-gray-200 rounded-lg">
+                                  <img src={`${product?.productDB?.images[0]}`} alt={product?.productDB?.name} className="w-full h-full object-cover"/>
+                                </div>
+                                <div className="w-full h-auto flex flex-col gap-y-2 px-4">
+
+                                  <p className="text-primary text-sm">{product?.productDB?.name}</p>
+                                  <p className="text-secondary text-xs">{product?.productDB?.description}</p>
+                                  <p className="text-primary text-sm mt-auto">{formatPrice(product.price)}</p>
+                                </div>
+                                <div className="w-24 h-auto flex flex-col justify-center items-center">
+                                  <p className="text-primary text-sm">{t("reserve.quantity")}</p>
+                                  <p className="text-primary text-sm">{product.quantity}</p>
+                                  <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
+                                </div>
+                              </div>
                             </div>
-                            <div className="w-24 h-auto flex flex-col justify-center items-center">
-                              <p className="text-primary text-sm">{t("reserve.quantity")}</p>
-                              <p className="text-primary text-sm">{product.quantity}</p>
-                              <p className="text-primary text-sm mt-auto">{formatPrice(product.quantity ? product.price*product.quantity : 0 )}</p>
-                            </div>
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
                       <div className="w-full h-auto flex flex-row justify-between  border-t-2 border-secondary mt-auto p-4">
                         <p className="text-primary text-sm">{t("common.gross_amount")}</p>
                         <p className="text-primary text-sm">{formatPrice(reserve.products.reduce((acc,product) => acc + product.price*product?.quantity,0))}</p>
@@ -1032,7 +1041,7 @@ const DashboardReserves = () => {
                 </div>
               :
                 datasetReserves.reserves.map((reserve, index) => (
-                  <ReserveCard key={index} reserve={reserve}/>
+                  <ReserveCard key={index} reserve={reserve} fetchReserves={getMyReservesHandler} currentPage={datasetReserves.currentPage}/>
                 ))
             }
             </div>

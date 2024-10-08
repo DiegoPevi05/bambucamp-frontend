@@ -68,6 +68,8 @@
 		"no_products_available": "No hay productos disponbiles"
 	},
 	"reserve": {
+		"user_log_in_experience": "El usuario debe estar autorizado para agregar esta experiencia",
+		"user_log_in_product": "El usuario debe estar autorizado para agregar este producto",
 		"header_in_process": "Tu reserva se encuentra en proceso",
 		"info_in_process": "Se han enviado las indicaciones para confirmar tu reserva a tu correo electronico, revisa tu correo electrónico o ponte en contacto cono nosotros indicando el correo con el cual solicitaste la reserva a traves de nuestros canales o el siguiente enlace de whatsapp ",
 		"user_info_header": "Informacion para la Reserva",

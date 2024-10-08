@@ -68,6 +68,8 @@
 		"no_products_available": "There are no products available"
 	},
 	"reserve": {
+		"user_log_in_experience": "User must be authorize to add the experience",
+		"user_log_in_product": "User must be authorize to add the product",
 		"header_in_process": "Your reservation is being processed",
 		"info_in_process": "Instructions to confirm your reservation have been sent to your email. Please check your email or contact us using the email you provided for the reservation through our channels or the following WhatsApp ",
 		"user_info_header": "Reserve information",

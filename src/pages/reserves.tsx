@@ -898,7 +898,7 @@ const DashboardReserves = () => {
         getMyNotifications(1);
     }, [pageSize]); // `pageSize` is correctly passed to ensure data fetching with the right page size.
 
-    const getMyReservesHandler = useCallback(async (page: number) => {
+    const getMyReservesHandler = useCallback(async (page: Number) => {
         if (user != null) {
             const reserves = await getAllMyReserves(user.token, page, pageSize?.reserves as number, i18n.language);
             if (reserves) {

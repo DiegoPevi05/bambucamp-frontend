@@ -32,6 +32,7 @@ interface CartContextType {
   updateDateFrom: (newDateFrom: Date) => void;
   updateDateTo: (newDateTo: Date) => void;
   getRangeDates: () => {date:Date, label:string}[];
+  checkDates: {checkin:Date,checkout:Date};
   getReservationsDates: () => {checkin:Date,checkout:Date};
   cleanCart: () => void;
 }
@@ -57,6 +58,17 @@ export function CartProvider({ children }: CartProviderProps) {
     dateFrom: new Date(), // Initialize with current date
     dateTo: new Date(new Date().setDate(new Date().getDate() + 1)),
   });
+
+  const [checkDates,setCheckDates] = useState<{checkin:Date, checkout:Date}>({
+    checkin:new Date(),
+    checkout:new Date(new Date().setDate(new Date().getDate() + 1))
+  })
+
+  useEffect(()=>{
+    const { checkin, checkout  } = getReservationsDates();
+    setCheckDates({checkin, checkout })
+  },[cart.tents])
+
 
    useEffect(() => {
     setCookie(CART_COOKIE_NAME, JSON.stringify(cart), CART_COOKIE_MAX_AGE_MS);
@@ -230,7 +242,7 @@ export function CartProvider({ children }: CartProviderProps) {
       let currentDate = new Date(tent.dateFrom);
 
       // Loop through the dates from dateFrom to dateTo for each tent
-      while (currentDate <= tent.dateTo) {
+      while (currentDate <= new Date(tent.dateTo)) {
         const formattedDate = currentDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
 
         // Check if the date is already in the dateRanges array to avoid overlap
@@ -280,6 +292,16 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const getReservationsDates = ():{checkin:Date,checkout:Date} => {
     const rangeDates =  getRangeDates();
+    // Return today's date and tomorrow's date if rangeDates is empty
+      if (rangeDates.length === 0) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        return {
+          checkin: today,
+          checkout: tomorrow,
+        };
+      }
 
     const lastItem = rangeDates.length -1;
 
@@ -312,7 +334,7 @@ export function CartProvider({ children }: CartProviderProps) {
   }
 
   return (
-    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart, addPromotion, removePromotion, getReservationsDates }}>
+    <CartContext.Provider value={{ cart, updateDateTo, updateDateFrom, dates, checkDates,  totalItems,addDiscountCode, addTent, removeTent, updateTentNights, addProduct, removeProduct, updateProductQuantity, addExperience, removeExperience, updateExperienceQuantity, isTentInCart, getTotalCost, getTotalNights ,getRangeDates, cleanCart, addPromotion, removePromotion, getReservationsDates }}>
       {children}
     </CartContext.Provider>
   );

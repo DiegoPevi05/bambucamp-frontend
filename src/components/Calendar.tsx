@@ -41,10 +41,10 @@ export const generateCalendar = (
 
       calendarDays.push(
         <span
-          key={`prev-${i}`}
+          key={`reserved-${i}`}
           className="bg-gray-100 flex items-center justify-center h-10 text-gray-400 rounded-xl"
         >
-          {totalDaysInPrevMonth - i + 1}
+          {i}
         </span>
       );
       continue;

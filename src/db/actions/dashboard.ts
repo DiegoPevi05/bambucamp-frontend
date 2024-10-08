@@ -19,7 +19,6 @@ export const getCalendarDates = async(page:Number, language:string):Promise<{ da
         'Accept-Language':language
       }
     });
-    console.log(fetchedDays);
 
     data = serializeCalendarDays(fetchedDays.data);
 
@@ -109,7 +108,6 @@ export const getAllMyReserves = async(token:string, page:Number,pageSize:Number,
   let data:{ reserves:Reserve[],totalPages:Number,currentPage:Number } | null = null;
   try{
 
-    console.log(pageSize)
     // Create a URLSearchParams object to construct the query string
     const params = new URLSearchParams();
     params.append('page', page.toString());

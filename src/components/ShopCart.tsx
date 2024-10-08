@@ -35,7 +35,7 @@ const ShopCart = (props:CartProps) => {
         viewport={{ once: true }}
         exit="hidden"
         variants={slideIn("left","",0,0.3)}
-        className={`w-[300px] h-[100vh] absolute top-0 left-0 right-0 bottom-0 z-[120] bg-white ${variant == "dark" ? "border-r-2 border-secondary":""}`}>
+        className={`w-[300px] h-[100vh] fixed top-0 left-0 right-0 bottom-0 z-[120] bg-white ${variant == "dark" ? "border-r-2 border-secondary":""}`}>
         <div className="h-10 w-10 absolute top-12 right-6">
           <X onClick={onClose} className="h-full w-auto text-secondary cursor-pointer hover:text-primary"/>
         </div>

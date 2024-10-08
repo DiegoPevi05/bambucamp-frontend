@@ -19,6 +19,7 @@ import Extras from './pages/extras';
 import Reserve from './pages/reserve';
 import SuccessReservation from './pages/SuccessReservation';
 import ErrorPage from './pages/error';
+import InProcessReservation from './pages/reserve-in-process';
 
 
 const AppRoutes: React.FC = () => {
@@ -41,6 +42,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/validate-code" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateCode /></ProtectedRoute>} />
       <Route path="/change-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ChangePassword /></ProtectedRoute>} />
       <Route path="/validated-account" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateAccount /></ProtectedRoute>} />
+
+      <Route path="/reserve-processing" element={<InProcessReservation />} />
 
       <Route
         path="/dashboard/reserves"

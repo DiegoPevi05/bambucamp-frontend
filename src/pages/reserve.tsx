@@ -20,7 +20,7 @@ import {ZodError} from 'zod';
 const Reservation:React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { cart, getTotalNights, getTotalCost, addDiscountCode, cleanCart  } = useCart();
+  const { cart, getTotalNights, getTotalCost, addDiscountCode, cleanCart,checkDates } = useCart();
   const navigate = useNavigate();
   const [discountCode, setDiscountCode] = useState<DiscountCode>({id:0,code:"",discount:0});
   const [loadingDiscountCode, setLoadingDiscountcode] = useState<boolean>(false);
@@ -80,6 +80,7 @@ const Reservation:React.FC = () => {
         data.user_phone_number = fieldsValidated.phoneNumber;
         data.user_document_type = fieldsValidated.document_type;
         data.user_document_id = fieldsValidated.document_id;
+        data.user_nationality = fieldsValidated.nationality;
         data.eta = fieldsValidated.eta;
       }else{
         setLoadingReserve(false);
@@ -99,10 +100,10 @@ const Reservation:React.FC = () => {
 
     const responseReserve = await createReserve(data,i18n.language);
 
-    if(responseReserve != null){
+    if(responseReserve){
       setLoadingReserve(false);
       cleanCart();
-      goToRoute("/reserve-success");
+      goToRoute("/reserve-processing");
     }
 
     setLoadingReserve(false);
@@ -119,7 +120,13 @@ const Reservation:React.FC = () => {
       const nationality = (form.querySelector('input[name="nationality"]') as HTMLInputElement).value;
       const document_type = (form.querySelector('select[name="document_type"]') as HTMLInputElement).value;
       const document_id = (form.querySelector('input[name="document_id"]') as HTMLInputElement).value;
-      const eta = new Date ((form.querySelector('input[name="eta"]') as HTMLInputElement).value); 
+      const eta = (form.querySelector('input[name="eta"]') as HTMLInputElement).value; 
+      const eta_date = new Date();
+      // Split the eta value into hours and minutes
+      const [hours, minutes] = eta.split(':').map(Number);
+
+      // Set the hours and minutes on the today date object
+      eta_date.setHours(hours, minutes, 0, 0);
 
       setErrorMessages({});
 
@@ -135,7 +142,7 @@ const Reservation:React.FC = () => {
             nationality,
             document_type,
             document_id,
-            eta : new Date(eta)
+            eta : eta_date
         };
 
       } catch (error) {
@@ -334,11 +341,15 @@ const Reservation:React.FC = () => {
                 </div>
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>
                   <span className="text-lg font-primary text-secondary">Desde:</span>
-                  <span className="text-md font-secondary">{/*formatDate(getReservationsDates().checkin)*/}</span>
+                  <span className="text-md font-secondary">
+                  {formatDate(checkDates.checkin)}
+                  </span>
                 </div>
                 <div className='w-auto h-auto gap-x-2 flex flex-row items-end'>
                   <span className="text-lg font-primary text-secondary">Hasta:</span>
-                  <span className="text-md font-secondary">{/*formatDate(getReservationsDates().checkout)*/}</span>
+                  <span className="text-md font-secondary">
+                   {formatDate(checkDates.checkout)}
+                  </span>
                 </div>
               </div>
 

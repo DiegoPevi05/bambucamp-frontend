@@ -4,7 +4,6 @@ import Home from './pages/home';
 import Booking from './pages/booking';
 import  LoadingComponent from './components/ui/Loader';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import SignUp from './pages/signup';
 import SignIn from './pages/signin';
 import ForgotPassword from './pages/forgot-password';
 import ValidateCode from './pages/validate-code';
@@ -38,7 +37,6 @@ const AppRoutes: React.FC = () => {
       <Route path="/reserve" element={<Reserve />} />
 
       <Route path="/signin" element={<ProtectedRoute  redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignIn /></ProtectedRoute>} />
-      <Route path="/signup" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignUp /></ProtectedRoute>} />
       <Route path="/forgot-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ForgotPassword /></ProtectedRoute>} />
       <Route path="/validate-code" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateCode /></ProtectedRoute>} />
       <Route path="/change-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ChangePassword /></ProtectedRoute>} />

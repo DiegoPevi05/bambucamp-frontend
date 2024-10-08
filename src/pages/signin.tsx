@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import Button from "../components/ui/Button";
-import { LUNAHUANA, LOGO_PRIMARY } from "../assets/images";
+import { LUNAHUANA, ISOLOGO } from "../assets/images";
 import { signInSchema } from "../db/schemas.ts"
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
@@ -79,7 +79,7 @@ const SignIn = () => {
     <div className="w-full h-screen bg-cover bg-center" style={{backgroundImage: `url(${LUNAHUANA})`}}>
       <div className="w-full h-full flex justify-center items-center">
         <form id="form_user_login" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-6" style={{background: "rgba(255,255,255,0.80)"}} onSubmit={(e)=>onSubmitCreation(e)}>
-          <img onClick={()=>goToRoute("/")} src={LOGO_PRIMARY} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
+          <img onClick={()=>goToRoute("/")} src={ISOLOGO} alt="logo" className="w-auto h-20 cursor-pointer hover:scale-105"/>
           <p className="text-secondary text-sm my-2">{t("auth.log_in_header")}</p>
           <div className="flex flex-col justify-start items-start w-full h-auto overflow-hidden my-1 gap-y-2 sm:gap-y-1">
             <label htmlFor="email" className="font-primary text-secondary text-xs sm:text-lg h-3 sm:h-6">{t("common.email")}</label>
@@ -116,7 +116,6 @@ const SignIn = () => {
             </div>
           </div>
           <Button className="mb-4" isRound={true} isLoading={loadingForm}>{t("auth.log_in")}</Button>
-          <p onClick={()=>goToRoute("/signup")} className="text-secondary text-xs mb-2 hover:text-tertiary group cursor-pointer">{t("auth.no_account_question")} <span  className="text-primary cursor-pointer group-hover:text-tertiary">{t("auth.sign_up")}</span></p>
           <p onClick={()=>goToRoute("/forgot-password")} className="text-secondary text-xs mb-2 flex flex-row items-center gap-x-2 hover:text-tertiary cursor-pointer group">{t("auth.forgot_password_question")}<span  className="text-primary group-hover:text-tertiary"><Lock/></span></p>
         </form>
       </div>

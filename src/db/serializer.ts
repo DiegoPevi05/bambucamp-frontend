@@ -294,6 +294,21 @@ export const serializePromotion = (data:any):Promotion|null => {
   return promotion;
 }
 
+export const serializeCalendarDays = (data:any):{ date: Date, label: string, available: boolean }[] => {
+  let dates:{ date: Date, label: string, available: boolean }[] = [];
+
+  data.forEach((day:any)=> {
+    let day_item:{ date: Date, label: string, available: boolean } = {
+      date: new Date(day.date),
+      label: day.label,
+      available: day.available
+    };
+    dates.push(day_item);
+  })
+
+  return dates;
+}
+
 
 
 

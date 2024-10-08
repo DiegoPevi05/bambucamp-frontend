@@ -18,6 +18,10 @@ import NO_CHAT from './chat.svg';
 import TENT_SVG_2 from './tent_2_svg.svg';
 import NO_TENTS from './no_reservations.svg';
 import NO_NOTIFCATIONS from './no_notifications.svg';
+import ISOLOGO from './isologo.png';
+import ISOLOGO_SECONDARY from './isologo.png';
+import ISOLOGO_TERTIARY from './isologo_tertiary.png';
+import ISOLOGO_WHITE from './isologo_white.png';
 
 
 import GOLD_KULLAQ_1 from './tents/gold_kullaq/kullaq_1.jpeg';
@@ -120,5 +124,9 @@ export {
 	NO_CHAT,
 	TENT_SVG_2,
 	NO_TENTS,
-	NO_NOTIFCATIONS
+	NO_NOTIFCATIONS,
+	ISOLOGO,
+	ISOLOGO_SECONDARY,
+	ISOLOGO_TERTIARY,
+	ISOLOGO_WHITE 
 }

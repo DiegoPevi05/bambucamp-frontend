@@ -6,12 +6,12 @@ import { fadeIn, fadeOnly } from "../lib/motions"
 import { 
   ChevronLeftIcon, 
   ChevronRightIcon,
-  Tent as TentIcon
 } from "lucide-react"
 import Button from "./ui/Button"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import ServiceItem from "./ServiceItem"
+import {ISOLOGO_TERTIARY} from "../assets/images"
 
 
 interface CarouselCardProps {
@@ -158,7 +158,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
                 </h2>
 
                 <h1 
-                  className={`${styles.sectionHeadText} text-tertiary flex flex-row items-center`}><TentIcon className="h-8 w-8"/>{selectedTent.title}
+                  className={`${styles.sectionHeadText} text-tertiary flex flex-row items-center`}><img alt="isologo" src={ISOLOGO_TERTIARY} className="h-10 w-10"/> {selectedTent.title}
                 </h1>
                 <p 
                   className={`${styles.sectionBodyText} text-white mb-2`}>{selectedTent.description}

@@ -310,13 +310,12 @@ export const validateDiscountCode = async (code:string, language:string): Promis
   return null;
 };
 
-export const createReserve = async (reserve: ReserveFormData, token: string, language:string): Promise<boolean> => {
+export const createReserve = async (reserve: ReserveFormData, language:string): Promise<boolean> => {
   try {
 
 
     const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/reserves/reserve`, reserve, {
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Accept-Language':language
       }
     });

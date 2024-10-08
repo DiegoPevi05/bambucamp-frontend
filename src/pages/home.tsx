@@ -2,7 +2,7 @@ import  {FormEvent, useEffect, useState} from "react"
 import Navbar from "../components/Navbar"
 import Banner from "../assets/video/Banner.mp4";
 import FooterBanner from "../assets/video/Footer.mp4";
-import {LOGO_THIRD, TENT_SVG, LUNAHUANA, SERVICE_1,SERVICE_2,SERVICE_3,SERVICE_4,SERVICE_5,SERVICE_6,SERVICE_7,SERVICE_8 } from "../assets/images"
+import {LOGO_THIRD, TENT_SVG, LUNAHUANA, SERVICE_1,SERVICE_2,SERVICE_3,SERVICE_4,SERVICE_5,SERVICE_6,SERVICE_7,SERVICE_8, ISOLOGO_TERTIARY, ISOLOGO_WHITE } from "../assets/images"
 import {motion} from "framer-motion"
 import {styles} from "../lib/styles"
 import { fadeIn } from "../lib/motions"
@@ -15,7 +15,6 @@ import Button from "../components/ui/Button"
 import { formHomeSchema } from "../db/schemas.ts"
 import PromotionCard from "../components/CardPromotion"
 import Collapsible from "../components/Collapsible"
-import { Tent  } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import * as LucideIcons from 'lucide-react';
 import ChatComponent from "../components/ChatWhatsapp.tsx"
@@ -112,7 +111,7 @@ const Home = () => {
           whileInView='show'
           viewport={{ once: true }}
           variants={fadeIn("down","",0,2)}
-          className="h-auto  sm:h-[20%] lg:h-[30%] w-[90%] sm:w-auto bg-transparent z-[10]">
+          className="h-auto  sm:h-[20%] lg:h-[25%] w-[90%] sm:w-auto bg-transparent z-[10]">
           <img src={LOGO_THIRD} alt="logo_lg" className="w-full h-full object-cover"/>
         </motion.div>
         <SearchDatesBar/>
@@ -211,7 +210,7 @@ const Home = () => {
             whileInView='show'
             viewport={{ once: true }}
             variants={fadeIn("up","",0,1.5)}
-            className={`${styles.sectionHeadText} flex items-center gap-x-2 pb-2`}><Tent className="h-8 w-8"/>FAQ</motion.h2>
+            className={`${styles.sectionHeadText} flex items-center gap-x-2 pb-2`}><img alt="isologo" src={ISOLOGO_WHITE} className="h-16 w-16 "/> FAQ</motion.h2>
           <motion.h3 
             initial="hidden"
             whileInView='show'
@@ -247,7 +246,7 @@ const Home = () => {
           viewport={{ once: true }}
           variants={fadeIn("up","tween",0.8,1.5)}
           id="form_contact_home" className="w-[90%] sm:w-[400px] h-auto flex flex-col justify-center items-center rounded-3xl shadow-3xl p-4 sm:p-6 z-[50]" style={{background: "rgba(255,255,255,0.20)"}} onSubmit={(e)=>onSubmitCreation(e)}>
-          <Tent className="h-12 w-12 text-tertiary"/>
+          <img alt="isologo" src={ISOLOGO_TERTIARY} className="h-16 w-16 "/>
           <h2 className="text-tertiary text-2xl my-2">{t("home_page.contact_us")}</h2>
 
 

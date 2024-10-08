@@ -5,11 +5,38 @@ import CalendarComponent from "./Calendar";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
+import {getCalendarDates} from "../db/actions/dashboard";
 
 const CalendarModal = ({ show, type, section, handleSelectedDate, containerDimensions }:{show:boolean, type:string, section?:string, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [topValue,setTopValue] = useState<string>("0");
   const [isSmallScreen,setIsSmallScreen] = useState(false);
+  const [notAvailableDates,setNotAvailableDates] = useState<{ date: Date, label: string, available: boolean }[]>([]);
+
+  useEffect(()=>{
+    if(show){
+      console.log("this is executed")
+      handleGetNotAvailableDates(currentDate);
+    }
+  },[currentDate,show])
+
+  const handleGetNotAvailableDates = async (currentDate:Date) => {
+
+    const today = new Date();
+    
+    // Calculate year and month difference
+    const yearDiff = currentDate.getFullYear() - today.getFullYear();
+    const monthDiff = currentDate.getMonth() - today.getMonth();
+
+    // Calculate the page value (months away from the current month)
+    const page = yearDiff * 12 + monthDiff;
+
+    const notAvailableDates = await getCalendarDates(page,"es") 
+    console.log(notAvailableDates)
+    if(notAvailableDates != null){
+      setNotAvailableDates(notAvailableDates);
+    }
+  }
 
   useEffect(() => {
 
@@ -30,7 +57,7 @@ const CalendarModal = ({ show, type, section, handleSelectedDate, containerDimen
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
   }
 
-  const calendarDays = CalendarComponent(currentDate,[], handleSelectedDate);
+  const calendarDays = CalendarComponent(currentDate,[],notAvailableDates, handleSelectedDate);
 
   return (
     <AnimatePresence>

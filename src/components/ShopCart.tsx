@@ -4,7 +4,7 @@ import {useAuth} from "../contexts/AuthContext";
 import {useCart} from "../contexts/CartContext";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
-import {LOGO_PRIMARY} from "../assets/images";
+import {ISOLOGO} from "../assets/images";
 import { motion } from "framer-motion";
 import { formatPrice, formatDateToYYYYMMDD } from "../lib/utils";
 import { X, CalendarCheck, User, ChevronRightIcon } from "lucide-react";
@@ -40,8 +40,8 @@ const ShopCart = (props:CartProps) => {
           <X onClick={onClose} className="h-full w-auto text-secondary cursor-pointer hover:text-primary"/>
         </div>
         <div className="w-full h-full flex flex-col justify-start items-start px-6 py-12 gap-y-6">
-          <a href="/" className="relative hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 rounded-full bg-white top-0 min-w-[80px] sm:min-w-[90px] min-h-[80px] sm:min-h-[90px] flex items-center justify-center border border-2 border-secondary">
-            <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]"/>
+          <a href="/" className="relative hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 top-0 min-w-[80px] sm:min-w-[90px] min-h-[80px] sm:min-h-[90px] flex items-center justify-center ">
+            <img src={ISOLOGO} alt="logo" className="w-[40px] sm:w-[50px] h-[40px] sm:h-[50px]"/>
           </a>
 
           <div className="w-full h-full overflow-y-scroll no-scroll-bar">

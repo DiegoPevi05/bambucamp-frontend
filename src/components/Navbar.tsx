@@ -1,7 +1,6 @@
 import  { useState } from "react";
 
 import {User, AlignJustify, Facebook, Instagram, Twitter, X, CalendarCheck, ShoppingCart  } from 'lucide-react';
-import { styles } from "../lib/styles";
 import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
 import {fadeIn, slideIn} from "../lib/motions";
@@ -91,11 +90,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`${styles.paddingX} absolute w-full flex flex-row justify-center items-center bg-black-to-transparent absolute top-0 z-[100] max-h-[80px]`}>
-      <div className="w-[50%] lg:w-[20%] flex justify-start lg:justify-center items-center">
-        <a href="/" className="relative hover:cursor-pointer hover:scale-[1.05] transition-all duration-300 rounded-full bg-white top-8 w-[80px] sm:w-[125px] h-[80px] sm:h-[125px] flex items-center justify-center">
-          <img src={LOGO_PRIMARY} alt="logo" className="w-[40px] sm:w-[90px] h-[40px] sm:h-[90px]"/>
-        </a>
+    <nav className={` sm:px-16 px-2 sm:py-16 py-10 absolute w-full flex flex-row justify-center items-center bg-black-to-transparent absolute top-0 z-[100] max-h-[80px]`}>
+      <div className="w-[50%] sm:w-[20%] flex justify-start lg:justify-center items-center h-[80px] sm:h-[125px]">
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-8">
         <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("common.us")}</NavBarItem>

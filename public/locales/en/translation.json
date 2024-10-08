@@ -68,6 +68,13 @@
 		"no_products_available": "There are no products available"
 	},
 	"reserve": {
+		"user_info_header": "Reserve information",
+		"nationality": "Nationality",
+		"document_type": "Document type",
+		"document_id": "Document Number",
+		"eta": "Estimated time of Arrival (Optional)",
+		"Passport": "Passport",
+		"DNI": "DNI",
 		"no_notifications": "No Notifications",
 		"no_tents_reservations": "No glampings reserved",
 		"download_bill": "Voucher",
@@ -146,13 +153,16 @@
 		"see_tents": "See our Tents",
 		"see_services": "See our Services",
 		"learn_more": "Learn More",
-		"faqs_header": "Here are some of the most frequently asked questions that we get from our customers",
+		"faqs_header": "Here are some of the frequently asked questions that we get from our customers",
 		"contact_us": "Contact Us",
 		"contact_form_message": "Message",
 		"contact_form_save_info": "Save info for marketing purposes",
 		"contact_form_header": "Send us a message with a specific proposal that you might have for us or any addiontal information you could not found"
 	},
 	"validations": {
+		"nationality_required": "Nationality is required",
+		"document_type_required": "Document type is required",
+		"document_id_required": "Document number is required",
 		"max_aditional_people": "Maximum number of aditional people for this glamping:",
 		"email_required": "Email is required.",
 		"title_required": "Title is required.",

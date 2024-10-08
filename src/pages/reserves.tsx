@@ -1010,7 +1010,7 @@ const DashboardReserves = () => {
 
         <div className="bg-white px-2 py-4  xl:p-4 rounded-lg shadow-lg border-2 border-gray-200 w-full xl:w-[50%] h-auto xl:h-full flex flex-col ">
           <h1 className="text-sm sm:text-lg flex flex-row gap-x-2 text-secondary max-sm:mt-2"><TentIcon/>{t("reserve.reserves")}</h1>
-          <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{"Mira tus reservas aqui"}</p>
+          <p className="font-secondary text-tertiary text-sm sm:text-md max-sm:mt-2">{t("reserve.view_reserves_month")}</p>
 
           <div className="w-full h-[80%] flex flex-col overflow-y-scroll xl:pr-4 gap-y-4 mt-4">
               {datasetReserves.reserves.length === 0 ?

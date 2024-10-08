@@ -22,6 +22,16 @@ const signUpSchema = z.object({
 }).refine(data => data.password === data.confirmPassword, {
   message: "validations.passwords_missmatch", path: ["confirmPassword"], });
 
+const userInfoReserveSchema = z.object({
+  email: z.string().email({ message: "validations.email_invalid" }),
+  firstName: z.string().nonempty({ message: "validations.first_name_required" }),
+  lastName: z.string().nonempty({ message: "validations.last_name_required" }),
+  phoneNumber:z.string().nonempty({ message: "validations.phone_required" }),
+  nationality:z.string().nonempty({ message: "validations.nationality_required" }),
+  document_type:z.string().nonempty({ message: "validations.document_type_required" }),
+  document_id:z.string().nonempty({message:"validations.document_id_required"})
+})
+
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: "validations.email_invalid" }),
 });
@@ -64,4 +74,4 @@ const userSchema = z.object({
   phoneNumber: z.string().nonempty({ message: "Phone number is required." }),
 });
 
-export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema, forgotPasswordSchema, validateCodeSchema, resetPasswordSchema, userSchema};
+export {formHomeSchema, guestsSchema, searchSchema, signInSchema, signUpSchema, forgotPasswordSchema, validateCodeSchema, resetPasswordSchema, userSchema ,userInfoReserveSchema};

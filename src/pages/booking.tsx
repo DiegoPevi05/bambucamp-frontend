@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {  useGLTF } from '@react-three/drei';
 import { a } from '@react-spring/three';
-import { BG_BOOKING, NOTICE_BOARD } from '../assets/images';
+import { BG_BOOKING, ISOLOGO_TERTIARY, ISOLOGO_WHITE, NOTICE_BOARD } from '../assets/images';
 import {  motion } from 'framer-motion';
 import { fadeIn, fadeOnly } from '../lib/motions';
 import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, User, UserIcon, X} from 'lucide-react';
@@ -177,11 +177,11 @@ const Booking: React.FC = () => {
                       <div className="flex flex-row gap-x-4 mt-1">
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <UserIcon className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtypeople} {t('common.adults')}</span>
+                          <span className="text-white text-sm">{tent.qtypeople} {t('glampings.adults')}</span>
                         </div>
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <ToyBrick className="h-4 w-4 text-white"/>
-                          <span className="text-white text-sm">{tent.qtykids} {t('common.kids')}</span>
+                          <span className="text-white text-sm">{tent.qtykids} {t('glampings.kids')}</span>
                         </div>
                       </div>
                     </div>
@@ -255,7 +255,7 @@ const Booking: React.FC = () => {
                   variants={fadeIn("down","",0.5,0.5)}
                   className='sm:hidden flex flex-col items-start justify-start w-[50%] h-auto absolute right-[5%] top-1/4 z-[30] ' >
                   <div className="w-full h-[200px] rounded-xl shadow-xl px-4 py-6 flex flex-col items-start justify-start relative" style={{background: "rgba(255,255,255,0.80)"}}>
-                      <span className='absolute -top-[10%] -left-[5%] w-10 h-10 bg-secondary rounded-full p-2 hover:bg-white group shadow-lg'><TentIcon className="w-full h-full text-white group-hover:text-primary"/></span>
+                      <span className='absolute -top-[10%] -left-[5%] w-10 h-10 bg-secondary rounded-full p-2 hover:bg-white group shadow-lg'><img alt="isologo" src={ISOLOGO_WHITE} className="w-full h-full text-white group-hover:text-primary"/></span>
                       <h2 className="font-primary text-primary text-xs uppercase">{tent.header}</h2>
                       <h1 className="font-primary text-tertiary text-lg uppercase">{tent.title}</h1>
                       {tent.custom_price != tent.price ?
@@ -299,7 +299,7 @@ const Booking: React.FC = () => {
                   <div className='w-full h-full p-10 px-8 flex flex-col items-start justify-start overflow-y-scroll'>
                     <button onClick={()=>setViewDetailsMobile(false)} className='ml-auto duration-300 h-8 w-8 hover:text-secondary'><X className='w-full h-full'/></button>
                       <h2 className="font-primary text-primary text-sm uppercase">{tent.header}</h2>
-                      <h1 className="font-primary text-tertiary text-xl uppercase flex flex-row"><TentIcon/>{tent.title}</h1>
+                      <h1 className="font-primary text-tertiary text-xl uppercase flex flex-row my-2"><img alt="isologo" src={ISOLOGO_TERTIARY} className="w-8 h-8"/>{tent.title}</h1>
                       <div className="flex flex-row gap-x-4 mt-1">
                         <div className="w-auto h-auto flex flex-row gap-x-2">
                           <UserIcon className="h-4 w-4 text-primary"/>
@@ -321,6 +321,14 @@ const Booking: React.FC = () => {
                             }
                             return null;
                           })}
+                      </div>
+
+                      <label className="text-primary text-sm mt-4">{t("glampings.aditional_people")}</label>
+                      <label className='text-primary text-[10px]'>{t("glampings.aditional_people_cost")}:{" "}{formatPrice(tent.aditional_people_price || 0)}</label>
+                      <div className='w-auto mx-auto flex flex-row items-center gap-x-4 mt-2'>
+                        <input value={aditionalPeople}  className="h-12 w-12 border-2 border-secondary rounded-lg text-center disabled:bg-white" disabled/>
+                        <button onClick={()=>setAditionalPeople(prevAditionalPeople => (prevAditionalPeople - 1  >= 0 ? prevAditionalPeople - 1 : 0 ))}  className="active:scale-95 hover:bg-white hover:text-secondary duration-300 transition-all h-10 w-10 bg-secondary border-white border-2 rounded-lg text-white">-</button>
+                        <button onClick={()=>setAditionalPeople(prevAditionalPeople => prevAditionalPeople + 1)} className="active:scale-95 hover:bg-white hover:text-secondary duration-300 transition-all h-10 w-10 bg-secondary border-white border-2 rounded-lg text-white">+</button>
                       </div>
                       <label className="text-primary text-sm mt-4">{t("booking.gallery")}</label>
                       <div className='w-full h-auto mt-2'>

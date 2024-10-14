@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {formatPrice} from "../lib/utils";
 import {useTranslation} from "react-i18next";
-import {CalendarPlus} from "lucide-react";
+import {CalendarPlus, ChefHat} from "lucide-react";
 
 
 
@@ -17,7 +17,7 @@ interface propsItemExtra {
 
 const ProductCard:React.FC<propsItemExtra> = (props:propsItemExtra) => {
   const { t } = useTranslation();
-  const { variant, index,product, handleAddProduct } = props;
+  const { variant,product, handleAddProduct } = props;
   const [quantity,setQuantity] = useState<number>(1);
 
   const handleIncrementQuantity = () => {
@@ -34,9 +34,17 @@ const ProductCard:React.FC<propsItemExtra> = (props:propsItemExtra) => {
       initial="hidden"
       animate="show"
       exit="hidden"
-      variants={fadeIn(` ${variant == "line" ? "up" : "left"}`,"",0.5*index, 0.5)}
+      variants={fadeIn(` ${variant == "line" ? "up" : "left"}`,"",0.5, 0.5)}
       className={`shrink-0 bg-white  ${variant == "line" ? "w-full h-auto" : "w-[250px] h-[300px]"}  flex flex-col items-start justify-start border border-slate-200 rounded-lg shadow-md`}>
-      <div className={`${variant == "line" ? "h-[0px]" : "h-[30%]"} w-full bg-center bg-cover rounded-t-lg`} style={{ backgroundImage: `url(${product.images[0]})`}}></div>
+      <div className={`${variant == "line" ? "h-[0px]" : "h-[30%]"} w-full rounded-t-lg`}>
+        {product.images.length >0 ?
+          <img className="w-full h-full bg-center bg-cover rounded-t-lg" style={{ backgroundImage: `url(${product.images[0]})`}} />
+          :
+          <div className="w-full h-full bg-secondary rounded-t-lg flex items-center justify-center p-4">
+            <ChefHat className="text-white w-full h-full"/>
+          </div>
+        }
+      </div>
       <div className="w-full h-[25%] flex flex-col justify-start items-start py-2 px-4">
 
         <div className={`w-full h-auto p-none m-none flex ${variant == "line" ? "flex-row" : "flex-col"}`}>

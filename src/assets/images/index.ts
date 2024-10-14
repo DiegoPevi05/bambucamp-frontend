@@ -22,38 +22,6 @@ import ISOLOGO from './isologo.png';
 import ISOLOGO_SECONDARY from './isologo.png';
 import ISOLOGO_TERTIARY from './isologo_tertiary.png';
 import ISOLOGO_WHITE from './isologo_white.png';
-
-
-import GOLD_KULLAQ_1 from './tents/gold_kullaq/kullaq_1.jpeg';
-import GOLD_KULLAQ_2 from './tents/gold_kullaq/kullaq_2.jpg';
-import GOLD_KULLAQ_3 from './tents/gold_kullaq/kullaq_3.jpg';
-import GOLD_KULLAQ_4 from './tents/gold_kullaq/kullaq_4.jpg';
-import GOLD_KULLAQ_5 from './tents/gold_kullaq/kullaq_5.jpg';
-import GOLD_KULLAQ_6 from './tents/gold_kullaq/kullaq_6.jpg';
-
-import GOLD_SUMAQ_1 from './tents/gold_sumaq/sumaq_1.jpeg';
-import GOLD_SUMAQ_2 from './tents/gold_sumaq/sumaq_2.jpg';
-import GOLD_SUMAQ_3 from './tents/gold_sumaq/sumaq_3.jpg';
-import GOLD_SUMAQ_4 from './tents/gold_sumaq/sumaq_4.jpg';
-import GOLD_SUMAQ_5 from './tents/gold_sumaq/sumaq_5.jpg';
-import GOLD_SUMAQ_6 from './tents/gold_sumaq/sumaq_6.jpg';
-
-import GOLD_LLURAK_1 from './tents/suite_llurak/LLurak_1.jpeg';
-import GOLD_LLURAK_2 from './tents/suite_llurak/LLurak_2.jpg';
-import GOLD_LLURAK_3 from './tents/suite_llurak/LLurak_3.jpg';
-import GOLD_LLURAK_4 from './tents/suite_llurak/LLurak_4.jpg';
-import GOLD_LLURAK_5 from './tents/suite_llurak/LLurak_5.jpg';
-import GOLD_LLURAK_6 from './tents/suite_llurak/LLurak_6.jpg';
-
-import EXPERIENCE_1 from './experiences/canotaje_1.jpg';
-import EXPERIENCE_2 from './experiences/canotaje_2.webp';
-import EXPERIENCE_3 from './experiences/cuatrimoto.jpg';
-import EXPERIENCE_4 from './experiences/lunahuana.jpeg';
-import EXPERIENCE_5 from './experiences/vinos.jpeg';
-
-import PRODUCT_1 from './products/pizza.jpg';
-import PRODUCT_2 from './products/vino.jpg';
-
 import SERVICE_1 from './services/adventure.jpg';
 import SERVICE_2 from './services/food.jpg';
 import SERVICE_3 from './services/confort.jpg';
@@ -77,48 +45,8 @@ export {
 	TENT_SECONDARY,
 	TENT_THIRD,
 	TENT_FOURTH,
-
-	GOLD_KULLAQ_1,
-	GOLD_KULLAQ_2,
-	GOLD_KULLAQ_3,
-	GOLD_KULLAQ_4,
-	GOLD_KULLAQ_5,
-	GOLD_KULLAQ_6,
-
-	GOLD_SUMAQ_1,
-	GOLD_SUMAQ_2,
-	GOLD_SUMAQ_3,
-	GOLD_SUMAQ_4,
-	GOLD_SUMAQ_5,
-	GOLD_SUMAQ_6,
-
-	GOLD_LLURAK_1,
-	GOLD_LLURAK_2,
-	GOLD_LLURAK_3,
-	GOLD_LLURAK_4,
-	GOLD_LLURAK_5,
-	GOLD_LLURAK_6,
-
 	TENT_SVG,
 	LUNAHUANA,
-
-	EXPERIENCE_1,
-	EXPERIENCE_2,
-	EXPERIENCE_3,
-	EXPERIENCE_4,
-	EXPERIENCE_5,
-
-	PRODUCT_1,
-	PRODUCT_2,
-
-	SERVICE_1,
-	SERVICE_2,
-	SERVICE_3,
-	SERVICE_4,
-	SERVICE_5,
-	SERVICE_6,
-	SERVICE_7,
-	SERVICE_8,
 	BG_BOOKING,
 	NOTICE_BOARD,
 	NO_CHAT,
@@ -128,5 +56,13 @@ export {
 	ISOLOGO,
 	ISOLOGO_SECONDARY,
 	ISOLOGO_TERTIARY,
-	ISOLOGO_WHITE 
+	ISOLOGO_WHITE,
+	SERVICE_1,
+	SERVICE_2,
+	SERVICE_3,
+	SERVICE_4,
+	SERVICE_5,
+	SERVICE_6,
+	SERVICE_7,
+	SERVICE_8,
 }

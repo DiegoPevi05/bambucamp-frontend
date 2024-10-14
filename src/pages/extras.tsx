@@ -14,6 +14,7 @@ import ExperienceCard from "../components/ExperienceCard";
 import ProductCard from "../components/ProductCard";
 import {fadeIn} from "../lib/motions";
 import { AnimatePresence, motion } from "framer-motion";
+import {toTitleCase} from "../lib/utils";
 
 
 const Extras:React.FC = () => {
@@ -160,7 +161,7 @@ const Extras:React.FC = () => {
                         return(
                           <div key={"checkbox_experience_"+index} className="checkbox-wrapper-13">
                             <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)} checked={selectedCategories.experiences.includes(item.name)}/>
-                            <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                            <label htmlFor={item.name} className="text-xs sm:text-sm">{toTitleCase(item.name)}</label>
                           </div>
                         )
                       })}
@@ -169,12 +170,12 @@ const Extras:React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="hidden w-full h-auto sm:flex flex-row pb-2 m-none gap-x-2">
+              <div className="hidden w-full h-auto sm:flex flex-row pb-2 m-none gap-x-4">
                 {experiencesCategories.map((item,index)=>{
                   return(
                     <div key={"checkbox_experience_"+index} className="checkbox-wrapper-13">
                       <input name={"experience_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>{onChangeSelectedCategorie(e),setOpenCategory(undefined)}}/>
-                      <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                      <label htmlFor={item.name} className="text-xs sm:text-sm">{toTitleCase(item.name)}</label>
                     </div>
                   )
                 })}
@@ -214,7 +215,7 @@ const Extras:React.FC = () => {
                       return(
                         <div key={"checkbox_product_"+index} className="checkbox-wrapper-13">
                           <input name={"product_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)} checked={selectedCategories.products.includes(item.name)}/>
-                          <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                          <label htmlFor={item.name} className="text-xs sm:text-sm">{toTitleCase(item.name)}</label>
                         </div>
                       )
                     })}
@@ -223,12 +224,12 @@ const Extras:React.FC = () => {
               </AnimatePresence>
             </div>
 
-            <div className="w-full h-auto hidden sm:flex flex-row py-2 m-none gap-x-2">
+            <div className="w-full h-auto hidden sm:flex flex-row py-2 m-none gap-x-4">
               {productsCategories.map((item,index)=>{
                 return(
                   <div key={"checkbox_product_"+index} className="checkbox-wrapper-13">
                     <input name={"product_"+item.id} value={item.name} type="checkbox" aria-hidden="true" onChange={(e)=>onChangeSelectedCategorie(e)}/>
-                    <label htmlFor={item.name} className="text-xs sm:text-sm">{item.name}</label>
+                    <label htmlFor={item.name} className="text-xs sm:text-sm">{toTitleCase(item.name)}</label>
                   </div>
                 )
               })}

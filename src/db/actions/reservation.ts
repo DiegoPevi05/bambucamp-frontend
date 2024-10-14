@@ -71,6 +71,7 @@ export const getPublicCategoryProducts = async (language:string): Promise<Produc
 
 
     data =  PublicCategoryProductsResponse.data;
+    console.log(PublicCategoryProductsResponse.data)
 
     return data;
 

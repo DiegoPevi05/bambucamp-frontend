@@ -16,13 +16,14 @@ import {ISOLOGO_TERTIARY} from "../assets/images"
 
 interface CarouselCardProps {
   data:Tent
+  index:number;
   isSelected:boolean
   handleSelect:(id:number)=>void
 }
 
 const CarouselCard = (props:CarouselCardProps) => {
 
-  const {isSelected,data,handleSelect} = props;
+  const {isSelected,index,data,handleSelect} = props;
 
   const selectCard = () => {
     handleSelect(data.id);
@@ -35,7 +36,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       initial="hidden"
       animate="show"
       exit="hidden"
-      variants={fadeIn("left","", data.id*0.1,1)}
+      variants={fadeOnly("left", 0.5*index,0.5)}
       onClick={selectCard}
       className="shrink-1 bg-black
       h-[300px] 2xl:h-[350px] min-w-[160px] 2xl:min-w-[200px]  2xl:w-[200px]
@@ -46,7 +47,7 @@ const CarouselCard = (props:CarouselCardProps) => {
       <motion.div 
       initial="hidden"
       animate="show"
-      variants={fadeIn("up","spring", data.id*0.2,1)}
+      variants={fadeIn("up","spring", 0.8*index,1)}
       className="bg-primary flex px-4"
       style={{opacity:"100%", zIndex:"1000"}}
       >
@@ -78,7 +79,7 @@ const CarouselImages = (props:carouselImagesProps) => {
       <div className="w-full h-full flex flex-row-reverse justify-end gap-x-6 px-12 py-12">
         <AnimatePresence>
           {tents.map((tent,index)=>(
-            <CarouselCard key={tent.id+"-"+index} data={tent} isSelected={tent.id === selectedTentId} handleSelect={handleSelect}/>
+            <CarouselCard key={tent.id+"-"+index} index={index} data={tent} isSelected={tent.id === selectedTentId} handleSelect={handleSelect}/>
           ))}
         </AnimatePresence>
       </div>
@@ -199,7 +200,7 @@ const VerticalCarousel = (props:VerticalCarousel) => {
           </AnimatePresence>
         </div>
 
-        <div className="hidden lg:flex col-span-3 row-span-1 w-full h-auto justify-start bg-transparent">
+        <div className="hidden lg:flex col-span-3 row-span-1 pb-6 px-4 w-full h-auto justify-start bg-transparent">
           <CarouselImages tents={tents} selectedTentId={selectedTent.id} handleSelect={handleSelectTent}/>
         </div>
         <div className="max-lg:absolute max-lg:bottom-[5%] w-full h-auto flex flex-row justify-center items-center lg:hidden z-[20] gap-x-4">

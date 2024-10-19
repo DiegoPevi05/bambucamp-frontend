@@ -70,7 +70,7 @@ const NavBarItemMobile = ({children, index, route, scrollTarget, goToRoute,close
       className="w-full h-auto sm:h-[50px]"
       onClick={handleClick}
     >
-      <li className="text-white text-lg lg:text-3lg hover:scale-[1.05]  hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
+      <li className="text-white text-2xl lg:text-3xl hover:scale-[1.05]  hover:text-tertiary ease-in-out duration-300 transition-all cursor-pointer">{children}</li>
     </motion.div>
   )
 };
@@ -99,7 +99,7 @@ const Navbar = () => {
 
   return (
     <nav className={` sm:px-16 px-2 sm:py-16 py-10 absolute w-full flex flex-row justify-center items-center bg-black-to-transparent absolute top-0 z-[100] max-h-[80px]`}>
-      <div className="w-[50%] sm:w-[20%] flex justify-start lg:justify-center items-center h-[80px] sm:h-[125px]">
+      <div className="w-[50%] lg:w-[20%] flex justify-start lg:justify-center items-center h-[80px] sm:h-[125px]">
       </div>
       <ul className="hidden w-[60%] lg:flex flex-row items-center justify-center gap-x-8">
         <NavBarItem index={1} scrollTarget="us-section" goToRoute={goToRoute}>{t("common.us")}</NavBarItem>
@@ -121,9 +121,9 @@ const Navbar = () => {
         {user ? 
           <DropDownListAccount user={user} isDashboard={false}/>
           :
-          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("auth.log_in")}<User/> </Button>
+          <Button effect="default" className="hidden lg:flex" onClick={()=>goToRoute("/signin")}>{t("auth.log_in")}<User className="w-6 h-6"/> </Button>
         }
-        <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 lg:h-14 w-10 lg:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className=""/> </Button>
+        <Button onClick={toogleSidebar} variant={"ghostLight"} effect={"default"} className="flex justify-center items-center lg:hidden h-10 lg:h-14 w-10 lg:w-14 p-0 !bg-transparent !color-white !border-transparent"> <AlignJustify className="w-6 h-6"/> </Button>
       </div>
       <div className={`lg:hidden ${!openSideBar ? "pointer-events-none" :"" } w-screen h-screen absolute top-0 left-0`}>
           <div className={`lg:hidden w-screen h-[100vh] fixed top-0 ${!openSideBar ? "left-[100%]" : "left-0"}  bottom-0 z-[120] bg-secondary duration-300 transition-all`}>
@@ -143,9 +143,9 @@ const Navbar = () => {
               </ul>
               <div className="w-full h-20 flex justify-start items-center">
                 {user ?
-                  <Button onClick={()=>goToRoute("/dashboard/reserves")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
+                  <Button onClick={()=>goToRoute("/dashboard/reserves")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck className="w-6 h-6"/> </Button>
                   :
-                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("auth.log_in")} <User/> </Button>
+                  <Button onClick={()=>goToRoute("/signin")} effect="default" className="py-2 sm:py-6 text-md sm:text-lg gap-x-4">{t("auth.log_in")} <User className="w-6 h-6"/> </Button>
                 }
               </div>
               <div className="w-full mt-auto flex flex-row justify-start items-center gap-x-4 sm:gap-x-6">
@@ -156,7 +156,7 @@ const Navbar = () => {
                   <Instagram className="h-6 sm:h-10 w-6 sm:w-10"/>
                 </a>
                 <a href="/" target="_blank" className="font-primary text-white text-sm hover:scale-[1.05] hover:text-primary duration-300">
-                  <Twitter className="h-6 sm:h-10 w-6 w-10"/>
+                  <Twitter className="h-6 sm:h-10 w-6 sm:w-10"/>
                 </a>
               </div>
             </div>

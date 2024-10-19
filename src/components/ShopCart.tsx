@@ -8,7 +8,7 @@ import {ISOLOGO} from "../assets/images";
 import { motion } from "framer-motion";
 import { formatPrice, formatDateToYYYYMMDD } from "../lib/utils";
 import X from "../assets/images/svg/x.svg?react";
-import CalendarCheck from "../assets/images/svg/calendar-check.svg";
+import CalendarCheck from "../assets/images/svg/calendar-check.svg?react";
 import User from "../assets/images/svg/user.svg?react";
 import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
 
@@ -65,7 +65,7 @@ const ShopCart = (props:CartProps) => {
                           <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')} : {formatPrice(tentItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                          <button onClick={()=>removeTent(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                          <button onClick={()=>removeTent(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X className="h-6 w-6"/></button>
                           <label className="mt-auto">{formatPrice((tentItem.price * tentItem.nights) + (tentItem.aditionalPeople * (tentItem.additionalPeoplePrice || 0)))}</label>
                         </div>
                       </div>
@@ -89,7 +89,7 @@ const ShopCart = (props:CartProps) => {
                           <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')}: {experienceItem.price}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                          <button onClick={()=>removeExperience(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                          <button onClick={()=>removeExperience(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X className="h-6 w-6"/></button>
                           <label className="mt-auto">{formatPrice(experienceItem.quantity * experienceItem.price)}</label>
                         </div>
                       </div>
@@ -112,7 +112,7 @@ const ShopCart = (props:CartProps) => {
                           <label className="text-secondary text-xs font-secondary flex flex-row">{t("reserve.unit_price")}: {formatPrice(productItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                          <button onClick={()=>removeProduct(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                          <button onClick={()=>removeProduct(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X className="h-6 w-6"/></button>
                           <label className="mt-auto">{formatPrice(productItem.quantity * productItem.price)}</label>
                         </div>
                       </div>
@@ -140,7 +140,7 @@ const ShopCart = (props:CartProps) => {
                           <label className="text-secondary text-xs font-secondary flex flex-row">{t('reserve.unit_price')} : {formatPrice(promotionItem.price)}</label>
                         </div>
                         <div className="w-[40%] h-full flex flex-col justify-start items-end">
-                          <button onClick={()=>removePromotion(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X/></button>
+                          <button onClick={()=>removePromotion(index)} className="w-6 h-6 text-secondary flex justify-end mb-4 hover:text-primary duration-300"><X className="h-6 w-6"/></button>
                           <label className="mt-auto">{formatPrice((promotionItem.price * promotionItem.nights))}</label>
                         </div>
                       </div>
@@ -173,9 +173,9 @@ const ShopCart = (props:CartProps) => {
           <label className="text-tertiary  border-b-2 w-full pb-2 mt-auto">{t("common.my_account")}</label>
           <div className="w-full h-auto flex justify-start items-center">
             {user ?
-              <Button onClick={()=>goToRoute("/dashboard/reserves")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck/> </Button>
+              <Button onClick={()=>goToRoute("/dashboard/reserves")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("reserve.my_reserves")} <CalendarCheck className="h-6 w-6"/> </Button>
               :
-              <Button onClick={()=>goToRoute("/signin")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("auth.sign_in")} <User/> </Button>
+              <Button onClick={()=>goToRoute("/signin")} variant="ghostLight" effect="default" className="py-2 text-md sm:text-lg gap-x-4">{t("auth.sign_in")} <User className="h-6 w-6"/> </Button>
             }
           </div>
         </div>

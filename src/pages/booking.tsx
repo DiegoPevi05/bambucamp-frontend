@@ -192,10 +192,10 @@ const Booking: React.FC = () => {
                     </div>
 
                     <div className="flex flex-row justify-around w-[400px] mx-auto">
-                      <button onClick={()=>handlePrevious()} className='rounded-full bg-white h-12 2xl:h-16 w-12 2xl:w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group p-1'>
+                      <button onClick={()=>handlePrevious()} className='rounded-full bg-white h-12 2xl:h-16 w-12 2xl:w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group p-2'>
                         <ChevronLeftIcon className="h-full w-full group-hover:text-white"/>
                       </button>
-                      <button onClick={()=>handleNext()} className='rounded-full bg-white h-12 2xl:h-16 w-12 2xl:w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group p-1'>
+                      <button onClick={()=>handleNext()} className='rounded-full bg-white h-12 2xl:h-16 w-12 2xl:w-16 duration-300 border-[5px] border-secondary flex justify-center items-center active:scale-95 hover:scale-105 hover:bg-secondary group p-2'>
                         <ChevronRightIcon className="h-full w-full group-hover:text-white"/>
                       </button>
                     </div>

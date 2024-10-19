@@ -75,13 +75,13 @@ const Footer = () => {
         </div>
         <div className="flex flex-row gap-x-6 text-white">
           <a href="/" target="_blank" className="font-primary text-sm hover:scale-[1.05] hover:text-primary duration-300">
-            <Facebook/>
+            <Facebook className="h-6 w-6"/>
           </a>
           <a href="/" target="_blank" className="font-primary text-sm hover:scale-[1.05] hover:text-primary duration-300">
-            <Instagram/>
+            <Instagram className="h-6 w-6"/>
           </a>
           <a href="/" target="_blank" className="font-primary text-sm hover:scale-[1.05] hover:text-primary duration-300">
-            <Twitter/>
+            <Twitter className="h-6 w-6"/>
           </a>
         </div>
       </div>

@@ -24,7 +24,6 @@ import ValidateCode from './pages/validate-code';
 import ChangePassword from './pages/change-password';
 import ErrorPage from './pages/error';
 import ValidateAccount from './pages/validate-account';
-import TestComponent from './pages/TestPage';
 
 
 interface ProtectedRouteProps {

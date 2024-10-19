@@ -37,7 +37,7 @@ const ProtectedRoute = ({ isAllowed, redirectPath = '/signin', children }:Protec
     return <Navigate to={redirectPath} replace />;
   }
   return(
-    <Suspense fallback={<LoadingComponent/>}>
+    <Suspense fallback={<LoadingComponent isLoading={true}/>}>
       {children ? children : <Outlet />}
     </Suspense>
   )
@@ -54,31 +54,31 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" 
         element={
-          <Suspense fallback={<LoadingComponent/>}>
+          <Suspense fallback={<LoadingComponent isLoading={true}/>}>
           <Home />
           </Suspense>
         } 
       />
 
-      <Route path="/loading" element={<LoadingComponent/>}/>
+      <Route path="/loading" element={<LoadingComponent isLoading={true}/>}/>
 
       <Route path="/booking" 
         element={
-          <Suspense fallback={<LoadingComponent/>}>
+          <Suspense fallback={<LoadingComponent isLoading={true}/>}>
             <Booking />
           </Suspense>
         } 
       />
       <Route path="/extras" 
         element={
-          <Suspense fallback={<LoadingComponent/>}>
+          <Suspense fallback={<LoadingComponent isLoading={true}/>}>
             <Extras />
           </Suspense>
         } 
       />
       <Route path="/reserve" 
         element={
-          <Suspense fallback={<LoadingComponent/>}>
+          <Suspense fallback={<LoadingComponent isLoading={true}/>}>
             <Reserve />
           </Suspense>
         } 
@@ -92,7 +92,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path="/reserve-processing" 
         element={
-          <Suspense fallback={<LoadingComponent/>}>
+          <Suspense fallback={<LoadingComponent isLoading={true}/>}>
             <InProcessReservation />
           </Suspense>
         } 

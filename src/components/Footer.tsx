@@ -1,4 +1,11 @@
-import { PhoneCall,Smartphone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import PhoneCall from "../assets/images/svg/phone-call.svg?react";
+import Smartphone from "../assets/images/svg/smartphone.svg?react";
+import Mail from "../assets/images/svg/mail.svg?react";
+import MapPin from "../assets/images/svg/map-pin.svg?react";
+import Facebook from "../assets/images/svg/facebook.svg?react";
+import Instagram from "../assets/images/svg/instagram.svg?react";
+import Twitter from "../assets/images/svg/twitter.svg?react";
+
 import {LOGO_PRIMARY } from "../assets/images"
 import {useTranslation} from 'react-i18next';
 

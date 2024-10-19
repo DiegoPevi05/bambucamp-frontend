@@ -1,6 +1,15 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip'
-import { ChevronLeftIcon, ChevronRightIcon, Coins, FlameKindlingIcon, List, Pizza, Tent, TicketPercent, User} from "lucide-react";
+import ChevronLeftIcon from "../assets/images/svg/chevron-left.svg?react";
+import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
+import Coins from "../assets/images/svg/coins.svg?react";
+import FlameKindlingIcon from "../assets/images/svg/flame-kindling.svg?react";
+import List from "../assets/images/svg/list.svg?react";
+import Pizza from "../assets/images/svg/pizza.svg?react";
+import Tent from "../assets/images/svg/tent.svg?react";
+import TicketPercent from "../assets/images/svg/ticket-percent.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+
 import ShopNavbar from "../components/ShopNavbar";
 import {useCart} from "../contexts/CartContext";
 import {useNavigate} from "react-router-dom";

@@ -1,4 +1,5 @@
-import { ChevronDown, Earth } from 'lucide-react';
+import ChevronDown from "../../assets/images/svg/chevron-down.svg?react";
+import Earth from "../../assets/images/svg/earth.svg?react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';

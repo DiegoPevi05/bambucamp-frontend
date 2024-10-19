@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {formatPrice} from "../lib/utils";
 import {useTranslation} from "react-i18next";
-import {CalendarPlus, ChefHat} from "lucide-react";
-
+import CalendarPlus from "../assets/images/svg/calendar-plus.svg?react"
+import ChefHat from "../assets/images/svg/chefhat.svg?react"
 
 
 interface propsItemExtra {

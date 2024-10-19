@@ -4,7 +4,27 @@ import { fadeIn, fadeOnly } from "../lib/motions";
 import { useTranslation } from "react-i18next";
 import  Button from "../components/ui/Button";
 import { NO_NOTIFCATIONS, NO_TENTS } from "../assets/images";
-import { CalendarCheck, DoorClosed, Tent as TentIcon, Pizza,  DoorOpen,Coins,CircleSlash, CreditCard, FlameKindling, Plus, Info, CircleX, CircleCheck, User, ChevronLeft, ChevronRight, ShoppingBasket, X, ReceiptText, FileDown  } from "lucide-react"
+import CalendarCheck from "../assets/images/svg/calendar-check.svg?react";
+import DoorClosed from "../assets/images/svg/door-closed.svg?react";
+import TentIcon from "../assets/images/svg/tent.svg?react";
+import Pizza from "../assets/images/svg/pizza.svg?react";
+import DoorOpen from "../assets/images/svg/door-open.svg?react";
+import Coins from "../assets/images/svg/coins.svg?react";
+import FlameKindling from "../assets/images/svg/flame-kindling.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+import ChevronLeft from "../assets/images/svg/chevron-left.svg?react";
+import ChevronRight from "../assets/images/svg/chevron-right.svg?react";
+import X from "../assets/images/svg/x.svg?react";
+import CreditCard from "../assets/images/svg/credit-card.svg?react";
+import CircleSlash from "../assets/images/svg/circle-slash.svg?react";
+import Plus from "../assets/images/svg/plus.svg?react";
+import CircleX from "../assets/images/svg/circle-x.svg?react";
+import Info from "../assets/images/svg/info.svg?react";
+import CircleCheck from "../assets/images/svg/circle-check.svg?react";
+import ShoppingBasket from "../assets/images/svg/shopping-basket.svg?react";
+import ReceiptText from "../assets/images/svg/receipt-text.svg?react";
+import FileDown from "../assets/images/svg/file-down.svg?react";
+
 import {  Experience, NotificationDto, Product, Reserve, ReserveExperienceDto, ReserveTentDto, createReserveExperienceDto, createReserveProductDto } from "../lib/interfaces";
 import Modal from "../components/Modal";
 import Dashboard from "../components/ui/Dashboard";

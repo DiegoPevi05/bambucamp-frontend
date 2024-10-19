@@ -5,7 +5,8 @@ import { signUpSchema } from "../db/schemas.ts"
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import { useNavigate } from "react-router-dom";
-import {  Eye, EyeOff } from "lucide-react";
+import Eye from "../assets/images/svg/eye.svg?react";
+import EyeOff from "../assets/images/svg/eye-off.svg?react";
 import { useTranslation } from "react-i18next";
 import { SignUp as SignUpIT } from "../lib/interfaces.ts";
 import { ZodError } from "zod";

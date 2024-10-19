@@ -1,5 +1,6 @@
 import {GOOGLE_ICON} from "../assets/images"
-import { ExternalLink, Star  } from "lucide-react"
+import ExternalLink from "../assets/images/svg/external-link.svg?react";
+import Star from "../assets/images/svg/star.svg?react";
 import {Review, } from "../lib/interfaces"
 import {useTranslation} from "react-i18next"
 import {capitalizeNames, getInitials, getTimeAgo} from "../lib/utils"

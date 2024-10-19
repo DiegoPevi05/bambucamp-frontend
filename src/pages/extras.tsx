@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Tooltip } from 'react-tooltip'
-import {  ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon, FlameKindlingIcon, Pizza} from "lucide-react";
+import ChevronDownIcon from "../assets/images/svg/chevron-down.svg?react";
+import ChevronLeftIcon from "../assets/images/svg/chevron-left.svg?react";
+import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
+import ChevronUpIcon from "../assets/images/svg/chevron-up.svg?react";
+import FlameKindlingIcon from "../assets/images/svg/flame-kindling.svg?react";
+import Pizza from "../assets/images/svg/pizza.svg?react";
+
 import { styles } from "../lib/styles";
 import {Experience, ExperienceCategory, Product, ProductCategory} from "../lib/interfaces";
 import ShopNavbar from "../components/ShopNavbar";

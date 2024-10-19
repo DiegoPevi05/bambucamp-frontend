@@ -1,6 +1,6 @@
 import { cn } from '../../lib/utils'
 import { cva, VariantProps } from 'class-variance-authority'
-import { Loader2 } from 'lucide-react'
+import Loader2 from "../../assets/images/svg/loader-circle.svg?react";
 import { ButtonHTMLAttributes, FC } from 'react'
 
 export const buttonVariants = cva(

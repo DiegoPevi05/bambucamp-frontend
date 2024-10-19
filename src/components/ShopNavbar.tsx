@@ -1,5 +1,5 @@
 import  { useState } from "react";
-import {ShoppingCart  } from 'lucide-react';
+import ShoppingCart from "../assets/images/svg/shopping-cart.svg?react";
 import { styles } from "../lib/styles";
 import { ISOLOGO_WHITE} from "../assets/images";
 import { AnimatePresence} from "framer-motion";

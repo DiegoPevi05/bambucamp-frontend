@@ -1,5 +1,10 @@
 import  { useState, useEffect, useRef, useCallback, ChangeEvent, KeyboardEvent } from "react";
-import { MessageSquare, SendHorizonal, Tent, X, User } from "lucide-react";
+import MessageSquare from "../assets/images/svg/message-square.svg?react";
+import Tent from "../assets/images/svg/tent.svg?react";
+import SendHorizonal from "../assets/images/svg/chevron-right.svg?react";
+import X from "../assets/images/svg/x.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+
 import { motion } from "framer-motion";
 import { NO_CHAT } from "../assets/images";
 import {useTranslation} from "react-i18next";

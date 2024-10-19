@@ -5,7 +5,14 @@ import { a } from '@react-spring/three';
 import { BG_BOOKING, ISOLOGO_TERTIARY, ISOLOGO_WHITE, NOTICE_BOARD } from '../assets/images';
 import {  motion } from 'framer-motion';
 import { fadeIn, fadeOnly } from '../lib/motions';
-import {ChevronLeftIcon, ChevronRightIcon, LoaderCircle, Tent as TentIcon, ToyBrick, User, UserIcon, X} from 'lucide-react';
+import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
+import LoaderCircle from "../assets/images/svg/loader-circle.svg?react";
+import TentIcon from "../assets/images/svg/tent.svg?react";
+import ToyBrick from "../assets/images/svg/toy-brick.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+import UserIcon from "../assets/images/svg/user.svg?react";
+import X from "../assets/images/svg/x.svg?react";
+import ChevronLeftIcon from "../assets/images/svg/chevron-left.svg?react";
 import ServiceItem from '../components/ServiceItem';
 import {InputRadio} from '../components/ui/Input';
 import { formatPrice, getDiscount} from '../lib/utils';
@@ -26,7 +33,7 @@ interface ModelTentProps {
 
 const ModelTent: React.FC<ModelTentProps> = ({ position }) => {
   // Use useGLTF hook to load the .glb model
-  const { scene } = useGLTF('/models/tent.glb');
+  const { scene } = useGLTF('/models/tent.glb',true);
 
   return (
     <a.group position={position}>

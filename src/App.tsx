@@ -1,26 +1,47 @@
-import {Suspense} from 'react';
+import React,{Suspense, lazy} from 'react';
 import Providers from './components/Providers';
-import Home from './pages/home';
-import Booking from './pages/booking';
+import {CartProvider} from './contexts/CartContext';
+
 import  LoadingComponent from './components/ui/Loader';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate, Outlet} from 'react-router-dom';
+
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+
+const DashboardReserves = lazy(()=>import('./pages/reserves')) ;
+const DashboardAccount = lazy(()=>import('./pages/account'));
+const DashboardSettings = lazy(()=>import('./pages/settings'));
+const Reserve = lazy(()=>import('./pages/reserve'));
+const Extras = lazy(()=>import('./pages/extras'));
+const Booking = lazy(()=>import('./pages/booking'));
+const InProcessReservation = lazy(()=>import('./pages/reserve-in-process'));
+const SuccessReservation = lazy(()=>import('./pages/SuccessReservation'));
+const Home = lazy(()=>import('./pages/home')) ;
+
+
 import SignIn from './pages/signin';
 import ForgotPassword from './pages/forgot-password';
 import ValidateCode from './pages/validate-code';
 import ChangePassword from './pages/change-password';
-import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import ValidateAccount from './pages/validate-account';
-import DashboardReserves from './pages/reserves';
-import DashboardAccount from './pages/account';
-import DashboardSettings from './pages/settings';
-import {CartProvider} from './contexts/CartContext';
-import Extras from './pages/extras';
-import Reserve from './pages/reserve';
-import SuccessReservation from './pages/SuccessReservation';
 import ErrorPage from './pages/error';
-import InProcessReservation from './pages/reserve-in-process';
+import ValidateAccount from './pages/validate-account';
 
+
+interface ProtectedRouteProps {
+  isAllowed: boolean | undefined;
+  redirectPath?: string;
+  children?: React.ReactNode;
+};
+
+const ProtectedRoute = ({ isAllowed, redirectPath = '/signin', children }:ProtectedRouteProps) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return(
+    <Suspense fallback={<LoadingComponent/>}>
+      {children ? children : <Outlet />}
+    </Suspense>
+  )
+};
 
 const AppRoutes: React.FC = () => {
   const { user, loading } = useAuth();
@@ -31,11 +52,37 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" 
+        element={
+          <Suspense fallback={<LoadingComponent/>}>
+          <Home />
+          </Suspense>
+        } 
+      />
 
-      <Route path="/booking" element={<Booking />} />
-      <Route path="/extras" element={<Extras />} />
-      <Route path="/reserve" element={<Reserve />} />
+      <Route path="/loading" element={<LoadingComponent/>}/>
+
+      <Route path="/booking" 
+        element={
+          <Suspense fallback={<LoadingComponent/>}>
+            <Booking />
+          </Suspense>
+        } 
+      />
+      <Route path="/extras" 
+        element={
+          <Suspense fallback={<LoadingComponent/>}>
+            <Extras />
+          </Suspense>
+        } 
+      />
+      <Route path="/reserve" 
+        element={
+          <Suspense fallback={<LoadingComponent/>}>
+            <Reserve />
+          </Suspense>
+        } 
+      />
 
       <Route path="/signin" element={<ProtectedRoute  redirectPath="/dashboard" isAllowed={user == null || user == undefined}><SignIn /></ProtectedRoute>} />
       <Route path="/forgot-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ForgotPassword /></ProtectedRoute>} />
@@ -43,7 +90,15 @@ const AppRoutes: React.FC = () => {
       <Route path="/change-password" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ChangePassword /></ProtectedRoute>} />
       <Route path="/validated-account" element={<ProtectedRoute redirectPath="/dashboard" isAllowed={user == null || user == undefined}><ValidateAccount /></ProtectedRoute>} />
 
-      <Route path="/reserve-processing" element={<InProcessReservation />} />
+      <Route path="/reserve-processing" 
+        element={
+          <Suspense fallback={<LoadingComponent/>}>
+            <InProcessReservation />
+          </Suspense>
+        } 
+      />
+
+
 
       <Route
         path="/dashboard/reserves"

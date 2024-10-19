@@ -1,6 +1,14 @@
 import  { useState } from "react";
 
-import {User, AlignJustify, Facebook, Instagram, Twitter, X, CalendarCheck, ShoppingCart  } from 'lucide-react';
+import User from "../assets/images/svg/user.svg?react";
+import AlignJustify from "../assets/images/svg/align-justify.svg?react";
+import Facebook from "../assets/images/svg/facebook.svg?react";
+import Instagram from "../assets/images/svg/instagram.svg?react";
+import Twitter from "../assets/images/svg/twitter.svg?react";
+import X from "../assets/images/svg/x.svg?react";
+import CalendarCheck from "../assets/images/svg/calendar-check.svg?react";
+import ShoppingCart from "../assets/images/svg/shopping-cart.svg?react";
+
 import Button from "./ui/Button";
 import {LOGO_PRIMARY} from "../assets/images";
 import {fadeIn, slideIn} from "../lib/motions";

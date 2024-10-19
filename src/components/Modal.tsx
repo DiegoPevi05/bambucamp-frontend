@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../lib/motions";
-import { X } from "lucide-react";
+import X from "../assets/images/svg/x.svg?react";
 
 interface ModalProps {
   isOpen: boolean;

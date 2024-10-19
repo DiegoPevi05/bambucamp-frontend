@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { CalendarDays } from "lucide-react";
+import CalendarDays from "../assets/images/svg/calendar-days.svg?react";
 import CalendarModal from "./CalendarModal";
 
 const DatePicker = ({ date, setDate, openBar, type, section, toggleBar }:{date:Date, setDate:(newDateFrom: Date) => void,openBar:boolean, type:"startDate" | "endDate" | "guests",section?:string, toggleBar: (type: "startDate" | "endDate" | "guests")=>void}) => {

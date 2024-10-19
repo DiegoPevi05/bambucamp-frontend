@@ -1,5 +1,11 @@
 import {  useState } from "react";
-import { Blocks, CalendarPlus, CircleAlert, Clock, FlameKindling, User} from "lucide-react";
+import Blocks from "../assets/images/svg/blocks.svg?react";
+import CalendarPlus from "../assets/images/svg/calendar-plus.svg?react";
+import CircleAlert from "../assets/images/svg/circle-alert.svg?react";
+import Clock from "../assets/images/svg/clock.svg?react";
+import FlameKindling from "../assets/images/svg/flame-kindling.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+
 import {Experience} from "../lib/interfaces";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";

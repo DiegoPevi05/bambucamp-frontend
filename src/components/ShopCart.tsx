@@ -7,7 +7,10 @@ import {useNavigate} from "react-router-dom";
 import {ISOLOGO} from "../assets/images";
 import { motion } from "framer-motion";
 import { formatPrice, formatDateToYYYYMMDD } from "../lib/utils";
-import { X, CalendarCheck, User, ChevronRightIcon } from "lucide-react";
+import X from "../assets/images/svg/x.svg?react";
+import CalendarCheck from "../assets/images/svg/calendar-check.svg";
+import User from "../assets/images/svg/user.svg?react";
+import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
 
 interface CartProps {
   variant?:string;

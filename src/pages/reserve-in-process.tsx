@@ -1,4 +1,4 @@
-import {  Home } from "lucide-react";
+import Home from "../assets/images/svg/home.svg?react";
 import { styles } from "../lib/styles";
 import ShopNavbar from "../components/ShopNavbar";
 import {useNavigate} from "react-router-dom";

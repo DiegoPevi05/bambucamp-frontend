@@ -3,10 +3,8 @@ import { styles } from "../lib/styles"
 import { Tent } from "../lib/interfaces"
 import { motion, AnimatePresence } from "framer-motion"
 import { fadeIn, fadeOnly } from "../lib/motions"
-import { 
-  ChevronLeftIcon, 
-  ChevronRightIcon,
-} from "lucide-react"
+import ChevronLeftIcon from "../assets/images/svg/chevron-left.svg?react";
+import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
 import Button from "./ui/Button"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"

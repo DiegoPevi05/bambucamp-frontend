@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {getCalendarDates} from "../db/actions/dashboard";
-import {LoaderCircle} from "lucide-react";
+import LoaderCircle from "../assets/images/svg/loader-circle.svg?react";
 
 const CalendarModal = ({ show, type, section, handleSelectedDate, containerDimensions }:{show:boolean, type:string, section?:string, handleSelectedDate: (date: Date) => void, containerDimensions: { height: number, width: number, left: number, top:number } }) => {
   const [currentDate, setCurrentDate] = useState(new Date());

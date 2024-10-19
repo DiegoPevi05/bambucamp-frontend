@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { User, UserCog, UserX } from "lucide-react";
+import User from "../assets/images/svg/user.svg?react";
+import UserCog from "../assets/images/svg/user-cog.svg?react";
+import UserX from "../assets/images/svg/user-x.svg?react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import Button from "../components/ui/Button";

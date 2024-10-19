@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import Button from "./Button";
 import { LOGO_PRIMARY } from "../../assets/images";
 import {  AnimatePresence } from "framer-motion";
-import { CalendarCheck, User, UserCog, DoorClosed  } from "lucide-react"
+import AlignJustify from "../../assets/images/svg/align-justify.svg?react";
+import CalendarCheck from "../../assets/images/svg/calendar-check.svg?react";
+import User from "../../assets/images/svg/user.svg?react";
+import UserCog from "../../assets/images/svg/user-cog.svg?react";
+import DoorClosed from "../../assets/images/svg/door-closed.svg?react";
+
 import {useTranslation} from "react-i18next";
 import {useAuth} from "../../contexts/AuthContext";
 import DropDownListAccount from "../DropDownListAccount";
 import {useNavigate} from "react-router-dom";
-import { AlignJustify } from "lucide-react";
+
 
 
 

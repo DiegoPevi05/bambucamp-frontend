@@ -1,5 +1,6 @@
 import  { useState, useRef } from "react";
-import { MapPin, Search } from "lucide-react";
+import MapPin from "../assets/images/svg/map-pin.svg?react";
+import Search from "../assets/images/svg/search.svg?react";
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import {useTranslation} from "react-i18next";

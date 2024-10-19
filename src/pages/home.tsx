@@ -16,23 +16,27 @@ import { formHomeSchema } from "../db/schemas.ts"
 import PromotionCard from "../components/CardPromotion"
 import Collapsible from "../components/Collapsible"
 import { useTranslation } from "react-i18next"
-import * as LucideIcons from 'lucide-react';
+import WavesIcon from "../assets/images/svg/waves.svg?react";
+import PizzaIcon from "../assets/images/svg/pizza.svg?react";
+import TentIcon from "../assets/images/svg/tent.svg?react";
+import MartiniIcon from "../assets/images/svg/martini.svg?react";
+import HandHeartIcon from "../assets/images/svg/hand-heart.svg?react";
+import DicesIcon from "../assets/images/svg/dices.svg?react";
+import BeefIcon from "../assets/images/svg/beef.svg?react";
+import CartTaxiFrontIcon from "../assets/images/svg/car-taxi-front.svg?react";
+
 import ChatComponent from "../components/ChatWhatsapp.tsx"
 import {ContactForm, webContent} from "../lib/interfaces.ts";
 import {ContactFormSubmit, getContentWeb} from "../db/actions/common.ts";
 import FooterDevelopment from "../components/FooterDevelopment.tsx";
 
-const ServiceCard = ({name,image,iconName}:{name:string;image:string;href:string,iconName:any}) => {
-
-  // @ts-ignore: Ignore TypeScript checking for IconComponent
-  const IconComponent = LucideIcons[iconName];
+const ServiceCard = ({name,image,children}:{name:string;image:string;href:string,children:React.ReactNode}) => {
 
   return(
     <div className="relative row-span-1 col-span-1 hover:scale-105 hover:z-20 transition-all flex flex-col items-center justify-center cursor-pointer bg-primary max-lg:py-6">
       <div className="absolute w-full h-full left-0 top-0 bg-no-repeat bg-cover bg-center opacity-[20%]" style={{backgroundImage: `url(${image})`}}></div>
       <h2 className="text-white text-md sm:text-4xl z-[50]">{name}</h2>
-
-      <IconComponent className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+      {children}
     </div>
   )
 
@@ -194,14 +198,30 @@ const Home = () => {
       )}
       <div id="services-2-section" className="h-auto sm:h-[100vh] w-full grid grid-rows-8 sm:grid-rows-2 grid-cols-1 sm:grid-cols-4 relative overflow-hidden">
         <h1 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-[40px] sm:text-[80px] text-white font-primary z-[100]">{t("common.services")}</h1>
-        <ServiceCard name="BambuAdventure" image={SERVICE_1} href="services" iconName="Waves" />
-        <ServiceCard name="BambuFood" image={SERVICE_2} href="services" iconName="Pizza"/>
-        <ServiceCard name="BambuRelax" image={SERVICE_3} href="services" iconName="Tent"/>
-        <ServiceCard name="BambuDrinks" image={SERVICE_4} href="services" iconName="Martini"/>
-        <ServiceCard name="BambuLove" image={SERVICE_5} href="services" iconName="HandHeart"/>
-        <ServiceCard name="BambuGames" image={SERVICE_6} href="services" iconName="Dices"/>
-        <ServiceCard name="BambuExtras" image={SERVICE_7} href="services" iconName="Beef"/>
-        <ServiceCard name="BambuTaxis" image={SERVICE_8} href="services" iconName="CarTaxiFront" />
+        <ServiceCard name="BambuAdventure" image={SERVICE_1} href="services">
+          <WavesIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuFood" image={SERVICE_2} href="services">
+          <PizzaIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuRelax" image={SERVICE_3} href="services">
+          <TentIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuDrinks" image={SERVICE_4} href="services">
+          <MartiniIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuLove" image={SERVICE_5} href="services">
+          <HandHeartIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuGames" image={SERVICE_6} href="services">
+          <DicesIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuExtras" image={SERVICE_7} href="services">
+          <BeefIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
+        <ServiceCard name="BambuTaxis" image={SERVICE_8} href="services">
+          <CartTaxiFrontIcon className="h-6 sm:h-12 w-6 sm:w-12 z-[50] text-white mt-4"/>
+        </ServiceCard>
       </div>
       <div id="FAQ" className="relative w-full h-auto lg:h-[100vh] grid grid-cols-1 lg:grid-cols-2 overflow-hidden px-12 sm:px-24 2xl:px-36 py-24 bg-secondary text-white max-lg:gap-y-4">
         <div className="lg:flex w-full h-full col-span-1 flex-col justify-center items-start gap-y-6">

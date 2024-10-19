@@ -1,4 +1,7 @@
-import { CreditCard, FlameKindling, Tent} from "lucide-react";
+import CreditCard from "../assets/images/svg/credit-card.svg?react";
+import FlameKindling from "../assets/images/svg/flame-kindling.svg?react";
+import Tent from "../assets/images/svg/tent.svg?react";
+
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 

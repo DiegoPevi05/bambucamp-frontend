@@ -5,7 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {  fadeOnly } from "../lib/motions";
-import { CalendarCheck, User, DoorClosed, ChevronDown, PanelTop } from "lucide-react";
+import CalendarCheck from "../assets/images/svg/calendar-check.svg?react";
+import User from "../assets/images/svg/user.svg?react";
+import DoorClosed from "../assets/images/svg/door-closed.svg?react";
+import ChevronDown from "../assets/images/svg/chevron-down.svg?react";
+import PanelTop from "../assets/images/svg/panel-top.svg?react";
+
 interface DropDownProps {
   user: UserIT | null;
   variant?: string;

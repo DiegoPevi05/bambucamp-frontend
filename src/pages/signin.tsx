@@ -5,7 +5,10 @@ import { signInSchema } from "../db/schemas.ts"
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/motions";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Lock, Eye, EyeOff } from "lucide-react";
+import Lock from "../assets/images/svg/eye.svg?react";
+import Eye from "../assets/images/svg/eye-off.svg?react";
+import EyeOff from "../assets/images/svg/lock.svg?react";
+
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import { SignInAccount } from "../db/actions/auth.ts";

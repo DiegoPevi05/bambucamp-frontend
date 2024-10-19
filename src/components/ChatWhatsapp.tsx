@@ -1,5 +1,4 @@
-import { MessageSquare } from "lucide-react";
-
+import MessageSquare from "../assets/images/svg/message-square.svg?react";
 
 const ChatComponent = () => {
 

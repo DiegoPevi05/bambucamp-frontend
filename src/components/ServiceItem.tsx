@@ -1,18 +1,31 @@
-import * as LucideIcons from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Wifi from "../assets/images/svg/wifi.svg?react";
+import Car from "../assets/images/svg/car.svg?react";
+import Waves  from "../assets/images/svg/waves.svg?react";
+import Croissant  from "../assets/images/svg/croissant.svg?react";
+import Sandwich  from "../assets/images/svg/sandwich.svg?react";
+import Utensils  from "../assets/images/svg/utensils.svg?react";
+import Sparkles  from "../assets/images/svg/sparkles.svg?react";
+import Martini  from "../assets/images/svg/martini.svg?react";
+import Bath  from "../assets/images/svg/bath.svg?react";
+import AirVent  from "../assets/images/svg/air-vent.svg?react";
+import Beef  from "../assets/images/svg/beef.svg?react";
 
-const serviceIconMap: Record<string, keyof typeof LucideIcons> = {
-  wifi: 'Wifi',
-  parking: 'Car',
-  pool: 'Waves',
-  breakfast: 'Croissant',
-  lunch: 'Sandwich',
-  dinner: 'Utensils',
-  spa: 'Sparkles',
-  bar: 'Martini',
-  hotwater: 'Bath',
-  airconditioning: 'AirVent',
-  grill: 'Beef',
+
+type IconKeys = 'wifi'|'parking'|'pool'|'breakfast'|'lunch'|'dinner'|'spa'|'bar'|'hotwater'|'airconditioning'|'grill'; // Extend this type as needed
+
+const serviceIconMap: Record<IconKeys, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  wifi: Wifi,
+  parking: Car,
+  pool: Waves,
+  breakfast: Croissant,
+  lunch: Sandwich,
+  dinner: Utensils,
+  spa: Sparkles,
+  bar: Martini,
+  hotwater: Bath,
+  airconditioning: AirVent,
+  grill: Beef,
 };
 
 const serviceLabelMap: Record<string, string> = {
@@ -38,10 +51,19 @@ interface ServiceItemProps {
 const ServiceItem = ({icon,size,color}:ServiceItemProps) => {
   const { t } = useTranslation();
 
-  const iconName = serviceIconMap[icon];
   const label = t(serviceLabelMap[icon]);
-  // @ts-ignore: Ignore TypeScript checking for IconComponent
-  const IconComponent = LucideIcons[iconName];
+
+  // Type assertion with runtime validation
+  const isValidIconKey = (key: string): key is IconKeys => {
+    return key in serviceIconMap;
+  };
+
+  if (!isValidIconKey(icon)) {
+    console.warn(`Invalid icon key: ${icon}`); // Warn about invalid keys
+    return null; // or return a fallback element if desired
+  }
+
+  const IconComponent = serviceIconMap[icon]; // Get the icon component
 
   return(
     <li className= {`${size == "sm" ? 'text-[12px] gap-x-1' : 'text-[10px] sm:text-[14px] 2xl:text-lg gap-x-2' } ${color ?? "text-white"} font-secondary flex flex-row ` }>

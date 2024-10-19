@@ -1,5 +1,5 @@
 import {fadeIn} from '../lib/motions'
-import { User } from 'lucide-react'
+import User from "../assets/images/svg/user.svg?react";
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import Dashboard from '../components/ui/Dashboard'

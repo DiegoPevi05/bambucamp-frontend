@@ -1,7 +1,7 @@
 import { cn } from '../../lib/utils'
 import { cva, VariantProps } from 'class-variance-authority'
 import { InputHTMLAttributes, FC } from 'react'
-import { Check } from 'lucide-react';
+import Check from "../../assets/images/svg/check.svg?react";
 
 export const radioVariants = cva(
   'active:scale-105',

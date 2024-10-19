@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import {  useGLTF } from '@react-three/drei';
-import { a } from '@react-spring/three';
-import { BG_BOOKING, ISOLOGO_TERTIARY, ISOLOGO_WHITE, NOTICE_BOARD } from '../assets/images';
+import { BG_BOOKING, ISOLOGO_TERTIARY, ISOLOGO_WHITE, NOTICE_BOARD, TENT_BOOKING } from '../assets/images';
 import {  motion } from 'framer-motion';
 import { fadeIn, fadeOnly } from '../lib/motions';
 import ChevronRightIcon from "../assets/images/svg/chevron-right.svg?react";
@@ -27,46 +24,6 @@ import {toast} from 'sonner';
 import {useNavigate} from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 
-interface ModelTentProps {
-  position: [number, number, number];
-}
-
-const ModelTent: React.FC<ModelTentProps> = ({ position }) => {
-  // Use useGLTF hook to load the .glb model
-  const { scene } = useGLTF('/models/tent.glb',true);
-
-  return (
-    <a.group position={position}>
-      <primitive object={scene} scale={[0.02, 0.02, 0.02]} rotation={[0.1,0.3,-0.05]} position={[-1.5,-1.8,-1]} />
-    </a.group>
-  );
-};
-
-interface CarouselTentProps {
-  idTent:number;
-}
-
-
-const CarouselTent: React.FC<CarouselTentProps> = ({idTent}) => {
-
-  return (
-    <div className="relative h-full w-full overflow-hidden z-[20]">
-      <motion.div 
-        key={`current-tent-${idTent}`}
-        initial="hidden"
-        animate="show"
-        exit="hidden"
-        variants={fadeIn("right","",0.5,1)}
-        className="w-full h-full">
-        <Canvas>
-          <ambientLight intensity={8} /> {/* Overall light */}
-          <spotLight position={[10, 10, 10]} /> {/* Spot light for highlights */}
-          <ModelTent key={1} position={[0, 0, 0]} />
-        </Canvas>
-      </motion.div>
-    </div>
-  );
-};
 
 const Booking: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -295,11 +252,16 @@ const Booking: React.FC = () => {
                   </div>
 
                 </motion.div>
-                <CarouselTent   
-                  key={`tent-catalog-model-${tent.id}`}
-                  idTent={selectedTent}
-                />
 
+                <motion.div 
+                  key={`current-tent-${tent.id}`}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={fadeIn("right","",0.5,1)}
+                  className="w-full h-full relative">
+                  <img src={TENT_BOOKING} alt="booking" className="absolute top-1/2 -translate-y-1/2 -left-[90%] sm:-left-[40%] lg:-left-[20%] xl:left-[20%] min-w-[800px] h-[478px] scale-[1.3] sm:scale-[2.1] xl:scale-[1.8]"/>
+                </motion.div>
                 <div 
                   key={`tent-catalog-mobile-${tent.id}`}
                   className={`w-screen h-screen absolute top-0 ${viewDetailsMobile ? "left-0": "left-[100%]"} z-[100] bg-white duration-300 transition-all overflow-hidden`}>

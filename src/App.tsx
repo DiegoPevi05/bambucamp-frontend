@@ -24,6 +24,7 @@ import ValidateCode from './pages/validate-code';
 import ChangePassword from './pages/change-password';
 import ErrorPage from './pages/error';
 import ValidateAccount from './pages/validate-account';
+import TestComponent from './pages/TestPage';
 
 
 interface ProtectedRouteProps {
@@ -59,8 +60,6 @@ const AppRoutes: React.FC = () => {
           </Suspense>
         } 
       />
-
-      <Route path="/loading" element={<LoadingComponent isLoading={true}/>}/>
 
       <Route path="/booking" 
         element={

@@ -3,6 +3,7 @@ import LUNAHUANA from './lunahuana.webp';
 import BG_BOOKING from './bg_booking.webp';
 import GOOGLE_ICON from './google.webp';
 import LOGO_PRIMARY from './logo_primary.webp';
+import TENT_BOOKING from './tent_booking.png';
 
 import LOGO_THIRD from './logo_third.webp';
 
@@ -31,6 +32,7 @@ import SERVICE_8 from './services/transport.webp';
 
 
 export {
+	TENT_BOOKING,
 	LOGO_PRIMARY,
 	LOGO_THIRD,
 	GOOGLE_ICON,

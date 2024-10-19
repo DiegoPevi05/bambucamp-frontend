@@ -12,9 +12,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
-    "@react-spring/three": "^9.7.4",
-    "@react-three/drei": "^9.109.5",
-    "@react-three/fiber": "^8.17.5",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -32,7 +29,6 @@
     "socket.io-client": "^4.7.5",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
-    "three": "^0.167.1",
     "uuid": "^10.0.0",
     "vite-plugin-svgr": "^4.2.0",
     "zod": "^3.23.8"
